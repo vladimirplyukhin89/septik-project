@@ -1,0 +1,39 @@
+---
+import AddressLink from './AddressLink.astro'
+import LeadFormFields from './LeadFormFields.astro'
+
+interface Props {
+  title: string
+  subtitle: string
+  phone: string
+  phoneHref: string
+  address: string
+  addressMapUrl: string
+}
+
+const { title, subtitle, phone, phoneHref, address, addressMapUrl } = Astro.props
+---
+
+<section id="lead-form" class="section">
+  <div class="container-site fade-up grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-start">
+    <div>
+      <p class="section-kicker">Заявка</p>
+      <h2 class="section-title mt-2">{title}</h2>
+      <p class="section-lead">{subtitle}</p>
+      <div class="mt-8 space-y-3 text-sm">
+        <p>
+          <span class="text-ink-muted">Телефон: </span>
+          <a href={`tel:${phoneHref}`} class="font-semibold hover:text-accent">{phone}</a>
+        </p>
+        <p>
+          <span class="text-ink-muted">Адрес: </span>
+          <AddressLink address={address} mapUrl={addressMapUrl} class="font-semibold hover:text-accent" />
+        </p>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-line bg-paper-deep p-6 md:p-8">
+      <LeadFormFields idPrefix="page-lead" />
+    </div>
+  </div>
+</section>

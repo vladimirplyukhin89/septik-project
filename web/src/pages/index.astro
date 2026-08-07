@@ -1,0 +1,107 @@
+---
+export const prerender = true
+
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro'
+import Hero from '../components/Hero.astro'
+import Problems from '../components/Problems.astro'
+import Services from '../components/Services.astro'
+import Advantages from '../components/Advantages.astro'
+import Package from '../components/Package.astro'
+import Gallery from '../components/Gallery.astro'
+import Trust from '../components/Trust.astro'
+import Faq from '../components/Faq.astro'
+import LeadForm from '../components/LeadForm.astro'
+import LeadModal from '../components/LeadModal.astro'
+import Footer from '../components/Footer.astro'
+import MotionInit from '../components/MotionInit.astro'
+import { getSiteContent } from '../lib/sanity'
+import { SITE_URL } from '../lib/site'
+
+const { settings, home } = await getSiteContent()
+
+const title = home.seoTitle || settings.seoTitle
+const description = home.seoDescription || settings.seoDescription
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: settings.brandName,
+  legalName: settings.legalName,
+  telephone: settings.phone,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: settings.address,
+    addressLocality: 'Тюмень',
+    addressCountry: 'RU',
+  },
+  areaServed: 'Тюмень',
+  url: SITE_URL,
+  description,
+  priceRange: home.heroPriceFrom,
+}
+---
+
+<Layout title={title} description={description} settings={settings} jsonLd={jsonLd}>
+  <Header brandName={settings.brandName} phone={settings.phone} phoneHref={settings.phoneHref} />
+  <main>
+    <Hero
+      eyebrow={home.heroEyebrow}
+      title={home.heroTitle}
+      subtitle={home.heroSubtitle}
+      cta={home.heroCta}
+      priceFrom={home.heroPriceFrom}
+      trust={home.heroTrust}
+      phone={settings.phone}
+      phoneHref={settings.phoneHref}
+      brandName={settings.brandName}
+    />
+    <Services title={home.servicesTitle} services={home.services} />
+    <Advantages title={home.advantagesTitle} advantages={home.advantages} />
+    <Package
+      title={home.packageTitle}
+      intro={home.packageIntro}
+      items={home.packageItems}
+      price={home.packagePrice}
+      cta={home.packageCta}
+    />
+    <Problems title={home.problemsTitle} problems={home.problems} />
+    <Gallery title={home.galleryTitle} items={home.gallery} />
+    <Trust
+      title={home.trustTitle}
+      text={home.trustText}
+      legalName={settings.legalName}
+      address={settings.address}
+      addressMapUrl={settings.addressMapUrl}
+      phone={settings.phone}
+      phoneHref={settings.phoneHref}
+    />
+    <Faq title={home.faqTitle} faqs={home.faqs} />
+    <LeadForm
+      title={home.formTitle}
+      subtitle={home.formSubtitle}
+      phone={settings.phone}
+      phoneHref={settings.phoneHref}
+      address={settings.address}
+      addressMapUrl={settings.addressMapUrl}
+    />
+  </main>
+  <Footer
+    brandName={settings.brandName}
+    phone={settings.phone}
+    phoneHref={settings.phoneHref}
+    legalName={settings.legalName}
+    address={settings.address}
+    addressMapUrl={settings.addressMapUrl}
+  />
+
+  <div
+    class="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-2 border-t border-ink/10 bg-paper/95 p-3 backdrop-blur md:hidden"
+  >
+    <a href={`tel:${settings.phoneHref}`} class="btn-outline py-3 text-center text-xs">Позвонить</a>
+    <a href="#lead-form" class="btn-primary py-3 text-center text-xs">Заявка</a>
+  </div>
+
+  <LeadModal title={home.formTitle} subtitle={home.formSubtitle} />
+  <MotionInit />
+</Layout>

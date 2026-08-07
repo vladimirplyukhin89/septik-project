@@ -1,0 +1,21 @@
+---
+interface Props {
+  address: string
+  mapUrl: string
+  class?: string
+}
+
+const { address, mapUrl, class: className = '' } = Astro.props
+---
+
+<a
+  href={mapUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={['address-link', className]}
+  data-address={address}
+  data-map-provider="2gis"
+  title="Открыть адрес в 2ГИС"
+>
+  {address}
+</a>

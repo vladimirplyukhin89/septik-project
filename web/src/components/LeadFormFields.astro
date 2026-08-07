@@ -1,0 +1,79 @@
+---
+interface Props {
+  idPrefix?: string
+  formClass?: string
+}
+
+const { idPrefix = 'lead', formClass = '' } = Astro.props
+const nameId = `${idPrefix}-name`
+const phoneId = `${idPrefix}-phone`
+const messageId = `${idPrefix}-message`
+---
+
+<form
+  class:list={['lead-form', formClass]}
+  data-lead-form
+  data-endpoint="/api/lead"
+  novalidate
+>
+  <div class="form-field">
+    <label class="form-label" for={nameId}>Имя <span class="text-rust">*</span></label>
+    <input
+      id={nameId}
+      type="text"
+      name="name"
+      data-field="name"
+      autocomplete="name"
+      maxlength="60"
+      class="form-input"
+      placeholder="Как к вам обращаться"
+      aria-describedby={`${nameId}-error`}
+    />
+    <p class="form-error" id={`${nameId}-error`} data-error-for="name" aria-live="polite"></p>
+  </div>
+
+  <div class="form-field">
+    <label class="form-label" for={phoneId}>Телефон <span class="text-rust">*</span></label>
+    <input
+      id={phoneId}
+      type="tel"
+      name="phone"
+      data-field="phone"
+      autocomplete="tel"
+      inputmode="tel"
+      maxlength="18"
+      class="form-input"
+      placeholder="+7 (9XX) XXX-XX-XX"
+      aria-describedby={`${phoneId}-error`}
+    />
+    <p class="form-error" id={`${phoneId}-error`} data-error-for="phone" aria-live="polite"></p>
+  </div>
+
+  <div class="form-field">
+    <label class="form-label" for={messageId}>Комментарий</label>
+    <textarea
+      id={messageId}
+      name="message"
+      data-field="message"
+      rows="3"
+      maxlength="1000"
+      class="form-input form-textarea"
+      placeholder="Объём, участок, удобное время звонка"
+      aria-describedby={`${messageId}-error`}
+    ></textarea>
+    <p class="form-error" id={`${messageId}-error`} data-error-for="message" aria-live="polite"></p>
+  </div>
+
+  <p class="mt-1 text-xs text-ink-muted">
+    Нажимая кнопку, вы соглашаетесь на обработку персональных данных для обратной связи.
+  </p>
+
+  <button type="submit" class="btn-form-submit mt-4 w-full" data-submit>
+    Отправить заявку
+  </button>
+
+  <p class="form-status mt-3 hidden text-sm text-success" data-success role="status">
+    Заявка отправлена. Мы скоро свяжемся с вами.
+  </p>
+  <p class="form-error form-error--form mt-2 is-empty text-sm" data-form-error role="alert"></p>
+</form>

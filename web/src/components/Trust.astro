@@ -1,0 +1,58 @@
+---
+import AddressLink from './AddressLink.astro'
+import { COMPANY_LOGO_URL } from '../lib/site'
+
+interface Props {
+  title: string
+  text: string
+  legalName: string
+  address: string
+  addressMapUrl: string
+  phone: string
+  phoneHref: string
+}
+
+const { title, text, legalName, address, addressMapUrl, phone, phoneHref } = Astro.props
+---
+
+<section id="trust" class="section">
+  <div class="container-site fade-up">
+    <div class="rounded-2xl border border-line bg-paper-deep p-8 md:grid md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-10 md:p-12">
+      <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-8">
+        <div class="trust-logo-wrap shrink-0">
+          <img
+            src={COMPANY_LOGO_URL}
+            alt="АРМАДА"
+            class="trust-logo"
+            width="300"
+            height="392"
+            loading="lazy"
+          />
+        </div>
+        <div>
+          <p class="section-kicker">О компании</p>
+          <h2 class="section-title mt-2">{title}</h2>
+          <p class="section-lead">{text}</p>
+        </div>
+      </div>
+      <dl class="mt-8 grid gap-5 md:mt-0">
+        <div>
+          <dt class="text-xs uppercase tracking-[0.12em] text-ink-muted">Компания</dt>
+          <dd class="mt-1 text-lg font-bold">{legalName}</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-[0.12em] text-ink-muted">Адрес</dt>
+          <dd class="mt-1 text-lg font-bold">
+            <AddressLink address={address} mapUrl={addressMapUrl} class="hover:text-accent" />
+          </dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-[0.12em] text-ink-muted">Телефон</dt>
+          <dd class="mt-1 text-lg font-bold">
+            <a href={`tel:${phoneHref}`} class="hover:text-accent">{phone}</a>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>

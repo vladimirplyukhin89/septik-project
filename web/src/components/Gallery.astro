@@ -1,0 +1,103 @@
+---
+import type { GalleryItem } from '../lib/types'
+
+interface Props {
+  title: string
+  items: GalleryItem[]
+}
+
+const { title, items } = Astro.props
+const first = items[0]
+---
+
+<section id="gallery" class="examples-section relative overflow-hidden bg-soil py-20 text-white md:py-28">
+  <div
+    class="pointer-events-none absolute inset-0 opacity-50"
+    style="background:
+      radial-gradient(ellipse 60% 45% at 15% 20%, rgba(11,110,153,0.35), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 90% 80%, rgba(196,92,38,0.12), transparent 50%);"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container-site relative">
+    <div class="fade-up max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Примеры</p>
+      <h2 class="mt-3 text-3xl font-bold tracking-tight md:text-4xl lg:text-[2.5rem]">{title}</h2>
+      <p class="mt-4 max-w-2xl text-base text-white/65 md:text-lg">
+        Крупные модели пластиковых септиков и станций — листайте галерею и выберите формат под участок.
+      </p>
+    </div>
+
+    {
+      first && (
+        <div
+          class="examples-gallery fade-up mt-10 md:mt-12"
+          data-examples-gallery
+          tabindex="0"
+          role="region"
+          aria-roledescription="карусель"
+          aria-label="Галерея примеров септиков"
+        >
+          <div class="examples-stage">
+            <button
+              type="button"
+              class="examples-nav examples-nav--prev"
+              data-examples-prev
+              aria-label="Предыдущий пример"
+            >
+              <span aria-hidden="true">‹</span>
+            </button>
+
+            <div class="examples-stage-frame">
+              <div class="examples-glow" aria-hidden="true" />
+              <img
+                src={first.imageUrl}
+                alt={first.caption}
+                class="examples-stage-img"
+                data-examples-main
+                width="960"
+                height="720"
+                decoding="async"
+              />
+              <div class="examples-stage-meta">
+                <p class="examples-stage-caption" data-examples-caption>
+                  {first.caption}
+                </p>
+                <p class="examples-stage-counter" data-examples-counter>
+                  1 / {items.length}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="examples-nav examples-nav--next"
+              data-examples-next
+              aria-label="Следующий пример"
+            >
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
+
+          <div class="examples-thumbs" role="tablist" aria-label="Выбор примера">
+            {items.map((item, i) => (
+              <button
+                type="button"
+                class:list={['examples-thumb', i === 0 && 'is-active']}
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-label={item.caption}
+                data-examples-thumb
+                data-src={item.imageUrl}
+                data-caption={item.caption}
+              >
+                <img src={item.imageUrl} alt="" width="240" height="180" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>

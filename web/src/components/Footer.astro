@@ -1,0 +1,44 @@
+---
+import AddressLink from './AddressLink.astro'
+
+interface Props {
+  brandName: string
+  phone: string
+  phoneHref: string
+  legalName: string
+  address: string
+  addressMapUrl: string
+}
+
+const { brandName, phone, phoneHref, legalName, address, addressMapUrl } = Astro.props
+const year = new Date().getFullYear()
+---
+
+<footer class="border-t border-line bg-soil text-white">
+  <div class="container-site grid gap-8 py-12 md:grid-cols-[1.2fr_1fr_1fr]">
+    <div>
+      <p class="text-2xl font-bold">{brandName}</p>
+      <p class="mt-2 text-sm text-white/75">
+        <AddressLink address={address} mapUrl={addressMapUrl} class="text-white/75 hover:text-white" />
+      </p>
+    </div>
+    <div>
+      <p class="text-xs uppercase tracking-[0.14em] text-white/45">Контакты</p>
+      <a href={`tel:${phoneHref}`} class="mt-3 block text-lg font-bold hover:text-accent">{phone}</a>
+      <a href="#lead-form" class="mt-4 inline-block text-sm font-semibold text-white/80 hover:text-white">Обратный звонок</a>
+    </div>
+    <div>
+      <p class="text-xs uppercase tracking-[0.14em] text-white/45">Разделы</p>
+      <ul class="mt-3 space-y-2 text-sm text-white/75">
+        <li><a href="#products" class="hover:text-white">Продукция</a></li>
+        <li><a href="#why" class="hover:text-white">Преимущества</a></li>
+        <li><a href="#package" class="hover:text-white">Под ключ</a></li>
+        <li><a href="#gallery" class="hover:text-white">Примеры</a></li>
+        <li><a href="#lead-form" class="hover:text-white">Заявка</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-white/10 py-4 text-center text-xs text-white/45">
+    © {year} {legalName}. Все права защищены.
+  </div>
+</footer>

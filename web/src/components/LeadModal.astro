@@ -1,0 +1,41 @@
+---
+import LeadFormFields from './LeadFormFields.astro'
+
+interface Props {
+  title?: string
+  subtitle?: string
+}
+
+const {
+  title = 'Оставьте заявку',
+  subtitle = 'Специалист свяжется с вами в рабочее время.',
+} = Astro.props
+---
+
+<dialog
+  class="lead-modal"
+  data-lead-modal
+  aria-labelledby="lead-modal-title"
+>
+  <div class="lead-modal__panel">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <p class="section-kicker">Обратный звонок</p>
+        <h2 id="lead-modal-title" class="mt-1 text-xl font-bold text-ink md:text-2xl">{title}</h2>
+        <p class="mt-1 text-sm text-ink-muted">{subtitle}</p>
+      </div>
+      <button
+        type="button"
+        class="lead-modal__close"
+        data-close-lead-modal
+        aria-label="Закрыть"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="mt-3 md:mt-4">
+      <LeadFormFields idPrefix="modal-lead" formClass="lead-form--modal" />
+    </div>
+  </div>
+</dialog>

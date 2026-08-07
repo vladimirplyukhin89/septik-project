@@ -1,0 +1,70 @@
+import {defineField, defineType} from 'sanity'
+
+export const homePage = defineType({
+  name: 'homePage',
+  title: 'Главная страница',
+  type: 'document',
+  fields: [
+    defineField({name: 'heroEyebrow', title: 'Hero: надзаголовок', type: 'string'}),
+    defineField({name: 'heroTitle', title: 'Hero: заголовок', type: 'string', validation: (r) => r.required()}),
+    defineField({name: 'heroSubtitle', title: 'Hero: подзаголовок', type: 'text', rows: 2}),
+    defineField({name: 'heroCta', title: 'Hero: текст кнопки', type: 'string'}),
+    defineField({name: 'heroPriceFrom', title: 'Цена от', type: 'string'}),
+    defineField({name: 'heroTrust', title: 'Trust-строки', type: 'array', of: [{type: 'string'}]}),
+    defineField({name: 'heroImage', title: 'Hero фото', type: 'image', options: {hotspot: true}}),
+    defineField({name: 'problemsTitle', title: 'Проблемы: заголовок', type: 'string'}),
+    defineField({
+      name: 'problems',
+      title: 'Проблемы участка',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'title', type: 'string', title: 'Заголовок'},
+            {name: 'text', type: 'text', title: 'Текст', rows: 3},
+          ],
+        },
+      ],
+    }),
+    defineField({name: 'servicesTitle', title: 'Продукты: заголовок', type: 'string'}),
+    defineField({
+      name: 'services',
+      title: 'Продукты на главной',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'service'}]}],
+    }),
+    defineField({name: 'advantagesTitle', title: 'Почему мы: заголовок', type: 'string'}),
+    defineField({
+      name: 'advantages',
+      title: 'Преимущества',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'advantage'}]}],
+    }),
+    defineField({name: 'packageTitle', title: 'Комплект: заголовок', type: 'string'}),
+    defineField({name: 'packageIntro', title: 'Комплект: описание', type: 'text', rows: 3}),
+    defineField({name: 'packageItems', title: 'Что входит', type: 'array', of: [{type: 'string'}]}),
+    defineField({name: 'packagePrice', title: 'Комплект: цена', type: 'string'}),
+    defineField({name: 'packageCta', title: 'Комплект: кнопка', type: 'string'}),
+    defineField({name: 'galleryTitle', title: 'Галерея: заголовок', type: 'string'}),
+    defineField({
+      name: 'gallery',
+      title: 'Фото галереи',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'galleryItem'}]}],
+    }),
+    defineField({name: 'trustTitle', title: 'Доверие: заголовок', type: 'string'}),
+    defineField({name: 'trustText', title: 'Доверие: текст', type: 'text', rows: 3}),
+    defineField({name: 'faqTitle', title: 'FAQ: заголовок', type: 'string'}),
+    defineField({
+      name: 'faqs',
+      title: 'Вопросы',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'faqItem'}]}],
+    }),
+    defineField({name: 'formTitle', title: 'Форма: заголовок', type: 'string'}),
+    defineField({name: 'formSubtitle', title: 'Форма: подзаголовок', type: 'text', rows: 2}),
+    defineField({name: 'seoTitle', title: 'SEO title', type: 'string'}),
+    defineField({name: 'seoDescription', title: 'SEO description', type: 'text', rows: 3}),
+  ],
+})
