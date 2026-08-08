@@ -1,0 +1,104 @@
+---
+import type { GalleryItem } from '../lib/types'
+
+interface Props {
+  title: string
+  items: GalleryItem[]
+}
+
+const { title, items } = Astro.props
+const first = items[0]
+---
+
+<section id="works" class="works-section relative overflow-hidden bg-soil py-20 text-white md:py-28">
+  <div
+    class="pointer-events-none absolute inset-0 opacity-45"
+    style="background:
+      radial-gradient(ellipse 55% 40% at 80% 10%, rgba(11,110,153,0.32), transparent 55%),
+      radial-gradient(ellipse 45% 35% at 10% 90%, rgba(196,92,38,0.14), transparent 50%);"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="container-site relative">
+    <div class="fade-up max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Наши работы</p>
+      <h2 class="mt-3 text-[2rem] font-bold tracking-tight md:text-4xl lg:text-[2.5rem]">{title}</h2>
+      <p class="mt-4 max-w-2xl text-base text-white/65 md:text-lg">
+        Реальные объекты в Тюмени и области — от котлована до готового монтажа.
+      </p>
+    </div>
+
+    {
+      first && (
+        <div
+          class="examples-gallery works-gallery fade-up mt-10 md:mt-12"
+          data-examples-gallery
+          tabindex="0"
+          role="region"
+          aria-roledescription="карусель"
+          aria-label="Галерея выполненных работ"
+        >
+          <div class="examples-stage">
+            <button
+              type="button"
+              class="examples-nav examples-nav--prev"
+              data-examples-prev
+              aria-label="Предыдущее фото"
+            >
+              <span aria-hidden="true">‹</span>
+            </button>
+
+            <div class="examples-stage-frame works-stage-frame">
+              <img
+                src={first.imageUrl}
+                alt={first.caption}
+                class="examples-stage-img works-stage-img"
+                data-examples-main
+                width="960"
+                height="1200"
+                decoding="async"
+              />
+              <div class="works-stage-overlay" aria-hidden="true" />
+              <div class="examples-stage-meta">
+                <p class="examples-stage-caption" data-examples-caption>
+                  {first.caption}
+                </p>
+                <p class="examples-stage-counter" data-examples-counter>
+                  1 / {items.length}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="examples-nav examples-nav--next"
+              data-examples-next
+              aria-label="Следующее фото"
+            >
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
+
+          <div class="examples-thumbs works-thumbs" role="tablist" aria-label="Выбор работы">
+            {items.map((item, i) => (
+              <button
+                type="button"
+                class:list={['examples-thumb', 'works-thumb', i === 0 && 'is-active']}
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-label={item.caption}
+                data-examples-thumb
+                data-src={item.imageUrl}
+                data-caption={item.caption}
+                data-tap-hover
+              >
+                <img src={item.imageUrl} alt="" width="240" height="300" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>

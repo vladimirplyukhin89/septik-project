@@ -1,8 +1,10 @@
-/** Интерактивная галерея «Примеры»: stage + thumbnails + стрелки. */
+/** Интерактивная галерея: stage + thumbnails + стрелки (поддерживает несколько на странице). */
 export function initExamplesGallery() {
-  const root = document.querySelector<HTMLElement>('[data-examples-gallery]')
-  if (!root) return
+  const roots = document.querySelectorAll<HTMLElement>('[data-examples-gallery]')
+  roots.forEach((root) => initGalleryRoot(root))
+}
 
+function initGalleryRoot(root: HTMLElement) {
   const main = root.querySelector<HTMLImageElement>('[data-examples-main]')
   const caption = root.querySelector<HTMLElement>('[data-examples-caption]')
   const counter = root.querySelector<HTMLElement>('[data-examples-counter]')

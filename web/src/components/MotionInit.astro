@@ -43,7 +43,7 @@
   }
 
   function initReveals() {
-    const targets = document.querySelectorAll('.fade-up, .stagger-group')
+    const targets = document.querySelectorAll('.fade-up, .reveal-item')
     if (!targets.length) return
 
     if (reduceMotion) {
@@ -57,13 +57,9 @@
           if (!entry.isIntersecting) continue
           entry.target.classList.add('is-visible')
           observer.unobserve(entry.target)
-
-          if (entry.target.classList.contains('js-stats')) {
-            animateStats(entry.target)
-          }
         }
       },
-      { threshold: 0.14, rootMargin: '0px 0px -6% 0px' }
+      { threshold: 0.2, rootMargin: '0px' },
     )
 
     targets.forEach((el) => observer.observe(el))
@@ -73,20 +69,38 @@
     const hero = document.getElementById('top')
     if (!hero) return
 
+    const stats = hero.querySelector('.js-stats')
+
     if (reduceMotion) {
       hero.classList.add('hero-ready')
-      const stats = hero.querySelector('.js-stats')
       if (stats) animateStats(stats, true)
       return
     }
 
-    requestAnimationFrame(() => {
-      hero.classList.add('hero-ready')
-    })
+    const heroObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          hero.classList.add('hero-ready')
+          heroObserver.unobserve(hero)
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px' },
+    )
+    heroObserver.observe(hero)
 
-    const stats = hero.querySelector('.js-stats')
     if (stats) {
-      window.setTimeout(() => animateStats(stats), 420)
+      const statsObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue
+            animateStats(entry.target)
+            statsObserver.unobserve(entry.target)
+          }
+        },
+        { threshold: 0.2, rootMargin: '0px' },
+      )
+      statsObserver.observe(stats)
     }
   }
 
@@ -121,9 +135,102 @@
     })
   }
 
+  function initTapHover() {
+    const coarse = window.matchMedia('(hover: none), (pointer: coarse)')
+    if (!coarse.matches) return
+
+    let active: Element | null = null
+
+    const clear = () => {
+      if (!active) return
+      active.classList.remove('is-hovered')
+      active = null
+    }
+
+    const activate = (el: Element) => {
+      if (active === el) return
+      clear()
+      el.classList.add('is-hovered')
+      active = el
+    }
+
+    document.addEventListener(
+      'pointerdown',
+      (event) => {
+        if (!(event.target instanceof Element)) return
+        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .examples-thumb, .examples-nav, .faq-trigger, .lead-modal__close')
+        if (!target) {
+          clear()
+          return
+        }
+        activate(target)
+      },
+      { passive: true },
+    )
+
+    document.addEventListener(
+      'pointerup',
+      () => {
+        // Keep card hover visible briefly; clear non-sticky controls on release
+        window.setTimeout(() => {
+          if (!active) return
+          if (active.matches('[data-tap-hover]')) return
+          clear()
+        }, 180)
+      },
+      { passive: true },
+    )
+  }
+
+  function initMobileCta() {
+    const cta = document.querySelector<HTMLElement>('[data-mobile-cta]')
+    const sentinel = document.querySelector<HTMLElement>('.js-mobile-cta-sentinel')
+    if (!cta || !sentinel) return
+
+    const mq = window.matchMedia('(max-width: 767px)')
+    let spacer: HTMLElement | null = null
+
+    const setFixed = (fixed: boolean) => {
+      const isFixed = cta.classList.contains('is-fixed')
+      if (fixed === isFixed) return
+
+      if (fixed) {
+        spacer = document.createElement('div')
+        spacer.className = 'js-mobile-cta-spacer md:hidden'
+        cta.parentElement?.insertBefore(spacer, cta.nextSibling)
+        cta.classList.add('is-fixed')
+        document.body.classList.add('has-fixed-cta')
+      } else {
+        cta.classList.remove('is-fixed')
+        document.body.classList.remove('has-fixed-cta')
+        spacer?.remove()
+        spacer = null
+      }
+    }
+
+    const update = () => {
+      if (!mq.matches) {
+        setFixed(false)
+        return
+      }
+
+      // Spacer holds the in-flow slot once the bar is fixed
+      const anchorTop = (spacer ?? cta).getBoundingClientRect().top
+      const stickLine = window.innerHeight - cta.offsetHeight
+      setFixed(anchorTop <= stickLine)
+    }
+
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
+    mq.addEventListener('change', update)
+  }
+
   initHeader()
   initHero()
   initReveals()
+  initTapHover()
+  initMobileCta()
   initNoCopy()
   initExamplesGallery()
   initLeadForms()

@@ -5,9 +5,10 @@ import { COMPANY_LOGO_URL } from '../lib/site'
 interface Props {
   title: string
   services: Service[]
+  phoneHref: string
 }
 
-const { title, services } = Astro.props
+const { title, services, phoneHref } = Astro.props
 
 const badges = ['Пластик', 'Вертикальный', 'Горизонтальный']
 const hoverImages = [
@@ -33,6 +34,7 @@ const hoverImages = [
             class="product-card group reveal-item cursor-pointer"
             style={`--reveal-i: ${i}`}
             data-open-lead-modal
+            data-tap-hover
             role="button"
             tabindex="0"
             aria-label={`Подобрать: ${service.title}`}
@@ -40,7 +42,7 @@ const hoverImages = [
             <div class="relative aspect-[16/14] overflow-hidden bg-soil">
               {/* Default: gradient + logo */}
               <div
-                class="absolute inset-0 opacity-80 transition-opacity duration-300 group-hover:opacity-0"
+                class="absolute inset-0 opacity-80 transition-opacity duration-300 group-hover:opacity-0 group-[.is-hovered]:opacity-0"
                 style={`background: linear-gradient(145deg, #0f1c2e 0%, #0b6e99 55%, #1a334d 100%);`}
                 aria-hidden="true"
               />
@@ -48,7 +50,7 @@ const hoverImages = [
                 src={COMPANY_LOGO_URL}
                 alt=""
                 aria-hidden="true"
-                class="absolute inset-0 m-auto h-[55%] w-auto max-w-[70%] object-contain opacity-90 transition-opacity duration-300 group-hover:opacity-0"
+                class="absolute inset-0 m-auto h-[55%] w-auto max-w-[70%] object-contain opacity-90 transition-opacity duration-300 group-hover:opacity-0 group-[.is-hovered]:opacity-0"
                 width="120"
                 height="140"
               />
@@ -58,7 +60,7 @@ const hoverImages = [
                   src={hoverImages[i]}
                   alt=""
                   aria-hidden="true"
-                  class="absolute inset-0 h-full w-full bg-white object-contain p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  class="absolute inset-0 h-full w-full bg-white object-contain p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-[.is-hovered]:opacity-100"
                   width="640"
                   height="400"
                   loading="lazy"
@@ -67,7 +69,7 @@ const hoverImages = [
               <span class="absolute left-4 top-4 z-10 rounded-md bg-white/95 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-ink">
                 {badges[i] || 'Изделие'}
               </span>
-              <div class="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-soil/90 via-soil/50 to-transparent px-4 pb-4 pt-10 transition-opacity duration-300 group-hover:from-ink/80 group-hover:via-ink/40">
+              <div class="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-soil/90 via-soil/50 to-transparent px-4 pb-4 pt-10 transition-opacity duration-300 group-hover:from-ink/80 group-hover:via-ink/40 group-[.is-hovered]:from-ink/80 group-[.is-hovered]:via-ink/40">
                 <p class="text-lg font-bold text-white drop-shadow-sm">{service.title}</p>
               </div>
             </div>
@@ -99,6 +101,12 @@ const hoverImages = [
           </article>
         ))
       }
+    </div>
+
+    <div class="js-mobile-cta-sentinel mt-8 h-px w-full md:hidden" aria-hidden="true"></div>
+    <div class="mobile-cta-bar js-mobile-cta md:hidden" data-mobile-cta>
+      <a href={`tel:${phoneHref}`} class="btn-outline py-3 text-center text-xs">Позвонить</a>
+      <a href="#lead-form" class="btn-primary py-3 text-center text-xs">Заявка</a>
     </div>
   </div>
 </section>

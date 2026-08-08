@@ -12,7 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^11.1.0",
+    "@astrojs/vercel": "^11.0.5",
     "@sanity/client": "^7.26.2",
     "@sanity/image-url": "^2.1.1",
     "@tailwindcss/vite": "^4.3.3",

@@ -9,6 +9,7 @@ import Services from '../components/Services.astro'
 import Advantages from '../components/Advantages.astro'
 import Package from '../components/Package.astro'
 import Gallery from '../components/Gallery.astro'
+import Works from '../components/Works.astro'
 import Trust from '../components/Trust.astro'
 import Faq from '../components/Faq.astro'
 import LeadForm from '../components/LeadForm.astro'
@@ -56,7 +57,7 @@ const jsonLd = {
       phoneHref={settings.phoneHref}
       brandName={settings.brandName}
     />
-    <Services title={home.servicesTitle} services={home.services} />
+    <Services title={home.servicesTitle} services={home.services} phoneHref={settings.phoneHref} />
     <Advantages title={home.advantagesTitle} advantages={home.advantages} />
     <Package
       title={home.packageTitle}
@@ -67,6 +68,7 @@ const jsonLd = {
     />
     <Problems title={home.problemsTitle} problems={home.problems} />
     <Gallery title={home.galleryTitle} items={home.gallery} />
+    <Works title={home.worksTitle} items={home.works} />
     <Trust
       title={home.trustTitle}
       text={home.trustText}
@@ -94,13 +96,6 @@ const jsonLd = {
     address={settings.address}
     addressMapUrl={settings.addressMapUrl}
   />
-
-  <div
-    class="fixed inset-x-0 bottom-0 z-50 grid grid-cols-2 gap-2 border-t border-ink/10 bg-paper/95 p-3 backdrop-blur md:hidden"
-  >
-    <a href={`tel:${settings.phoneHref}`} class="btn-outline py-3 text-center text-xs">Позвонить</a>
-    <a href="#lead-form" class="btn-primary py-3 text-center text-xs">Заявка</a>
-  </div>
 
   <LeadModal title={home.formTitle} subtitle={home.formSubtitle} />
   <MotionInit />

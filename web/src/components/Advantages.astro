@@ -22,7 +22,7 @@ const { title, advantages } = Astro.props
   <div class="container-site relative">
     <div class="fade-up fade-up--left max-w-3xl">
       <p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Преимущества</p>
-      <h2 class="mt-3 text-3xl font-bold tracking-tight md:text-4xl lg:text-[2.5rem]">
+      <h2 class="mt-3 text-[2rem] font-bold tracking-tight md:text-4xl lg:text-[2.5rem]">
         {title}
       </h2>
       <p class="mt-4 max-w-2xl text-base text-white/65 md:text-lg">
@@ -34,10 +34,11 @@ const { title, advantages } = Astro.props
       {
         advantages.map((item, i) => (
           <article
-            class="group reveal-item relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm hover:border-accent/50 hover:bg-white/[0.07] md:p-8"
+            class="advantage-card group reveal-item relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm md:p-8"
             style={`--reveal-i: ${i}`}
+            data-tap-hover
           >
-            <div class="absolute left-0 top-0 h-full w-1 bg-accent/80 opacity-70 transition group-hover:opacity-100" />
+            <div class="absolute left-0 top-0 h-full w-1 bg-accent/80 opacity-70 transition group-hover:opacity-100 group-[.is-hovered]:opacity-100" />
             <div class="flex items-start gap-5">
               <span class="shrink-0 text-4xl font-extrabold leading-none tracking-tight text-accent/90 md:text-5xl">
                 {String(i + 1).padStart(2, '0')}

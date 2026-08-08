@@ -38,6 +38,11 @@ const homeQuery = `{
       caption,
       "imageUrl": image.asset->url
     },
+    worksTitle,
+    "works": works[]->{
+      caption,
+      "imageUrl": image.asset->url
+    },
     trustTitle, trustText,
     faqTitle,
     "faqs": faqs[]->{ question, answer },
@@ -63,6 +68,7 @@ function mergeContent(remote: Partial<SiteContent> | null): SiteContent {
         ? remote.home.advantages
         : fallbackContent.home.advantages,
       gallery: remote.home.gallery?.length ? remote.home.gallery : fallbackContent.home.gallery,
+      works: remote.home.works?.length ? remote.home.works : fallbackContent.home.works,
       faqs: remote.home.faqs?.length ? remote.home.faqs : fallbackContent.home.faqs,
       packageItems: remote.home.packageItems?.length
         ? remote.home.packageItems

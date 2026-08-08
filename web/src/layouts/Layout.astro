@@ -68,7 +68,7 @@ const metrikaId = settings.yandexMetrikaId || import.meta.env.PUBLIC_YANDEX_METR
       )
     }
   </head>
-  <body data-metrika-id={metrikaId || undefined} class="pb-20 md:pb-0">
+  <body data-metrika-id={metrikaId || undefined}>
     <slot />
   </body>
 </html>

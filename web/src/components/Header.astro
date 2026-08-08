@@ -8,12 +8,13 @@ interface Props {
 }
 
 const { brandName, phone, phoneHref } = Astro.props
+const brandShort = brandName.replace(/^ООО\s*/i, '').trim() || brandName
 
 const nav = [
   { href: '#products', label: 'Продукция' },
   { href: '#why', label: 'Преимущества' },
   { href: '#package', label: 'Под ключ' },
-  { href: '#gallery', label: 'Примеры' },
+  { href: '#works', label: 'Работы' },
   { href: '#faq', label: 'FAQ' },
 ]
 ---
@@ -21,7 +22,7 @@ const nav = [
 <header class="site-header">
   <div class="container-site flex h-[4.25rem] items-center justify-between gap-4 md:h-[4.75rem]">
     <div class="flex items-center gap-6 md:gap-8">
-      <a href="#top" class="flex items-center gap-3 no-underline">
+      <a href="#top" class="flex items-center gap-2 no-underline sm:gap-3">
         <span class="site-logo-wrap">
           <img
             src={COMPANY_LOGO_URL}
@@ -32,7 +33,8 @@ const nav = [
           />
         </span>
         <span class="leading-tight">
-          <span class="block text-base font-bold tracking-tight text-ink md:text-lg">{brandName}</span>
+          <span class="block text-base font-bold tracking-tight text-ink md:hidden">{brandShort}</span>
+          <span class="hidden text-base font-bold tracking-tight text-ink md:block md:text-lg">{brandName}</span>
           <span class="mt-0.5 block text-[10px] font-medium uppercase tracking-[0.14em] text-ink-muted md:text-[11px]">
             септики · Тюмень
           </span>

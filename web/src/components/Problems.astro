@@ -19,8 +19,9 @@ const { title, problems } = Astro.props
       {
         problems.map((item, i) => (
           <article
-            class="reveal-item rounded-xl border border-line bg-paper p-6 transition duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_12px_32px_rgba(18,32,51,0.08)]"
+            class="problem-card reveal-item surface-glow rounded-xl border border-line bg-paper p-6 transition duration-300"
             style={`--reveal-i: ${i}`}
+            data-tap-hover
           >
             <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent/10 text-sm font-bold text-accent">
               {String(i + 1).padStart(2, '0')}

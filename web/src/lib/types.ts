@@ -45,6 +45,8 @@ export type HomePage = {
   packageCta: string
   galleryTitle: string
   gallery: GalleryItem[]
+  worksTitle: string
+  works: GalleryItem[]
   trustTitle: string
   trustText: string
   faqTitle: string

@@ -47,14 +47,14 @@ export const fallbackContent: SiteContent = {
         features: ['Компактный корпус', 'Для дачи и небольшого дома', 'Монтаж под ключ'],
       },
       {
-        title: 'Вертикальный пластиковый септик',
+        title: 'Вертикальный септик',
         summary:
           'Цилиндрическая ёмкость с рёбрами жёсткости. Экономит место на участке при достаточной глубине котлована.',
         priceFrom: 'по запросу',
         features: ['Рёбра жёсткости', 'Экономия площади участка', 'Стойкость к коррозии'],
       },
       {
-        title: 'Горизонтальный накопительный септик',
+        title: 'Горизонтальный септик',
         summary:
           'Ребристый горизонтальный корпус — удобный монтаж при высоком УГВ и ограниченной глубине котлована.',
         priceFrom: 'по запросу',
@@ -100,6 +100,14 @@ export const fallbackContent: SiteContent = {
       { caption: 'Вертикальная ёмкость', imageUrl: '/images/jpg/septik-mini-2.jpg' },
       { caption: 'Горизонтальный накопитель', imageUrl: '/images/jpg/septik-mini-3.jpg' },
       { caption: 'Монтаж на участке', imageUrl: '/images/jpg/septik-mini-4.jpg' },
+    ],
+    worksTitle: 'Монтаж на реальных объектах',
+    works: [
+      { caption: 'Установка станции в котлован', imageUrl: '/images/jpg/photo-example-1.jpg' },
+      { caption: 'Монтаж ёмкости на участке', imageUrl: '/images/jpg/photo-example-2.jpg' },
+      { caption: 'Работы с привлечением техники', imageUrl: '/images/jpg/photo-example-3.jpg' },
+      { caption: 'Монтаж под ключ на объекте', imageUrl: '/images/jpg/photo-example-4.jpg' },
+      { caption: 'Готовые ёмкости после установки', imageUrl: '/images/jpg/photo-example-5.jpg' },
     ],
     trustTitle: 'ООО «АРМАДА» — септики в Тюмени',
     trustText:
