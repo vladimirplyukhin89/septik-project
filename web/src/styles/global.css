@@ -633,7 +633,7 @@
     transform:
       rotateZ(calc(var(--i) * var(--step-deg)))
       translateY(calc(var(--drum-size) * -0.325))
-      rotateZ(calc(var(--i) * var(--step-deg) * -1))
+      rotateZ(calc((var(--i) * var(--step-deg) + var(--rot)) * -1))
       rotateX(calc(var(--tilt) * -1));
     transform-style: preserve-3d;
     transition:
