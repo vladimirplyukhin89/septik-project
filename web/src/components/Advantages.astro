@@ -81,7 +81,7 @@ const step = 360 / count
             <div class="revolver__disc"></div>
             <div class="revolver__hub"></div>
             {
-              advantages.map((item, i) => (
+              advantages.map((_, i) => (
                 <div
                   class:list={['revolver__chamber', i === 0 && 'is-active']}
                   data-advantages-chamber
