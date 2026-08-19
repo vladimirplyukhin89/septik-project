@@ -20,7 +20,7 @@ const priceDigits = Number(priceFrom.replace(/\D/g, '')) || 45800
 
 const stats = [
   { count: 1, prefix: '', suffix: ' день', label: 'Монтаж под ключ', fallback: '1 день' },
-  { count: 5, prefix: '', suffix: ' лет', label: 'Гарантия в договоре', fallback: '5 лет' },
+  { count: 10, prefix: '', suffix: ' лет', label: 'Гарантия в договоре', fallback: '10 лет' },
   { count: null as number | null, prefix: '', suffix: '', label: 'Объём ёмкостей', fallback: '3–25 м³' },
   {
     count: priceDigits,

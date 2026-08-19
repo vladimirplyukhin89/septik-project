@@ -9,10 +9,11 @@
 3. **Scroll fade-up** — заголовки секций
 4. **Stagger cards** — продукция, преимущества, сценарии, галерея (`--reveal-i`)
 5. **Partners live** — пульс «официальные представители», count-up масштаба, ticker линеек, сеть узлов
-6. **Header shadow** — `.site-header.is-scrolled` после 12 px
-7. **Hover** — карточки `-translateY(2px)`, галерея zoom 1.03
-8. **Form** — `.is-loading` на кнопке отправки
-9. **FAQ** — плавный аккордеон (`grid-template-rows` + fade текста), один открытый пункт
+6. **Advantages story** — горизонтальные слайды 01–06, wheel→scroll, автоплей, зацикленный фон-поток
+7. **Header shadow** — `.site-header.is-scrolled` после 12 px
+8. **Hover** — карточки `-translateY(2px)`, галерея zoom 1.03
+9. **Form** — `.is-loading` на кнопке отправки
+10. **FAQ** — плавный аккордеон (`grid-template-rows` + fade текста), один открытый пункт
 
 ## Доступность
 
