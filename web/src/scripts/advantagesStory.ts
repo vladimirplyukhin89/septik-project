@@ -9,6 +9,7 @@ export function initAdvantagesStory() {
   const prevButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-advantages-prev]'))
   const nextButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-advantages-next]'))
   const fill = root.querySelector<HTMLElement>('[data-advantages-fill]')
+  const video = root.querySelector<HTMLVideoElement>('[data-advantages-video]')
   if (!scroller || slides.length < 2) return
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -123,15 +124,30 @@ export function initAdvantagesStory() {
     }
   })
 
+  const setVideoPlaying = (play: boolean) => {
+    if (!video || reduceMotion) return
+    if (play) {
+      const run = video.play()
+      if (run) run.catch(() => {})
+      return
+    }
+    video.pause()
+  }
+
   const viewObserver = new IntersectionObserver(
     (entries) => {
       inView = entries.some((entry) => entry.isIntersecting)
+      setVideoPlaying(inView)
       if (inView) startAuto()
       else stopAuto()
     },
-    { threshold: 0.35 },
+    { threshold: 0.28 },
   )
   viewObserver.observe(root)
+
+  if (reduceMotion) {
+    video?.remove()
+  }
 
   setActive(0, false)
 }

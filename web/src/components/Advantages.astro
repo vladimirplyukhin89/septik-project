@@ -17,17 +17,19 @@ const visuals = ['warranty', 'service', 'stable', 'ground', 'season', 'capacity'
   data-advantages-story
 >
   <div class="advantages-bg" aria-hidden="true">
-    <div class="advantages-bg__grid"></div>
-    <svg class="advantages-bg__flow" viewBox="0 0 1440 820" preserveAspectRatio="xMidYMid slice">
-      <path class="advantages-wave advantages-wave--a" d="M-120 210 C 180 110, 420 310, 720 210 S 1260 80, 1560 210" />
-      <path class="advantages-wave advantages-wave--b" d="M-80 360 C 240 280, 480 460, 780 360 S 1320 250, 1600 380" />
-      <path class="advantages-wave advantages-wave--c" d="M-140 530 C 160 450, 460 620, 760 520 S 1280 430, 1580 540" />
-      <g class="advantages-orbit">
-        <circle cx="1180" cy="180" r="90" />
-        <circle cx="1180" cy="180" r="132" />
-        <circle cx="1180" cy="180" r="178" />
-      </g>
-    </svg>
+    <!-- Particle loop: Pexels / Rostislav Uzunov #7670836, hue-graded to water/cyan -->
+    <video
+      class="advantages-bg__video"
+      data-advantages-video
+      poster="/videos/particles-water.jpg"
+      muted
+      loop
+      playsinline
+      preload="none"
+    >
+      <source src="/videos/particles-water.mp4" type="video/mp4" />
+    </video>
+    <div class="advantages-bg__veil"></div>
   </div>
 
   <div class="advantages-layout relative">
@@ -37,7 +39,7 @@ const visuals = ['warranty', 'service', 'stable', 'ground', 'season', 'capacity'
         {title}
       </h2>
       <p class="mt-4 max-w-sm text-sm leading-relaxed text-white/65 md:text-base">
-        Листайте историю достоинств — как живой блок «О компании» у завода: масштаб, гарантия и спокойная эксплуатация.
+        Листайте историю достоинств: живое «облако» очистки на фоне — как биопроцесс в станции, только в визуале.
       </p>
       <p class="advantages-hint mt-6">Листайте в сторону</p>
       <div class="mt-8 hidden items-center gap-2 md:flex">
