@@ -7,152 +7,92 @@ interface Props {
 }
 
 const { title, advantages } = Astro.props
-
-const visuals = ['warranty', 'service', 'stable', 'ground', 'season', 'capacity'] as const
+const count = Math.max(advantages.length, 1)
+const step = 360 / count
 ---
 
 <section
   id="why"
-  class="advantages-story relative overflow-hidden bg-soil py-16 text-white md:py-24"
+  class="advantages-story bg-soil text-white"
   data-advantages-story
+  style={`--steps: ${count}; --step-deg: ${step}deg`}
 >
-  <div class="advantages-bg" aria-hidden="true">
-    <div class="advantages-bg__grid"></div>
-    <svg class="advantages-bg__flow" viewBox="0 0 1440 820" preserveAspectRatio="xMidYMid slice">
-      <path class="advantages-wave advantages-wave--a" d="M-120 210 C 180 110, 420 310, 720 210 S 1260 80, 1560 210" />
-      <path class="advantages-wave advantages-wave--b" d="M-80 360 C 240 280, 480 460, 780 360 S 1320 250, 1600 380" />
-      <path class="advantages-wave advantages-wave--c" d="M-140 530 C 160 450, 460 620, 760 520 S 1280 430, 1580 540" />
-      <g class="advantages-orbit">
-        <circle cx="1180" cy="180" r="90" />
-        <circle cx="1180" cy="180" r="132" />
-        <circle cx="1180" cy="180" r="178" />
-      </g>
-    </svg>
-  </div>
-
-  <div class="advantages-layout relative">
-    <aside class="advantages-aside fade-up fade-up--left">
-      <p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Преимущества</p>
-      <h2 class="mt-3 text-[2rem] font-bold tracking-tight md:text-4xl lg:text-[2.45rem]">
-        {title}
-      </h2>
-      <p class="mt-4 max-w-sm text-sm leading-relaxed text-white/65 md:text-base">
-        Листайте историю достоинств — как живой блок «О компании» у завода: масштаб, гарантия и спокойная эксплуатация.
-      </p>
-      <p class="advantages-hint mt-6">Листайте в сторону</p>
-      <div class="mt-8 hidden items-center gap-2 md:flex">
-        <button type="button" class="advantages-nav" data-advantages-prev data-tap-hover aria-label="Предыдущее преимущество">
-          ‹
-        </button>
-        <button type="button" class="advantages-nav" data-advantages-next data-tap-hover aria-label="Следующее преимущество">
-          ›
-        </button>
-      </div>
-    </aside>
-
-    <div
-      class="advantages-scroller"
-      data-advantages-scroller
-      tabindex="0"
-      role="region"
-      aria-roledescription="карусель"
-      aria-label="Преимущества станций"
-    >
-      {
-        advantages.map((item, i) => (
-          <article
-            class:list={['advantages-slide', i === 0 && 'is-active']}
-            data-advantages-slide
-            style={`--slide-i: ${i}`}
-            aria-label={`${i + 1} из ${advantages.length}: ${item.title}`}
-          >
-            <div class="advantages-slide__media" data-visual={visuals[i % visuals.length]}>
-              <span class="advantages-slide__pos">{String(i + 1).padStart(2, '0')}</span>
-              {visuals[i % visuals.length] === 'warranty' && (
-                <div class="adv-visual adv-visual--warranty">
-                  <span class="adv-visual__ring" />
-                  <span class="adv-visual__ring adv-visual__ring--delay" />
-                  <strong>10</strong>
-                  <em>лет</em>
-                </div>
-              )}
-              {visuals[i % visuals.length] === 'service' && (
-                <div class="adv-visual adv-visual--service">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              )}
-              {visuals[i % visuals.length] === 'stable' && (
-                <div class="adv-visual adv-visual--stable">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              )}
-              {visuals[i % visuals.length] === 'ground' && (
-                <div class="adv-visual adv-visual--ground">
-                  <span class="adv-visual__layer" />
-                  <span class="adv-visual__layer" />
-                  <span class="adv-visual__unit" />
-                </div>
-              )}
-              {visuals[i % visuals.length] === 'season' && (
-                <div class="adv-visual adv-visual--season">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              )}
-              {visuals[i % visuals.length] === 'capacity' && (
-                <div class="adv-visual adv-visual--capacity">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-              )}
-            </div>
-            <div class="advantages-slide__body">
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-            </div>
-          </article>
-        ))
-      }
+  <div class="advantages-stage" data-advantages-stage>
+    <div class="advantages-bg" aria-hidden="true">
+      <!-- Particle loop: Pexels / Rostislav Uzunov #7670836, hue-graded to water/cyan -->
+      <video
+        class="advantages-bg__video"
+        data-advantages-video
+        poster="/videos/particles-water.jpg"
+        muted
+        loop
+        playsinline
+        preload="none"
+      >
+        <source src="/videos/particles-water.mp4" type="video/mp4" />
+      </video>
+      <div class="advantages-bg__veil"></div>
     </div>
-  </div>
 
-  <div class="advantages-footer relative">
-    <div class="advantages-progress" aria-hidden="true">
-      <span data-advantages-fill></span>
-    </div>
-    <div class="mt-4 flex items-center justify-between gap-3">
-      <div class="flex flex-wrap gap-2" role="tablist" aria-label="Слайды преимуществ">
-        {
-          advantages.map((item, i) => (
-            <button
-              type="button"
-              class:list={['advantages-dot', i === 0 && 'is-active']}
-              data-advantages-dot
-              role="tab"
-              aria-label={item.title}
-            >
-              {String(i + 1).padStart(2, '0')}
-            </button>
-          ))
-        }
-      </div>
-      <div class="flex items-center gap-2 md:hidden">
-        <button type="button" class="advantages-nav" data-advantages-prev data-tap-hover aria-label="Предыдущее преимущество">
-          ‹
-        </button>
-        <button type="button" class="advantages-nav" data-advantages-next data-tap-hover aria-label="Следующее преимущество">
-          ›
-        </button>
+    <div class="advantages-shell">
+      <header class="advantages-copy">
+        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Преимущества</p>
+        <h2 class="mt-3 text-[1.85rem] font-bold tracking-tight md:text-4xl">{title}</h2>
+        <p class="advantages-hint mt-4">Крутите вниз — барабан досылает камеру</p>
+
+        <div class="advantages-active" aria-live="polite">
+          {
+            advantages.map((item, i) => (
+              <article
+                class:list={['advantages-active__card', i === 0 && 'is-active']}
+                data-advantages-card
+                aria-hidden={i === 0 ? 'false' : 'true'}
+              >
+                <p class="advantages-active__num">{String(i + 1).padStart(2, '0')}</p>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))
+          }
+        </div>
+
+        <div class="advantages-ticks" role="tablist" aria-label="Камеры барабана">
+          {
+            advantages.map((item, i) => (
+              <button
+                type="button"
+                class:list={['advantages-tick', i === 0 && 'is-active']}
+                data-advantages-tick
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-label={`${i + 1}. ${item.title}`}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </button>
+            ))
+          }
+        </div>
+      </header>
+
+      <div class="revolver" data-revolver aria-hidden="true">
+        <div class="revolver__frame">
+          <span class="revolver__sight"></span>
+          <div class="revolver__drum" data-advantages-drum>
+            <div class="revolver__disc"></div>
+            <div class="revolver__hub"></div>
+            {
+              advantages.map((_, i) => (
+                <div
+                  class:list={['revolver__chamber', i === 0 && 'is-active']}
+                  data-advantages-chamber
+                  style={`--i: ${i}`}
+                >
+                  <span>{String(i + 1).padStart(2, '0')}</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
       </div>
     </div>
   </div>
