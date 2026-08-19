@@ -88,8 +88,18 @@
       { threshold: 0.15, rootMargin: '0px' },
     )
     heroObserver.observe(hero)
+  }
 
-    if (stats) {
+  function initCountUps() {
+    const roots = document.querySelectorAll('.js-stats')
+    if (!roots.length) return
+
+    roots.forEach((root) => {
+      if (reduceMotion) {
+        animateStats(root, true)
+        return
+      }
+
       const statsObserver = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
@@ -100,8 +110,30 @@
         },
         { threshold: 0.2, rootMargin: '0px' },
       )
-      statsObserver.observe(stats)
+      statsObserver.observe(root)
+    })
+  }
+
+  function initMeters() {
+    const meters = document.querySelectorAll<HTMLElement>('[data-meter-fill]')
+    if (!meters.length) return
+
+    if (reduceMotion) {
+      meters.forEach((el) => el.classList.add('is-filled'))
+      return
     }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          entry.target.classList.add('is-filled')
+          observer.unobserve(entry.target)
+        }
+      },
+      { threshold: 0.4 },
+    )
+    meters.forEach((el) => observer.observe(el))
   }
 
   function initHeader() {
@@ -228,6 +260,8 @@
 
   initHeader()
   initHero()
+  initCountUps()
+  initMeters()
   initReveals()
   initTapHover()
   initMobileCta()

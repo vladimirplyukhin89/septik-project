@@ -15,6 +15,7 @@ const nav = [
   { href: '#why', label: 'Преимущества' },
   { href: '#package', label: 'Под ключ' },
   { href: '#works', label: 'Работы' },
+  { href: '#partners', label: 'Партнёры' },
   { href: '#faq', label: 'FAQ' },
 ]
 ---
@@ -40,7 +41,7 @@ const nav = [
           </span>
         </span>
       </a>
-      <nav class="hidden items-center gap-5 lg:flex" aria-label="Основное меню">
+      <nav class="hidden items-center gap-5 xl:flex" aria-label="Основное меню">
         {
           nav.map((item) => (
             <a href={item.href} class="text-sm font-medium text-ink-muted transition hover:text-accent">

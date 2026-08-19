@@ -10,6 +10,7 @@ import Advantages from '../components/Advantages.astro'
 import Package from '../components/Package.astro'
 import Gallery from '../components/Gallery.astro'
 import Works from '../components/Works.astro'
+import Partners from '../components/Partners.astro'
 import Trust from '../components/Trust.astro'
 import Faq from '../components/Faq.astro'
 import LeadForm from '../components/LeadForm.astro'
@@ -69,6 +70,7 @@ const jsonLd = {
     <Problems title={home.problemsTitle} problems={home.problems} />
     <Gallery title={home.galleryTitle} items={home.gallery} />
     <Works title={home.worksTitle} items={home.works} />
+    <Partners title={home.partnersTitle} intro={home.partnersIntro} partners={home.partners} />
     <Trust
       title={home.trustTitle}
       text={home.trustText}

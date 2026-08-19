@@ -9,6 +9,24 @@ export type Service = {
 export type Advantage = { title: string; text: string }
 export type GalleryItem = { caption: string; imageUrl: string }
 export type FaqItem = { question: string; answer: string }
+export type PartnerStat = {
+  value: number | null
+  prefix?: string
+  suffix?: string
+  label: string
+  fallback: string
+}
+export type Partner = {
+  name: string
+  slug: string
+  role: string
+  summary: string
+  url: string
+  featured?: boolean
+  logoUrl?: string
+  stats: PartnerStat[]
+  tags: string[]
+}
 
 export type SiteSettings = {
   brandName: string
@@ -47,6 +65,9 @@ export type HomePage = {
   gallery: GalleryItem[]
   worksTitle: string
   works: GalleryItem[]
+  partnersTitle: string
+  partnersIntro: string
+  partners: Partner[]
   trustTitle: string
   trustText: string
   faqTitle: string

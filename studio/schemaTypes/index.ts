@@ -4,5 +4,6 @@ import {service} from './service'
 import {advantage} from './advantage'
 import {galleryItem} from './galleryItem'
 import {faqItem} from './faqItem'
+import {partner} from './partner'
 
-export const schemaTypes = [siteSettings, homePage, service, advantage, galleryItem, faqItem]
+export const schemaTypes = [siteSettings, homePage, service, advantage, galleryItem, faqItem, partner]
