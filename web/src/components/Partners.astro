@@ -1,0 +1,254 @@
+---
+import type { Partner } from '../lib/types'
+
+interface Props {
+  title: string
+  intro: string
+  partners: Partner[]
+}
+
+const { title, intro, partners } = Astro.props
+const featured = partners.find((p) => p.featured) ?? partners[0]
+const rest = partners.filter((p) => p !== featured)
+
+const isEurobion = (p: Partner) => p.slug === 'eurobion' || /евробион/i.test(p.name)
+
+const warehouses = [
+  'Москва',
+  'Санкт-Петербург',
+  'Краснодар',
+  'Тюмень',
+  'Новосибирск',
+  'Екатеринбург',
+  'Ярославль',
+  'Казань',
+  'Иркутск',
+]
+
+const nodes = [
+  { x: 12, y: 38, s: 6 },
+  { x: 22, y: 22, s: 5 },
+  { x: 31, y: 48, s: 7 },
+  { x: 42, y: 28, s: 5 },
+  { x: 51, y: 58, s: 8, hub: true },
+  { x: 63, y: 34, s: 6 },
+  { x: 72, y: 52, s: 5 },
+  { x: 81, y: 24, s: 7 },
+  { x: 90, y: 44, s: 6 },
+]
+---
+
+<section id="partners" class="partners-section section bg-paper-deep">
+  <div class="container-site">
+    <div class="fade-up fade-up--left max-w-3xl">
+      <p class="section-kicker">Производители</p>
+      <h2 class="section-title mt-2">{title}</h2>
+      <p class="section-lead">{intro}</p>
+    </div>
+
+    {
+      featured && (
+        <article
+          class="partner-featured reveal-item group relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-soil text-white"
+          style="--reveal-i: 0"
+          data-tap-hover
+        >
+          <div class="partners-grid" aria-hidden="true" />
+          <div
+            class="pointer-events-none absolute inset-0 opacity-70"
+            style="background:
+              radial-gradient(ellipse 55% 50% at 0% 0%, rgba(255,220,4,0.16), transparent 55%),
+              radial-gradient(ellipse 45% 40% at 100% 100%, rgba(11,110,153,0.35), transparent 50%);"
+            aria-hidden="true"
+          />
+
+          <div class="relative grid gap-8 p-6 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:gap-10 md:p-10">
+            <div>
+              <div class="flex flex-wrap items-center gap-4">
+                <div class="partner-mark" aria-hidden="true">
+                  <span class="partner-mark__ring" />
+                  <span class="partner-mark__ring partner-mark__ring--delay" />
+                  <img
+                    src={featured.slug === 'eurolos' ? '/images/partners/eurolos-mark.png' : featured.logoUrl}
+                    alt=""
+                    width="96"
+                    height="96"
+                    class="partner-mark__icon"
+                  />
+                </div>
+                <div>
+                  <p class="partner-live">
+                    <span class="partner-live__dot" />
+                    Статус: {featured.role.toLowerCase()}
+                  </p>
+                  <h3 class="mt-2 text-3xl font-extrabold tracking-tight md:text-4xl">{featured.name}</h3>
+                </div>
+              </div>
+
+              <p class="mt-5 max-w-xl text-sm leading-relaxed text-white/70 md:text-base">{featured.summary}</p>
+
+              <div class="mt-6 flex flex-wrap gap-2">
+                {(featured.tags || []).map((tag) => (
+                  <span class="partner-chip">{tag}</span>
+                ))}
+              </div>
+
+              <div class="mt-7 flex flex-wrap items-center gap-3">
+                <a
+                  href={featured.url}
+                  class="btn-ghost border-white/25"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Сайт производителя
+                </a>
+                <button type="button" class="btn-primary" data-open-lead-modal>
+                  Подобрать {featured.name}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <div class="js-stats grid grid-cols-2 gap-3">
+                {(featured.stats || []).map((stat) => (
+                  <div class="partner-stat">
+                    <p class="partner-stat__value">
+                      {stat.value != null ? (
+                        <span
+                          data-count={stat.value}
+                          data-prefix={stat.prefix || ''}
+                          data-suffix={stat.suffix || ''}
+                        >
+                          {stat.fallback}
+                        </span>
+                      ) : (
+                        stat.fallback
+                      )}
+                    </p>
+                    <p class="partner-stat__label">{stat.label}</p>
+                    <span class="partner-meter" data-meter-fill />
+                  </div>
+                ))}
+              </div>
+
+              <p class="mt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40">
+                Склады быстрой отгрузки · есть Тюмень
+              </p>
+              <ul class="mt-3 flex flex-wrap gap-2">
+                {warehouses.map((city) => (
+                  <li class:list={['partner-city', city === 'Тюмень' && 'is-hub']}>{city}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div class="partners-constellation" aria-hidden="true">
+            <svg viewBox="0 0 100 80" preserveAspectRatio="none">
+              <g class="partners-links">
+                {nodes.slice(0, -1).map((n, i) => (
+                  <line x1={n.x} y1={n.y} x2={nodes[i + 1].x} y2={nodes[i + 1].y} />
+                ))}
+              </g>
+              {nodes.map((n, i) => (
+                <circle
+                  class:list={['partners-node', n.hub && 'is-hub']}
+                  cx={n.x}
+                  cy={n.y}
+                  r={n.s / 4}
+                  style={`--node-i: ${i}`}
+                />
+              ))}
+            </svg>
+          </div>
+        </article>
+      )
+    }
+
+    <div class="stagger-group stagger-group--left mt-6 grid gap-6 lg:grid-cols-2">
+      {
+        rest.map((partner, i) => (
+          <article
+            class="partner-card reveal-item group"
+            style={`--reveal-i: ${i + 1}`}
+            data-tap-hover
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="partner-logo-plate">
+                {isEurobion(partner) ? (
+                  <div class="eurobion-mark">
+                    <span class="eurobion-mark__drop" />
+                    <span>
+                      <span class="block text-lg font-extrabold leading-none text-ink">{partner.name}</span>
+                      <span class="mt-1 block text-[10px] font-bold uppercase tracking-[0.16em] text-[#14845A]">
+                        4-е поколение
+                      </span>
+                    </span>
+                  </div>
+                ) : (
+                  <img src={partner.logoUrl} alt="" class="partner-logo-img" width="220" height="66" />
+                )}
+              </div>
+              <span class="partner-role">{partner.role}</span>
+            </div>
+
+            <h3 class="mt-5 text-2xl font-bold text-ink">{partner.name}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-ink-muted md:text-base">{partner.summary}</p>
+
+            <div class="js-stats mt-6 grid grid-cols-3 gap-2">
+              {(partner.stats || []).map((stat) => (
+                <div class="partner-mini-stat">
+                  <p class="text-lg font-extrabold text-ink md:text-xl">
+                    {stat.value != null ? (
+                      <span
+                        data-count={stat.value}
+                        data-prefix={stat.prefix || ''}
+                        data-suffix={stat.suffix || ''}
+                      >
+                        {stat.fallback}
+                      </span>
+                    ) : (
+                      stat.fallback
+                    )}
+                  </p>
+                  <p class="mt-1 text-[11px] leading-snug text-ink-muted">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {isEurobion(partner) && (partner.tags || []).length > 0 && (
+              <div class="partner-marquee mt-6" aria-hidden="true">
+                <div class="partner-marquee__track">
+                  {[...partner.tags, ...partner.tags].map((tag) => (
+                    <span>{tag}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!isEurobion(partner) && (partner.tags || []).length > 0 && (
+              <div class="mt-6 flex flex-wrap gap-2">
+                {partner.tags.map((tag) => (
+                  <span class="partner-chip partner-chip--light">{tag}</span>
+                ))}
+              </div>
+            )}
+
+            <div class="mt-auto flex flex-wrap items-center gap-3 pt-6">
+              <a
+                href={partner.url}
+                class="btn-outline py-2.5 text-xs"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Подробнее о {partner.name}
+              </a>
+              <button type="button" class="btn-primary py-2.5 text-xs" data-open-lead-modal>
+                Подобрать модель
+              </button>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

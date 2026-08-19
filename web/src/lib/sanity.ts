@@ -43,6 +43,12 @@ const homeQuery = `{
       caption,
       "imageUrl": image.asset->url
     },
+    partnersTitle, partnersIntro,
+    "partners": partners[]->{
+      name, slug, role, summary, url, featured,
+      "logoUrl": logo.asset->url,
+      stats, tags
+    },
     trustTitle, trustText,
     faqTitle,
     "faqs": faqs[]->{ question, answer },
@@ -69,11 +75,14 @@ function mergeContent(remote: Partial<SiteContent> | null): SiteContent {
         : fallbackContent.home.advantages,
       gallery: remote.home.gallery?.length ? remote.home.gallery : fallbackContent.home.gallery,
       works: remote.home.works?.length ? remote.home.works : fallbackContent.home.works,
+      partners: remote.home.partners?.length ? remote.home.partners : fallbackContent.home.partners,
       faqs: remote.home.faqs?.length ? remote.home.faqs : fallbackContent.home.faqs,
       packageItems: remote.home.packageItems?.length
         ? remote.home.packageItems
         : fallbackContent.home.packageItems,
       heroTrust: remote.home.heroTrust?.length ? remote.home.heroTrust : fallbackContent.home.heroTrust,
+      partnersTitle: remote.home.partnersTitle || fallbackContent.home.partnersTitle,
+      partnersIntro: remote.home.partnersIntro || fallbackContent.home.partnersIntro,
     },
   }
 }
