@@ -318,7 +318,6 @@
     --steps: 6;
     --step-h: 88svh;
     --header-h: 4.25rem;
-    --step-deg: 60deg;
     position: relative;
     height: calc(var(--step-h) * var(--steps));
     isolation: isolate;
@@ -339,55 +338,35 @@
     overflow: hidden;
   }
 
-  .advantages-bg {
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-  }
-
-  .advantages-bg__video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 72% 42%;
-    opacity: 0.72;
-  }
-
-  .advantages-bg__veil {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(105deg, rgba(12, 22, 36, 0.94) 0%, rgba(12, 22, 36, 0.74) 34%, rgba(12, 22, 36, 0.42) 62%, rgba(11, 110, 153, 0.22) 100%),
-      radial-gradient(ellipse 50% 55% at 78% 42%, rgba(11, 110, 153, 0.18), transparent 70%);
-  }
-
   .advantages-shell {
-    position: relative;
-    z-index: 1;
     display: grid;
-    align-items: center;
-    gap: 0.75rem;
+    grid-template-rows: minmax(0, 1.15fr) minmax(11.5rem, 0.85fr);
     width: 100%;
     height: 100%;
-    margin: 0 auto;
-    padding: 1rem 1.25rem 1.15rem;
-    max-width: 1240px;
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 900px) {
     .advantages-shell {
-      grid-template-columns: minmax(18rem, 26.5rem) minmax(0, 1fr);
-      gap: 1.5rem 2rem;
-      padding: 1.35rem 2rem 1.5rem;
+      grid-template-columns: minmax(22rem, 46%) minmax(0, 1fr);
+      grid-template-rows: 1fr;
     }
   }
 
   .advantages-copy {
     position: relative;
     z-index: 2;
-    max-width: 36rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    padding: 1.35rem 1.35rem 1.2rem;
+    background: #0f1c2e;
+  }
+
+  @media (min-width: 900px) {
+    .advantages-copy {
+      padding: clamp(2rem, 6vh, 4.5rem) clamp(1.75rem, 5vw, 4.75rem);
+    }
   }
 
   .advantages-hint {
@@ -411,32 +390,47 @@
 
   .advantages-active {
     position: relative;
-    min-height: 8.75rem;
-    margin-top: 1.15rem;
+    min-height: 9.5rem;
+    margin-top: 1.35rem;
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 900px) {
     .advantages-active {
-      min-height: 11.5rem;
+      min-height: 13.5rem;
     }
   }
 
   .advantages-active__card {
     position: absolute;
     inset: 0 auto auto 0;
-    max-width: 36rem;
-    opacity: 0;
-    transform: translateY(14px);
+    width: 100%;
+    max-width: 34rem;
+    visibility: hidden;
     pointer-events: none;
-    transition:
-      opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .advantages-active__card.is-active {
-    opacity: 1;
-    transform: none;
+    visibility: visible;
     pointer-events: auto;
+  }
+
+  .advantages-active__num,
+  .advantages-active__card h3,
+  .advantages-active__text {
+    opacity: 0;
+    transform: translateX(-1.65rem);
+  }
+
+  .advantages-active__card.is-active .advantages-active__num {
+    animation: advantages-enter-left 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .advantages-active__card.is-active h3 {
+    animation: advantages-enter-left 0.72s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+  }
+
+  .advantages-active__card.is-active .advantages-active__text {
+    animation: advantages-enter-left 0.78s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
   }
 
   .advantages-active__num {
@@ -447,31 +441,31 @@
   }
 
   .advantages-active__card h3 {
-    margin-top: 0.35rem;
-    font-size: 1.35rem;
+    margin-top: 0.4rem;
+    font-size: 1.45rem;
     font-weight: 800;
     letter-spacing: -0.03em;
-    line-height: 1.25;
+    line-height: 1.22;
   }
 
   @media (min-width: 768px) {
     .advantages-active__card h3 {
-      font-size: 1.55rem;
+      font-size: 1.85rem;
     }
   }
 
-  .advantages-active__card p:last-child {
-    margin-top: 0.65rem;
-    font-size: 0.92rem;
-    line-height: 1.55;
-    color: rgb(255 255 255 / 0.68);
+  .advantages-active__text {
+    margin-top: 0.75rem;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: rgb(255 255 255 / 0.7);
   }
 
   .advantages-ticks {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-top: 1.15rem;
+    margin-top: 1.35rem;
   }
 
   .advantages-tick {
@@ -487,8 +481,7 @@
     transition:
       color 0.2s ease,
       border-color 0.2s ease,
-      background-color 0.2s ease,
-      transform 0.2s ease;
+      background-color 0.2s ease;
   }
 
   .advantages-tick:hover,
@@ -505,158 +498,28 @@
     color: #ffdc04;
   }
 
-  .revolver {
-    --drum-size: min(21rem, 82vw);
-    --tilt: 60deg;
-    --rot: 180deg;
+  .advantages-media {
     position: relative;
-    display: grid;
-    place-items: center;
-    width: 100%;
     min-height: 0;
-    align-self: stretch;
+    overflow: hidden;
+    background: #0a1520;
   }
 
-  @media (min-width: 960px) {
-    .revolver {
-      --drum-size: min(34rem, 46vw);
-    }
-  }
-
-  @media (max-width: 959px) and (max-height: 760px) {
-    .advantages-active {
-      min-height: 6.6rem;
-    }
-
-    .advantages-active__card p:last-child {
-      display: -webkit-box;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
-    }
-
-    .revolver {
-      --drum-size: min(16.75rem, 68vw);
-    }
-  }
-
-  .revolver__frame {
-    position: relative;
-    width: var(--drum-size);
-    height: var(--drum-size);
-    perspective: 1180px;
-    perspective-origin: 50% 62%;
-  }
-
-  .revolver__sight {
-    position: absolute;
-    left: 50%;
-    bottom: 4%;
-    z-index: 3;
-    width: 0;
-    height: 0;
-    border-left: 0.55rem solid transparent;
-    border-right: 0.55rem solid transparent;
-    border-bottom: 0.85rem solid #ffdc04;
-    transform: translateX(-50%);
-    filter: drop-shadow(0 0 10px rgba(255, 220, 4, 0.55));
-  }
-
-  .revolver__drum {
+  .advantages-media__video {
     position: absolute;
     inset: 0;
-    transform-style: preserve-3d;
-    transform: rotateX(var(--tilt)) rotateZ(var(--rot));
-    will-change: transform;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 58% 42%;
   }
 
-  .revolver__disc {
+  .advantages-media__veil {
     position: absolute;
     inset: 0;
-    border-radius: 50%;
     background:
-      repeating-conic-gradient(from 7deg, rgba(255, 255, 255, 0.07) 0 5deg, transparent 5deg 60deg),
-      radial-gradient(circle at 42% 34%, #4a6b84 0%, #1b3348 42%, #0c1826 74%);
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.14),
-      0 0 0 14px #152536,
-      0 0 0 15px rgba(255, 255, 255, 0.12),
-      0 28px 40px rgba(0, 0, 0, 0.45),
-      inset 0 0 48px rgba(0, 0, 0, 0.4);
-    transform: translateZ(-22px);
-  }
-
-  .revolver__disc::after {
-    content: '';
-    position: absolute;
-    inset: 11%;
-    border-radius: 50%;
-    border: 1px dashed rgba(255, 255, 255, 0.12);
-  }
-
-  .revolver__hub {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    z-index: 2;
-    width: 23%;
-    height: 23%;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 34% 30%, #d7e3ee, #6d8296 38%, #1a2c3c 72%);
-    box-shadow:
-      0 0 0 7px #0d1a26,
-      0 0 0 8px rgba(255, 255, 255, 0.16),
-      inset 0 3px 8px rgba(255, 255, 255, 0.35);
-    transform: translate3d(-50%, -50%, 6px);
-  }
-
-  .revolver__chamber {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: calc(var(--drum-size) * 0.235);
-    height: calc(var(--drum-size) * 0.235);
-    margin: calc(var(--drum-size) * -0.1175) 0 0 calc(var(--drum-size) * -0.1175);
-    display: grid;
-    place-items: center;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    background:
-      radial-gradient(circle at 50% 40%, rgba(12, 22, 36, 0.2), rgba(6, 12, 20, 0.92) 62%),
-      #0a1520;
-    box-shadow:
-      inset 0 0 0 7px #1c3348,
-      inset 0 10px 16px rgba(0, 0, 0, 0.45),
-      0 8px 16px rgba(0, 0, 0, 0.28);
-    color: rgb(255 255 255 / 0.72);
-    transform:
-      rotateZ(calc(var(--i) * var(--step-deg)))
-      translateY(calc(var(--drum-size) * -0.325))
-      rotateZ(calc((var(--i) * var(--step-deg) + var(--rot)) * -1))
-      rotateX(calc(var(--tilt) * -1));
-    transform-style: preserve-3d;
-    transition:
-      border-color 0.35s ease,
-      box-shadow 0.35s ease,
-      color 0.35s ease;
-  }
-
-  .revolver__chamber span {
-    font-size: clamp(0.95rem, 2.4vw, 1.35rem);
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    line-height: 1;
-  }
-
-  .revolver__chamber.is-active {
-    border-color: rgba(255, 220, 4, 0.7);
-    color: #fff;
-    box-shadow:
-      inset 0 0 0 7px #24516a,
-      inset 0 10px 16px rgba(0, 0, 0, 0.35),
-      0 0 0 2px rgba(255, 220, 4, 0.35),
-      0 0 28px rgba(11, 110, 153, 0.45);
+      linear-gradient(90deg, rgba(15, 28, 46, 0.55) 0%, rgba(15, 28, 46, 0.12) 28%, transparent 52%),
+      linear-gradient(180deg, rgba(15, 28, 46, 0.18) 0%, transparent 28%, rgba(15, 28, 46, 0.28) 100%);
   }
 
   .advantages-story.is-static {
@@ -672,13 +535,16 @@
 
   .advantages-story.is-static .advantages-hint,
   .advantages-story.is-static .advantages-ticks,
-  .advantages-story.is-static .revolver {
+  .advantages-story.is-static .advantages-media {
     display: none;
   }
 
   .advantages-story.is-static .advantages-shell {
     display: block;
     height: auto;
+  }
+
+  .advantages-story.is-static .advantages-copy {
     padding-top: 3.5rem;
     padding-bottom: 3.5rem;
   }
@@ -692,13 +558,20 @@
 
   .advantages-story.is-static .advantages-active__card {
     position: static;
-    opacity: 1;
-    transform: none;
+    visibility: visible;
     pointer-events: auto;
     padding: 1.1rem 1.2rem;
     border-radius: 1rem;
     border: 1px solid rgb(255 255 255 / 0.1);
     background: rgb(255 255 255 / 0.04);
+  }
+
+  .advantages-story.is-static .advantages-active__num,
+  .advantages-story.is-static .advantages-active__card h3,
+  .advantages-story.is-static .advantages-active__text {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
   .section-lead {
@@ -1432,6 +1305,17 @@
   }
 }
 
+@keyframes advantages-enter-left {
+  from {
+    opacity: 0;
+    transform: translateX(-1.65rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1527,7 +1411,7 @@
     transition: none !important;
   }
 
-  .advantages-bg__video {
+  .advantages-media__video {
     display: none;
   }
 
@@ -1535,9 +1419,15 @@
     animation: none !important;
   }
 
-  .advantages-tick:hover,
-  .advantages-tick.is-hovered {
-    transform: none;
+  .advantages-active__num,
+  .advantages-active__card h3,
+  .advantages-active__text,
+  .advantages-active__card.is-active .advantages-active__num,
+  .advantages-active__card.is-active h3,
+  .advantages-active__card.is-active .advantages-active__text {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
   }
 
   .advantages-story {
@@ -1548,9 +1438,5 @@
     position: relative;
     top: auto;
     height: auto;
-  }
-
-  .revolver {
-    transform: none;
   }
 }

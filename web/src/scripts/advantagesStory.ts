@@ -1,20 +1,16 @@
-/** Sticky revolver: вертикальный скролл крутит барабан преимуществ. */
+/** Sticky split: вертикальный скролл меняет преимущество слева, видео справа. */
 export function initAdvantagesStory() {
   const root = document.querySelector<HTMLElement>('[data-advantages-story]')
   if (!root) return
 
   const stage = root.querySelector<HTMLElement>('[data-advantages-stage]')
-  const drum = root.querySelector<HTMLElement>('[data-advantages-drum]')
   const video = root.querySelector<HTMLVideoElement>('[data-advantages-video]')
-  const chambers = Array.from(root.querySelectorAll<HTMLElement>('[data-advantages-chamber]'))
   const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-advantages-card]'))
   const ticks = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-advantages-tick]'))
-  const count = chambers.length
-  if (!stage || !drum || count < 2) return
+  const count = cards.length
+  if (!stage || count < 2) return
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const stepDeg = 360 / count
-  const startRot = 180
 
   if (reduceMotion) {
     root.classList.add('is-static')
@@ -26,18 +22,13 @@ export function initAdvantagesStory() {
     return
   }
 
-  let target = 0
-  let current = 0
   let index = -1
-  let raf = 0
-  let inView = false
 
   const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
   const setActive = (next: number) => {
     if (next === index) return
     index = next
-    chambers.forEach((el, i) => el.classList.toggle('is-active', i === index))
     cards.forEach((el, i) => {
       const on = i === index
       el.classList.toggle('is-active', on)
@@ -60,27 +51,9 @@ export function initAdvantagesStory() {
     return clamp((pinnedTop() - root.getBoundingClientRect().top) / range, 0, 1)
   }
 
-  const applyRot = (progress: number) => {
-    const pos = progress * (count - 1)
-    drum.style.setProperty('--rot', `${startRot - pos * stepDeg}deg`)
+  const sync = () => {
+    const pos = readProgress() * (count - 1)
     setActive(Math.round(pos))
-  }
-
-  const render = () => {
-    current += (target - current) * 0.18
-    if (Math.abs(target - current) < 0.0004) current = target
-    applyRot(current)
-
-    if (inView || Math.abs(target - current) > 0.0004) {
-      raf = window.requestAnimationFrame(render)
-      return
-    }
-    raf = 0
-  }
-
-  const kick = () => {
-    target = readProgress()
-    if (!raf) raf = window.requestAnimationFrame(render)
   }
 
   const setVideoPlaying = (play: boolean) => {
@@ -107,18 +80,18 @@ export function initAdvantagesStory() {
     tick.addEventListener('click', () => scrollToIndex(i))
   })
 
-  window.addEventListener('scroll', kick, { passive: true })
-  window.addEventListener('resize', kick)
+  window.addEventListener('scroll', sync, { passive: true })
+  window.addEventListener('resize', sync)
 
   const viewObserver = new IntersectionObserver(
     (entries) => {
-      inView = entries.some((entry) => entry.isIntersecting)
+      const inView = entries.some((entry) => entry.isIntersecting)
       setVideoPlaying(inView)
-      if (inView) kick()
+      if (inView) sync()
     },
     { threshold: 0.08 },
   )
   viewObserver.observe(root)
 
-  kick()
+  sync()
 }
