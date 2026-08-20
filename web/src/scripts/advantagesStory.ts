@@ -1,4 +1,4 @@
-/** Sticky split: вертикальный скролл меняет преимущество слева, видео справа. */
+/** Sticky advantages: scroll swaps copy over a full-bleed video. */
 export function initAdvantagesStory() {
   const root = document.querySelector<HTMLElement>('[data-advantages-story]')
   if (!root) return
@@ -14,7 +14,7 @@ export function initAdvantagesStory() {
 
   if (reduceMotion) {
     root.classList.add('is-static')
-    video?.remove()
+    video?.closest('.advantages-bg')?.remove()
     cards.forEach((card) => {
       card.classList.add('is-active')
       card.setAttribute('aria-hidden', 'false')

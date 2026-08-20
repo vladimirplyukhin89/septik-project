@@ -14,9 +14,9 @@ const { title, intro, items, price, cta } = Astro.props
   <div class="container-site fade-up">
     <div class="overflow-hidden rounded-2xl bg-soil text-white md:grid md:grid-cols-[1.15fr_0.85fr]">
       <div class="p-8 md:p-12">
-        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-white/50">Комплектация</p>
-        <h2 class="mt-3 text-[2rem] font-bold md:text-4xl">{title}</h2>
-        <p class="mt-4 text-white/70">{intro}</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-white/50 md:text-sm">Комплектация</p>
+        <h2 class="mt-3 text-[2rem] font-bold md:text-[2.75rem] lg:text-[3rem]">{title}</h2>
+        <p class="mt-4 text-white/70 md:mt-5 md:text-xl md:leading-relaxed">{intro}</p>
         <ul class="mt-8 grid gap-3 sm:grid-cols-2">
           {
             items.map((item) => (
@@ -31,7 +31,7 @@ const { title, intro, items, price, cta } = Astro.props
       <div class="flex flex-col justify-between border-t border-white/10 bg-accent/15 p-8 md:border-l md:border-t-0 md:p-12">
         <div>
           <p class="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">Стоимость</p>
-          <p class="mt-3 text-2xl font-bold leading-snug md:text-3xl">{price}</p>
+          <p class="mt-3 text-2xl font-bold leading-snug md:text-4xl">{price}</p>
         </div>
         <button
           type="button"
