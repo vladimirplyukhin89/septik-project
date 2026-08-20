@@ -70,11 +70,11 @@ const hoverImages = [
                 {badges[i] || 'Изделие'}
               </span>
               <div class="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-soil/90 via-soil/50 to-transparent px-4 pb-4 pt-10 transition-opacity duration-300 group-hover:from-ink/80 group-hover:via-ink/40 group-[.is-hovered]:from-ink/80 group-[.is-hovered]:via-ink/40">
-                <p class="text-lg font-bold text-white drop-shadow-sm">{service.title}</p>
+                <p class="text-lg font-bold text-white drop-shadow-sm md:text-xl">{service.title}</p>
               </div>
             </div>
             <div class="flex flex-1 flex-col p-5 md:p-6">
-              <p class="text-sm leading-relaxed text-ink-muted">{service.summary}</p>
+              <p class="text-sm leading-relaxed text-ink-muted md:text-base">{service.summary}</p>
               <ul class="product-features">
                 {
                   (service.features || []).map((f) => (

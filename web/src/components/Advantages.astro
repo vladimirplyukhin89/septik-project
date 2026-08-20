@@ -17,10 +17,26 @@ const count = Math.max(advantages.length, 1)
   style={`--steps: ${count}`}
 >
   <div class="advantages-stage" data-advantages-stage>
+    <div class="advantages-bg" aria-hidden="true">
+      <!-- Particle loop: Pexels / Rostislav Uzunov #7670836, hue-graded to water/cyan -->
+      <video
+        class="advantages-bg__video"
+        data-advantages-video
+        poster="/videos/particles-water.jpg"
+        muted
+        loop
+        playsinline
+        preload="none"
+      >
+        <source src="/videos/particles-water.mp4" type="video/mp4" />
+      </video>
+      <div class="advantages-bg__veil"></div>
+    </div>
+
     <div class="advantages-shell">
       <header class="advantages-copy">
-        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Преимущества</p>
-        <h2 class="mt-3 text-[1.65rem] font-bold tracking-tight md:text-[2.15rem]">{title}</h2>
+        <p class="section-kicker text-accent">Преимущества</p>
+        <h2 class="advantages-copy__title">{title}</h2>
         <p class="advantages-hint mt-4">Крутите вниз — следующий пункт</p>
 
         <div class="advantages-active" aria-live="polite">
@@ -56,22 +72,6 @@ const count = Math.max(advantages.length, 1)
           }
         </div>
       </header>
-
-      <div class="advantages-media" aria-hidden="true">
-        <!-- Particle loop: Pexels / Rostislav Uzunov #7670836, hue-graded to water/cyan -->
-        <video
-          class="advantages-media__video"
-          data-advantages-video
-          poster="/videos/particles-water.jpg"
-          muted
-          loop
-          playsinline
-          preload="none"
-        >
-          <source src="/videos/particles-water.mp4" type="video/mp4" />
-        </video>
-        <div class="advantages-media__veil"></div>
-      </div>
     </div>
   </div>
 </section>

@@ -81,11 +81,11 @@ const nodes = [
                     <span class="partner-live__dot" />
                     Статус: {featured.role.toLowerCase()}
                   </p>
-                  <h3 class="mt-2 text-3xl font-extrabold tracking-tight md:text-4xl">{featured.name}</h3>
+                  <h3 class="mt-2 text-3xl font-extrabold tracking-tight md:text-[2.75rem]">{featured.name}</h3>
                 </div>
               </div>
 
-              <p class="mt-5 max-w-xl text-sm leading-relaxed text-white/70 md:text-base">{featured.summary}</p>
+              <p class="mt-5 max-w-xl text-sm leading-relaxed text-white/70 md:text-lg">{featured.summary}</p>
 
               <div class="mt-6 flex flex-wrap gap-2">
                 {(featured.tags || []).map((tag) => (
@@ -191,8 +191,8 @@ const nodes = [
               <span class="partner-role">{partner.role}</span>
             </div>
 
-            <h3 class="mt-5 text-2xl font-bold text-ink">{partner.name}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-ink-muted md:text-base">{partner.summary}</p>
+            <h3 class="mt-5 text-2xl font-bold text-ink md:text-3xl">{partner.name}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-ink-muted md:text-lg">{partner.summary}</p>
 
             <div class="js-stats mt-6 grid grid-cols-3 gap-2">
               {(partner.stats || []).map((stat) => (
