@@ -9,11 +9,11 @@ interface Props {
 const { title, faqs } = Astro.props
 ---
 
-<section id="faq" class="section bg-paper-deep">
+<section id="faq" class="section">
   <div class="container-site fade-up max-w-3xl">
     <p class="section-kicker">Ответы на вопросы</p>
     <h2 class="section-title mt-2">{title}</h2>
-    <div class="faq-list surface-glow mt-8 divide-y divide-line rounded-xl border border-line bg-paper px-5 md:px-6" data-faq>
+    <div class="faq-list mt-8 divide-y divide-white/10 rounded-xl border border-white/10 bg-paper-deep px-5 md:px-6" data-faq>
       {
         faqs.map((faq, i) => {
           const panelId = `faq-panel-${i}`

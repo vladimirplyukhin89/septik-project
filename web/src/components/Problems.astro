@@ -9,7 +9,7 @@ interface Props {
 const { title, problems } = Astro.props
 ---
 
-<section id="problems" class="section bg-paper-deep">
+<section id="problems" class="section">
   <div class="container-site">
     <div class="fade-up fade-up--left">
       <p class="section-kicker">Сценарии участка</p>
@@ -19,7 +19,7 @@ const { title, problems } = Astro.props
       {
         problems.map((item, i) => (
           <article
-            class="problem-card reveal-item surface-glow rounded-xl border border-line bg-paper p-6 transition duration-300"
+            class="problem-card reveal-item rounded-xl border border-white/10 bg-paper-deep p-6 transition duration-300"
             style={`--reveal-i: ${i}`}
             data-tap-hover
           >
