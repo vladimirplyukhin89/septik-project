@@ -4,6 +4,7 @@ export const prerender = true
 import Layout from '../layouts/Layout.astro'
 import Header from '../components/Header.astro'
 import Hero from '../components/Hero.astro'
+import Intro from '../components/Intro.astro'
 import Problems from '../components/Problems.astro'
 import Services from '../components/Services.astro'
 import Advantages from '../components/Advantages.astro'
@@ -58,7 +59,9 @@ const jsonLd = {
       phoneHref={settings.phoneHref}
       brandName={settings.brandName}
     />
+    <Intro title={home.trustTitle} text={home.trustText} />
     <Services title={home.servicesTitle} services={home.services} phoneHref={settings.phoneHref} />
+    <Problems title={home.problemsTitle} problems={home.problems} />
     <Advantages title={home.advantagesTitle} advantages={home.advantages} />
     <Package
       title={home.packageTitle}
@@ -67,7 +70,6 @@ const jsonLd = {
       price={home.packagePrice}
       cta={home.packageCta}
     />
-    <Problems title={home.problemsTitle} problems={home.problems} />
     <Gallery title={home.galleryTitle} items={home.gallery} />
     <Works title={home.worksTitle} items={home.works} />
     <Partners title={home.partnersTitle} intro={home.partnersIntro} partners={home.partners} />

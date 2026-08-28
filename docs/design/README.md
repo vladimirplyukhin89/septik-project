@@ -4,6 +4,6 @@
 2. [Wireframes](./02-wireframes.md) · [low-fi HTML](./wireframes.html)
 3. [Design system (тёмная канва)](./03-design-system.md) → код в `web/src/styles/global.css`
 
-Визуал лендинга: тёмная канва как у Systeme, свой стальной акцент, каталожные карточки и цифры доверия. Светлый `#F4F6F8` фон секций убран.
+Визуал: тёмная канва и сетка блоков как у Systeme (hero-сцена, split-intro, фото-карточки, CTA-баннер). Видео с преимуществ вынесено на первый экран с лёгким стальным/жёлтым акцентом.
 
 4. [Motion](./04-motion.md) — reveal, stagger, count-up, partners live, header shadow, reduced-motion

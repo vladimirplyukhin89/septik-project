@@ -1,6 +1,4 @@
 ---
-import { COMPANY_LOGO_URL } from '../lib/site'
-
 interface Props {
   eyebrow: string
   title: string
@@ -32,71 +30,79 @@ const stats = [
 ]
 ---
 
-<section id="top" class="relative flex min-h-[calc(100svh-4.25rem)] flex-col overflow-hidden bg-soil text-white md:min-h-0">
-  <div
-    class="absolute inset-0 bottom-36 md:bottom-1 bg-[length:auto_48%] bg-bottom md:bg-center bg-no-repeat md:bg-[length:auto_55%] md:bg-right"
-    style={`background-image: linear-gradient(105deg, rgba(15,28,46,0.94) 0%, rgba(15,28,46,0.78) 50%, rgba(11,110,153,0.4) 100%), url('${COMPANY_LOGO_URL}')`}
-    aria-hidden="true"
-  >
-  </div>
-
-  <div class="container-site relative grid flex-0 md:flex-1 items-end gap-6 pb-6 pt-20 md:min-h-[78vh] md:grid-cols-[1.2fr_0.8fr] md:items-center md:gap-10 md:pb-16 md:pt-32">
-    <div>
-      <p class="hero-reveal section-kicker hidden text-white/70 md:block" style="--hero-i: 0">{eyebrow}</p>
-      <p class="hero-reveal mt-4 hidden text-sm font-semibold uppercase tracking-[0.12em] text-white/55 md:block" style="--hero-i: 1">
-        {brandName}
-      </p>
-      <h1
-        class="hero-reveal mt-0 max-w-3xl text-4xl font-bold leading-[1.08] md:mt-3 md:text-5xl lg:text-6xl"
-        style="--hero-i: 2"
-      >
-        {title}
-      </h1>
-      <p class="hero-reveal mt-4 max-w-xl text-base text-white/75 md:mt-6 md:max-w-2xl md:text-xl" style="--hero-i: 3">
-        {subtitle}
-      </p>
-      <div class="hero-reveal mt-6 grid grid-cols-1 gap-3 md:mt-8 md:flex md:items-center" style="--hero-i: 4">
-        <a href="#lead-form" class="btn-primary w-full justify-center text-center">{cta}</a>
-        <a href={`tel:${phoneHref}`} class="btn-ghost w-full justify-center text-center">{phone}</a>
+<section id="top" class="hero-block text-white">
+  <div class="container-site">
+    <div class="hero-stage">
+      <div class="hero-stage__media" aria-hidden="true">
+        <video
+          class="hero-stage__video"
+          data-hero-video
+          poster="/videos/particles-water.jpg"
+          muted
+          loop
+          playsinline
+          autoplay
+          preload="metadata"
+        >
+          <source src="/videos/particles-water.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-stage__veil"></div>
+        <div class="hero-stage__accent"></div>
+        <div class="hero-stage__spark"></div>
       </div>
-      <ul class="hero-reveal mt-5 flex flex-wrap gap-x-6 gap-y-2 text-base font-medium text-white/80 md:mt-7 md:gap-y-3 md:text-lg" style="--hero-i: 5">
-        {
-          trust.map((item) => (
-            <li class="flex items-center gap-2.5">
-              <span class="h-2 w-2 shrink-0 rounded-full bg-accent" />
-              {item}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
 
-    <aside class="hero-reveal hidden rounded-2xl border border-white/15 bg-white/8 p-5 backdrop-blur-sm md:block md:p-6" style="--hero-i: 3">
-      <p class="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">Коротко о предложении</p>
-      <p class="mt-3 text-3xl font-bold text-white md:text-4xl">{priceFrom}</p>
-      <p class="mt-2 text-sm text-white/70">Подбор пластикового септика + монтаж с доставкой по Тюмени</p>
-      <a href="#products" class="btn-ghost mt-6 w-full border-white/30">Смотреть продукцию</a>
-    </aside>
-  </div>
-
-  <div class="relative mt-auto border-t border-white/10 bg-black/20 backdrop-blur-sm">
-    <div class="container-site js-stats grid grid-cols-2 gap-4 py-4 md:grid-cols-4 md:gap-8 md:py-8">
-      {
-        stats.map((stat) => (
-          <div class="hero-reveal" style="--hero-i: 6">
-            <p class="text-xl font-bold text-white md:text-2xl">
-              {stat.count !== null ? (
-                <span data-count={stat.count} data-prefix={stat.prefix} data-suffix={stat.suffix}>
-                  {stat.fallback}
-                </span>
-              ) : (
-                stat.fallback
-              )}
-            </p>
-            <p class="mt-1 text-xs text-white/60 md:text-sm">{stat.label}</p>
+      <div class="hero-stage__content">
+        <div>
+          <p class="hero-reveal section-kicker text-white/70" style="--hero-i: 0">{eyebrow}</p>
+          <p class="hero-reveal mt-3 text-sm font-semibold uppercase tracking-[0.12em] text-white/55" style="--hero-i: 1">
+            {brandName}
+          </p>
+          <h1
+            class="hero-reveal mt-3 max-w-3xl text-4xl font-bold leading-[1.08] md:text-5xl lg:text-6xl"
+            style="--hero-i: 2"
+          >
+            {title}
+          </h1>
+          <p class="hero-reveal mt-4 max-w-xl text-base text-white/75 md:mt-6 md:max-w-2xl md:text-xl" style="--hero-i: 3">
+            {subtitle}
+          </p>
+          <div class="hero-reveal mt-6 grid grid-cols-1 gap-3 md:mt-8 md:flex md:items-center" style="--hero-i: 4">
+            <a href="#lead-form" class="btn-primary w-full justify-center text-center">{cta}</a>
+            <a href={`tel:${phoneHref}`} class="btn-ghost w-full justify-center text-center">{phone}</a>
           </div>
-        ))
-      }
+          <ul class="hero-reveal mt-5 flex flex-wrap gap-x-6 gap-y-2 text-base font-medium text-white/80 md:mt-7" style="--hero-i: 5">
+            {
+              trust.map((item) => (
+                <li class="flex items-center gap-2.5">
+                  <span class="hero-spark-dot" />
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="hero-stage__stats">
+        <div class="js-stats grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8">
+          {
+            stats.map((stat) => (
+              <div class="hero-reveal" style="--hero-i: 6">
+                <p class="text-xl font-bold text-white md:text-2xl">
+                  {stat.count !== null ? (
+                    <span data-count={stat.count} data-prefix={stat.prefix} data-suffix={stat.suffix}>
+                      {stat.fallback}
+                    </span>
+                  ) : (
+                    stat.fallback
+                  )}
+                </p>
+                <p class="mt-1 text-xs text-white/60 md:text-sm">{stat.label}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </div>
 </section>

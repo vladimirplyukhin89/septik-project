@@ -5,7 +5,6 @@
 <script>
   import { initLeadForms, initLeadModal } from '../scripts/leadForms'
   import { initExamplesGallery } from '../scripts/examplesGallery'
-  import { initAdvantagesStory } from '../scripts/advantagesStory'
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -71,10 +70,22 @@
     if (!hero) return
 
     const stats = hero.querySelector('.js-stats')
+    const video = hero.querySelector<HTMLVideoElement>('[data-hero-video]')
+
+    const setVideoPlaying = (play: boolean) => {
+      if (!video) return
+      if (play) {
+        const run = video.play()
+        if (run) run.catch(() => {})
+        return
+      }
+      video.pause()
+    }
 
     if (reduceMotion) {
       hero.classList.add('hero-ready')
       if (stats) animateStats(stats, true)
+      video?.remove()
       return
     }
 
@@ -89,6 +100,17 @@
       { threshold: 0.15, rootMargin: '0px' },
     )
     heroObserver.observe(hero)
+
+    if (video) {
+      const videoObserver = new IntersectionObserver(
+        (entries) => {
+          const inView = entries.some((entry) => entry.isIntersecting)
+          setVideoPlaying(inView)
+        },
+        { threshold: 0.12 },
+      )
+      videoObserver.observe(hero)
+    }
   }
 
   function initCountUps() {
@@ -191,7 +213,7 @@
       'pointerdown',
       (event) => {
         if (!(event.target instanceof Element)) return
-        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .examples-thumb, .examples-nav, .advantages-tick, .faq-trigger, .lead-modal__close')
+        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .examples-thumb, .examples-nav, .faq-trigger, .lead-modal__close')
         if (!target) {
           clear()
           return
@@ -268,7 +290,6 @@
   initMobileCta()
   initNoCopy()
   initExamplesGallery()
-  initAdvantagesStory()
   initLeadForms()
   initLeadModal()
 </script>
