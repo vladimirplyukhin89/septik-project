@@ -357,21 +357,24 @@
   }
 
   .hero-block {
-    padding: 1rem 0 0;
+    position: relative;
+    min-height: calc(100svh - 4.25rem);
+    padding: 0;
   }
 
   @media (min-width: 768px) {
     .hero-block {
-      padding-top: 1.25rem;
+      min-height: calc(100svh - 4.75rem);
     }
   }
 
   .hero-stage {
     position: relative;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     isolation: isolate;
-    min-height: min(78svh, 46rem);
-    border-radius: 1.35rem;
+    min-height: inherit;
     background: var(--color-soil);
   }
 
@@ -387,34 +390,25 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 58% 42%;
+    object-position: 72% 42%;
   }
 
   .hero-stage__veil {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(105deg, rgba(8, 12, 20, 0.72) 0%, rgba(8, 12, 20, 0.42) 40%, rgba(8, 12, 20, 0.14) 68%, rgba(11, 110, 153, 0.22) 100%),
-      linear-gradient(180deg, rgba(8, 12, 20, 0.12) 0%, transparent 40%, rgba(8, 12, 20, 0.38) 100%);
+      linear-gradient(90deg, rgba(8, 12, 20, 0.94) 0%, rgba(8, 12, 20, 0.72) 28%, rgba(8, 12, 20, 0.22) 58%, rgba(8, 12, 20, 0.04) 78%, transparent 100%),
+      linear-gradient(180deg, rgba(8, 12, 20, 0.16) 0%, transparent 42%, rgba(8, 12, 20, 0.4) 100%);
   }
 
   .hero-stage__accent {
     position: absolute;
-    right: -12%;
-    top: 8%;
-    width: min(48%, 30rem);
-    height: 72%;
-    background: radial-gradient(circle at center, rgba(11, 110, 153, 0.46), transparent 68%);
-    filter: blur(10px);
-  }
-
-  .hero-stage__spark {
-    position: absolute;
-    left: 16%;
-    bottom: 26%;
-    width: 11rem;
-    height: 11rem;
-    background: radial-gradient(circle, rgba(255, 220, 4, 0.18), transparent 70%);
+    right: -8%;
+    top: 10%;
+    width: min(56%, 34rem);
+    height: 70%;
+    background: radial-gradient(circle at center, rgba(11, 110, 153, 0.38), transparent 68%);
+    filter: blur(12px);
   }
 
   .hero-spark-dot {
@@ -427,21 +421,26 @@
     animation: partner-live-dot 2.2s ease-out infinite;
   }
 
-  .hero-stage__content {
+  .hero-stage__inner {
     position: relative;
     z-index: 1;
-    display: grid;
-    align-items: end;
-    min-height: min(58svh, 34rem);
-    padding: 2rem 1.25rem 1.5rem;
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    padding-top: 2.25rem;
+    padding-bottom: 1.5rem;
   }
 
   @media (min-width: 768px) {
-    .hero-stage__content {
+    .hero-stage__inner {
       align-items: center;
-      min-height: min(62svh, 36rem);
-      padding: clamp(2.5rem, 7vh, 4.5rem) clamp(2rem, 5vw, 4rem) 2rem;
+      padding-top: clamp(2.5rem, 8vh, 5rem);
+      padding-bottom: 2rem;
     }
+  }
+
+  .hero-stage__copy {
+    max-width: 38rem;
   }
 
   .hero-stage__stats {
@@ -450,13 +449,6 @@
     border-top: 1px solid rgb(255 255 255 / 0.1);
     background: rgb(0 0 0 / 0.28);
     backdrop-filter: blur(10px);
-    padding: 1rem 1.25rem 1.15rem;
-  }
-
-  @media (min-width: 768px) {
-    .hero-stage__stats {
-      padding: 1.35rem clamp(2rem, 5vw, 4rem) 1.5rem;
-    }
   }
 
   .solution-card {
@@ -1318,7 +1310,7 @@
 
   .hero-stage__media {
     background:
-      linear-gradient(105deg, rgba(8, 12, 20, 0.82), rgba(11, 110, 153, 0.28)),
-      url('/videos/particles-water.jpg') center / cover no-repeat;
+      linear-gradient(90deg, rgba(8, 12, 20, 0.88) 0%, rgba(8, 12, 20, 0.35) 48%, transparent 100%),
+      url('/videos/particles-water.jpg') 72% 42% / cover no-repeat;
   }
 }

@@ -31,77 +31,74 @@ const stats = [
 ---
 
 <section id="top" class="hero-block text-white">
-  <div class="container-site">
-    <div class="hero-stage">
-      <div class="hero-stage__media" aria-hidden="true">
-        <video
-          class="hero-stage__video"
-          data-hero-video
-          poster="/videos/particles-water.jpg"
-          muted
-          loop
-          playsinline
-          autoplay
-          preload="metadata"
+  <div class="hero-stage">
+    <div class="hero-stage__media" aria-hidden="true">
+      <video
+        class="hero-stage__video"
+        data-hero-video
+        poster="/videos/particles-water.jpg"
+        muted
+        loop
+        playsinline
+        autoplay
+        preload="metadata"
+      >
+        <source src="/videos/particles-water.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-stage__veil"></div>
+      <div class="hero-stage__accent"></div>
+    </div>
+
+    <div class="hero-stage__inner container-site">
+      <div class="hero-stage__copy">
+        <p class="hero-reveal section-kicker text-white/70" style="--hero-i: 0">{eyebrow}</p>
+        <p class="hero-reveal mt-3 text-sm font-semibold uppercase tracking-[0.12em] text-white/55" style="--hero-i: 1">
+          {brandName}
+        </p>
+        <h1
+          class="hero-reveal mt-3 text-4xl font-bold leading-[1.08] md:text-5xl lg:text-6xl"
+          style="--hero-i: 2"
         >
-          <source src="/videos/particles-water.mp4" type="video/mp4" />
-        </video>
-        <div class="hero-stage__veil"></div>
-        <div class="hero-stage__accent"></div>
-        <div class="hero-stage__spark"></div>
-      </div>
-
-      <div class="hero-stage__content">
-        <div>
-          <p class="hero-reveal section-kicker text-white/70" style="--hero-i: 0">{eyebrow}</p>
-          <p class="hero-reveal mt-3 text-sm font-semibold uppercase tracking-[0.12em] text-white/55" style="--hero-i: 1">
-            {brandName}
-          </p>
-          <h1
-            class="hero-reveal mt-3 max-w-3xl text-4xl font-bold leading-[1.08] md:text-5xl lg:text-6xl"
-            style="--hero-i: 2"
-          >
-            {title}
-          </h1>
-          <p class="hero-reveal mt-4 max-w-xl text-base text-white/75 md:mt-6 md:max-w-2xl md:text-xl" style="--hero-i: 3">
-            {subtitle}
-          </p>
-          <div class="hero-reveal mt-6 grid grid-cols-1 gap-3 md:mt-8 md:flex md:items-center" style="--hero-i: 4">
-            <a href="#lead-form" class="btn-primary w-full justify-center text-center">{cta}</a>
-            <a href={`tel:${phoneHref}`} class="btn-ghost w-full justify-center text-center">{phone}</a>
-          </div>
-          <ul class="hero-reveal mt-5 flex flex-wrap gap-x-6 gap-y-2 text-base font-medium text-white/80 md:mt-7" style="--hero-i: 5">
-            {
-              trust.map((item) => (
-                <li class="flex items-center gap-2.5">
-                  <span class="hero-spark-dot" />
-                  {item}
-                </li>
-              ))
-            }
-          </ul>
+          {title}
+        </h1>
+        <p class="hero-reveal mt-4 text-base text-white/75 md:mt-6 md:text-xl" style="--hero-i: 3">
+          {subtitle}
+        </p>
+        <div class="hero-reveal mt-6 grid grid-cols-1 gap-3 sm:flex sm:items-center md:mt-8" style="--hero-i: 4">
+          <a href="#lead-form" class="btn-primary w-full justify-center text-center sm:w-auto">{cta}</a>
+          <a href={`tel:${phoneHref}`} class="btn-ghost w-full justify-center text-center sm:w-auto">{phone}</a>
         </div>
-      </div>
-
-      <div class="hero-stage__stats">
-        <div class="js-stats grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-8">
+        <ul class="hero-reveal mt-5 flex flex-wrap gap-x-6 gap-y-2 text-base font-medium text-white/80 md:mt-7" style="--hero-i: 5">
           {
-            stats.map((stat) => (
-              <div class="hero-reveal" style="--hero-i: 6">
-                <p class="text-xl font-bold text-white md:text-2xl">
-                  {stat.count !== null ? (
-                    <span data-count={stat.count} data-prefix={stat.prefix} data-suffix={stat.suffix}>
-                      {stat.fallback}
-                    </span>
-                  ) : (
-                    stat.fallback
-                  )}
-                </p>
-                <p class="mt-1 text-xs text-white/60 md:text-sm">{stat.label}</p>
-              </div>
+            trust.map((item) => (
+              <li class="flex items-center gap-2.5">
+                <span class="hero-spark-dot" />
+                {item}
+              </li>
             ))
           }
-        </div>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hero-stage__stats">
+      <div class="container-site js-stats grid grid-cols-2 gap-4 py-4 md:grid-cols-4 md:gap-8 md:py-6">
+        {
+          stats.map((stat) => (
+            <div class="hero-reveal" style="--hero-i: 6">
+              <p class="text-xl font-bold text-white md:text-2xl">
+                {stat.count !== null ? (
+                  <span data-count={stat.count} data-prefix={stat.prefix} data-suffix={stat.suffix}>
+                    {stat.fallback}
+                  </span>
+                ) : (
+                  stat.fallback
+                )}
+              </p>
+              <p class="mt-1 text-xs text-white/60 md:text-sm">{stat.label}</p>
+            </div>
+          ))
+        }
       </div>
     </div>
   </div>
