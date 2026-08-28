@@ -7,71 +7,34 @@ interface Props {
 }
 
 const { title, advantages } = Astro.props
-const count = Math.max(advantages.length, 1)
 ---
 
-<section
-  id="why"
-  class="advantages-story bg-soil text-white"
-  data-advantages-story
-  style={`--steps: ${count}`}
->
-  <div class="advantages-stage" data-advantages-stage>
-    <div class="advantages-bg" aria-hidden="true">
-      <!-- Particle loop: Pexels / Rostislav Uzunov #7670836, hue-graded to water/cyan -->
-      <video
-        class="advantages-bg__video"
-        data-advantages-video
-        poster="/videos/particles-water.jpg"
-        muted
-        loop
-        playsinline
-        preload="none"
-      >
-        <source src="/videos/particles-water.mp4" type="video/mp4" />
-      </video>
-      <div class="advantages-bg__veil"></div>
+<section id="why" class="section">
+  <div class="container-site">
+    <div class="section-head fade-up">
+      <div>
+        <p class="section-kicker">Преимущества</p>
+        <h2 class="section-title mt-2">{title}</h2>
+      </div>
+      <p class="section-lead">
+        Шесть опорных пунктов: договор, сервис и монтаж под грунт Тюмени — без мелкого шрифта.
+      </p>
     </div>
 
-    <div class="advantages-shell">
-      <header class="advantages-copy">
-        <p class="section-kicker text-accent">Преимущества</p>
-        <h2 class="advantages-copy__title">{title}</h2>
-        <p class="advantages-hint mt-4">Крутите вниз — следующий пункт</p>
-
-        <div class="advantages-active" aria-live="polite">
-          {
-            advantages.map((item, i) => (
-              <article
-                class:list={['advantages-active__card', i === 0 && 'is-active']}
-                data-advantages-card
-                aria-hidden={i === 0 ? 'false' : 'true'}
-              >
-                <p class="advantages-active__num">{String(i + 1).padStart(2, '0')}</p>
-                <h3>{item.title}</h3>
-                <p class="advantages-active__text">{item.text}</p>
-              </article>
-            ))
-          }
-        </div>
-
-        <div class="advantages-ticks" role="tablist" aria-label="Преимущества">
-          {
-            advantages.map((item, i) => (
-              <button
-                type="button"
-                class:list={['advantages-tick', i === 0 && 'is-active']}
-                data-advantages-tick
-                role="tab"
-                aria-selected={i === 0 ? 'true' : 'false'}
-                aria-label={`${i + 1}. ${item.title}`}
-              >
-                {String(i + 1).padStart(2, '0')}
-              </button>
-            ))
-          }
-        </div>
-      </header>
+    <div class="stagger-group stagger-group--left mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        advantages.map((item, i) => (
+          <article
+            class="advantage-card reveal-item"
+            style={`--reveal-i: ${i}`}
+            data-tap-hover
+          >
+            <p class="advantage-card__num">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="mt-3 text-lg font-bold md:text-xl">{item.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-ink-muted md:text-base">{item.text}</p>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>

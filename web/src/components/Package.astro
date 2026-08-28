@@ -12,7 +12,7 @@ const { title, intro, items, price, cta } = Astro.props
 
 <section id="package" class="section">
   <div class="container-site fade-up">
-    <div class="overflow-hidden rounded-2xl bg-soil text-white md:grid md:grid-cols-[1.15fr_0.85fr]">
+    <div class="overflow-hidden rounded-[1.35rem] border border-white/10 bg-paper-deep text-white md:grid md:grid-cols-[1.15fr_0.85fr]">
       <div class="p-8 md:p-12">
         <p class="text-xs font-semibold uppercase tracking-[0.16em] text-white/50 md:text-sm">Комплектация</p>
         <h2 class="mt-3 text-[2rem] font-bold md:text-[2.75rem] lg:text-[3rem]">{title}</h2>
@@ -35,7 +35,7 @@ const { title, intro, items, price, cta } = Astro.props
         </div>
         <button
           type="button"
-          class="btn-primary mt-8 w-full bg-white text-ink hover:bg-paper-deep hover:text-ink md:mt-12"
+          class="btn-primary mt-8 w-full md:mt-12"
           data-open-lead-modal
         >
           {cta}

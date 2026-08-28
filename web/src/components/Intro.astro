@@ -1,0 +1,24 @@
+---
+interface Props {
+  title: string
+  text: string
+}
+
+const { title, text } = Astro.props
+---
+
+<section id="about" class="section">
+  <div class="container-site fade-up grid gap-8 md:grid-cols-2 md:items-start md:gap-16">
+    <div>
+      <p class="section-kicker">О компании</p>
+      <h2 class="section-title mt-2">{title}</h2>
+    </div>
+    <div>
+      <p class="section-lead mt-0 md:mt-8">{text}</p>
+      <a href="#trust" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent transition hover:text-accent-hover">
+        Узнайте больше о компании
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,39 +1,43 @@
-# High-fi design system — «Мой септик» (Eurolos-inspired)
+# High-fi design system — «Мой септик» (тёмная канва)
 
-Эталон структуры: [eurolos.ru](https://eurolos.ru/). Реализация: `web/src/styles/global.css` + компоненты.
+Референс компоновки: [systeme.ru](https://systeme.ru/). Реализация: `web/src/styles/global.css` + компоненты.
 
 ## Палитра
 
 ```css
---color-ink: #122033;
---color-ink-muted: #5a6573;
---color-paper: #ffffff;
---color-paper-deep: #f4f6f8;
---color-soil: #0f1c2e;      /* тёмные блоки */
---color-accent: #0b6e99;    /* стальной синий */
---color-accent-hover: #095a7d;
---color-rust: #c45c26;      /* цена / тёплый акцент */
---color-line: #e2e8ee;
---color-success: #1f7a45;
+--color-ink: #edf2f7;          /* основной текст */
+--color-ink-muted: #9aa8b8;    /* вторичный текст */
+--color-paper: #080c14;        /* канва страницы */
+--color-paper-deep: #121a28;   /* приподнятые карточки */
+--color-soil: #070b12;         /* hero / footer / video */
+--color-accent: #0b6e99;       /* стальной синий — свой, не Systeme teal */
+--color-accent-hover: #1a8fbf;
+--color-rust: #e06a2e;         /* цена / тёплый акцент */
+--color-line: #2a384c;
+--color-on-light: #122033;     /* текст на белых кнопках и бейджах */
+--color-success: #3dba6c;
 ```
+
+Акцент Systeme (`#00AC86` Techno Green) не копируем. Берём ритм тёмной канвы и сетку блоков.
 
 ## Типографика
 
-- **UI / headings:** `Manrope` (400–700)
-- H1 ~2.75–3.25rem, H2 ~1.75–2rem, body 1rem–1.0625rem
-- Без Literata — чистый manufacturer look
+- **UI / headings:** `Manrope` (400–800)
+- H1 ~2.75–3.75rem, H2 ~2–3rem, body 1rem–1.125rem
+- Kickers: uppercase, tracking широкий, `accent`
 
-## Паттерны как у Евролос
+## Паттерны как у Systeme
 
-1. **Stats strip** — 3–4 крупные цифры под hero  
-2. **Product cards** — медиа, бейдж, цена «от», specs, CTA  
-3. **Advantages** — горизонтальные слайды 01… с живым фоном, как `s-adv` у Евролос  
-4. **Header** — лого, якорное меню, телефон, «Заказать звонок»  
-5. **Светлые секции** чередуются с `#f4f6f8`
-6. **Партнёры** — featured-панель Евролос (мощь/масштаб) + карточки Евробион/Топас
+1. **Тёмная канва** — страница, шапка и секции на одном почти-чёрном фоне
+2. **Hero-сцена** — скруглённый слайд с фоновым видео, лёгким стальным glow и точечным жёлтым акцентом
+3. **Split intro** — H2 слева, лид и ссылка справа
+4. **Фото-карточки каталога** — медиа сразу, оверлей названия, CTA снизу
+5. **Решения / преимущества** — сетка карточек с акцентной обводкой, без sticky-скролла
+6. **CTA-баннер** — комплект под ключ как support-блок
+7. **Header** — тёмный, белый текст, телефон + «Обратный звонок»
 
 ## Motion
 
-1. `fade-up` секций  
-2. Hover карточки: лёгкая тень + border accent  
+1. `fade-up` секций
+2. Hover карточки: лёгкий подъём + border accent
 3. CTA: смена оттенка accent

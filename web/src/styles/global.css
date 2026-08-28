@@ -3,23 +3,25 @@
 @theme {
   --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --color-ink: #122033;
-  --color-ink-muted: #5a6573;
-  --color-paper: #ffffff;
-  --color-paper-deep: #f4f6f8;
-  --color-soil: #0f1c2e;
+  --color-ink: #edf2f7;
+  --color-ink-muted: #9aa8b8;
+  --color-paper: #080c14;
+  --color-paper-deep: #121a28;
+  --color-soil: #070b12;
   --color-accent: #0b6e99;
-  --color-accent-hover: #095a7d;
-  --color-rust: #c45c26;
-  --color-rust-hover: #a3491c;
-  --color-line: #e2e8ee;
+  --color-accent-hover: #1a8fbf;
+  --color-rust: #e06a2e;
+  --color-rust-hover: #c45c26;
+  --color-line: #2a384c;
   --color-metal: #8a93a0;
-  --color-success: #1f7a45;
+  --color-success: #3dba6c;
+  --color-on-light: #122033;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
   body {
@@ -27,6 +29,11 @@
     min-height: 100%;
     -webkit-user-select: none;
     user-select: none;
+  }
+
+  ::selection {
+    background: rgb(11 110 153 / 0.45);
+    color: #fff;
   }
 
   input,
@@ -70,11 +77,11 @@
 
 @layer components {
   .container-site {
-    @apply mx-auto w-full max-w-[1160px] px-5 md:px-8;
+    @apply mx-auto w-full max-w-[1240px] px-5 md:px-8;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold tracking-wide transition duration-200 bg-accent text-white hover:bg-accent-hover hover:-translate-y-px;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold tracking-wide transition duration-200 bg-accent text-white hover:bg-accent-hover hover:-translate-y-px;
   }
 
   .btn-primary.is-hovered {
@@ -83,7 +90,7 @@
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold tracking-wide transition duration-200 border border-white/60 text-white hover:bg-white/10;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold tracking-wide transition duration-200 border border-white/60 text-white hover:bg-white/10;
   }
 
   .btn-ghost.is-hovered {
@@ -91,7 +98,7 @@
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold tracking-wide transition duration-200 border border-line text-ink hover:border-accent hover:text-accent;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold tracking-wide transition duration-200 border border-white/20 text-ink hover:border-accent hover:text-accent;
   }
 
   .btn-outline.is-hovered {
@@ -106,7 +113,7 @@
   }
 
   .btn-form-submit {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-3.5 text-sm font-semibold tracking-wide bg-accent text-white;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold tracking-wide bg-accent text-white;
     box-shadow: 0 8px 20px rgba(11, 110, 153, 0.25);
     transition:
       background-color 0.2s ease,
@@ -142,7 +149,21 @@
   }
 
   .form-input {
-    @apply mt-1.5 w-full rounded-md border border-line bg-paper px-3 py-2.5 text-ink outline-none transition duration-200 focus:border-accent;
+    @apply mt-1.5 w-full rounded-md border border-line bg-paper-deep px-3 py-2.5 text-ink outline-none transition duration-200 focus:border-accent;
+  }
+
+  .form-input::placeholder {
+    color: var(--color-ink-muted);
+    opacity: 0.75;
+  }
+
+  .form-input:-webkit-autofill,
+  .form-input:-webkit-autofill:hover,
+  .form-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--color-ink);
+    caret-color: var(--color-ink);
+    box-shadow: 0 0 0 1000px var(--color-paper-deep) inset;
+    transition: background-color 9999s ease-out;
   }
 
   .form-input.is-invalid {
@@ -196,15 +217,15 @@
   }
 
   .lead-modal__panel {
-    @apply rounded-2xl border border-line bg-paper p-4 md:p-6;
+    @apply rounded-2xl border border-white/12 bg-paper-deep p-4 md:p-6;
     max-height: min(92dvh, 40rem);
     overflow-y: auto;
     overscroll-behavior: contain;
-    box-shadow: 0 24px 64px rgba(18, 32, 51, 0.28);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
   }
 
   .lead-modal__close {
-    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-2xl leading-none text-ink-muted transition hover:border-accent hover:text-accent;
+    @apply flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-2xl leading-none text-ink-muted transition hover:border-accent hover:text-accent;
   }
 
   .lead-modal__close.is-hovered,
@@ -290,61 +311,77 @@
   }
 
   .section {
-    @apply py-16 md:py-24;
+    @apply py-20 md:py-28;
   }
 
   .section-title {
     @apply font-display text-[2rem] font-bold tracking-tight text-ink md:text-[2.75rem] lg:text-[3rem];
   }
 
-  .surface-glow {
-    box-shadow: 0 8px 28px rgba(18, 32, 51, 0.06);
+  .section-head {
+    @apply grid gap-4 md:grid-cols-2 md:items-end md:gap-12;
   }
 
-  .problem-card:hover,
-  .problem-card.is-hovered {
-    transform: translateY(-2px);
-    border-color: rgb(11 110 153 / 0.35);
-    box-shadow: 0 12px 32px rgba(18, 32, 51, 0.08);
+  .section-head .section-lead {
+    @apply mt-0 max-w-none md:mt-0;
+  }
+
+  .surface-glow {
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  }
+
+  .advantage-card {
+    height: 100%;
+    border-radius: 1.15rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: var(--color-paper-deep);
+    padding: 1.35rem 1.4rem 1.55rem;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.3s ease,
+      background-color 0.3s ease;
   }
 
   .advantage-card:hover,
   .advantage-card.is-hovered {
-    border-color: rgb(11 110 153 / 0.5);
-    background-color: rgb(255 255 255 / 0.07);
+    transform: translateY(-2px);
+    border-color: rgb(11 110 153 / 0.55);
+    background-color: rgb(255 255 255 / 0.04);
   }
 
-  .advantages-story {
-    --steps: 6;
-    --step-h: 88svh;
-    --header-h: 4.25rem;
-    position: relative;
-    height: calc(var(--step-h) * var(--steps));
-    isolation: isolate;
+  .advantage-card__num {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    color: var(--color-accent);
+  }
+
+  .hero-block {
+    padding: 1rem 0 0;
   }
 
   @media (min-width: 768px) {
-    .advantages-story {
-      --header-h: 4.75rem;
+    .hero-block {
+      padding-top: 1.25rem;
     }
   }
 
-  .advantages-stage {
-    position: sticky;
-    top: var(--header-h);
-    z-index: 1;
-    display: grid;
-    height: calc(100svh - var(--header-h));
+  .hero-stage {
+    position: relative;
     overflow: hidden;
+    isolation: isolate;
+    min-height: min(78svh, 46rem);
+    border-radius: 1.35rem;
+    background: var(--color-soil);
   }
 
-  .advantages-bg {
+  .hero-stage__media {
     pointer-events: none;
     position: absolute;
     inset: 0;
   }
 
-  .advantages-bg__video {
+  .hero-stage__video {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -353,255 +390,106 @@
     object-position: 58% 42%;
   }
 
-  .advantages-bg__veil {
+  .hero-stage__veil {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(105deg, rgba(12, 22, 36, 0.78) 0%, rgba(12, 22, 36, 0.52) 42%, rgba(12, 22, 36, 0.34) 68%, rgba(11, 110, 153, 0.18) 100%),
-      linear-gradient(180deg, rgba(12, 22, 36, 0.22) 0%, transparent 32%, rgba(12, 22, 36, 0.28) 100%);
+      linear-gradient(105deg, rgba(8, 12, 20, 0.72) 0%, rgba(8, 12, 20, 0.42) 40%, rgba(8, 12, 20, 0.14) 68%, rgba(11, 110, 153, 0.22) 100%),
+      linear-gradient(180deg, rgba(8, 12, 20, 0.12) 0%, transparent 40%, rgba(8, 12, 20, 0.38) 100%);
   }
 
-  .advantages-shell {
+  .hero-stage__accent {
+    position: absolute;
+    right: -12%;
+    top: 8%;
+    width: min(48%, 30rem);
+    height: 72%;
+    background: radial-gradient(circle at center, rgba(11, 110, 153, 0.46), transparent 68%);
+    filter: blur(10px);
+  }
+
+  .hero-stage__spark {
+    position: absolute;
+    left: 16%;
+    bottom: 26%;
+    width: 11rem;
+    height: 11rem;
+    background: radial-gradient(circle, rgba(255, 220, 4, 0.18), transparent 70%);
+  }
+
+  .hero-spark-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: #ffdc04;
+    box-shadow: 0 0 0 0 rgba(255, 220, 4, 0.55);
+    animation: partner-live-dot 2.2s ease-out infinite;
+  }
+
+  .hero-stage__content {
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 36rem);
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 1.35rem 1.35rem 1.2rem;
-  }
-
-  @media (min-width: 900px) {
-    .advantages-shell {
-      grid-template-columns: minmax(24rem, 48%);
-      padding: clamp(2rem, 6vh, 4.5rem) clamp(2rem, 6vw, 5.5rem);
-    }
-  }
-
-  .advantages-copy {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 0;
-    max-width: 36rem;
-  }
-
-  .advantages-copy__title {
-    margin-top: 0.75rem;
-    font-size: 1.65rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.15;
+    align-items: end;
+    min-height: min(58svh, 34rem);
+    padding: 2rem 1.25rem 1.5rem;
   }
 
   @media (min-width: 768px) {
-    .advantages-copy__title {
-      font-size: 2.75rem;
+    .hero-stage__content {
+      align-items: center;
+      min-height: min(62svh, 36rem);
+      padding: clamp(2.5rem, 7vh, 4.5rem) clamp(2rem, 5vw, 4rem) 2rem;
     }
   }
 
-  @media (min-width: 1024px) {
-    .advantages-copy__title {
-      font-size: 3rem;
-    }
-  }
-
-  .advantages-hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgb(255 255 255 / 0.42);
-  }
-
-  .advantages-hint::after {
-    content: '';
-    width: 2.4rem;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), transparent);
-    animation: advantages-hint 1.6s ease-in-out infinite;
-  }
-
-  .advantages-active {
+  .hero-stage__stats {
     position: relative;
-    min-height: 9.5rem;
-    margin-top: 1.35rem;
+    z-index: 1;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    background: rgb(0 0 0 / 0.28);
+    backdrop-filter: blur(10px);
+    padding: 1rem 1.25rem 1.15rem;
   }
 
-  @media (min-width: 900px) {
-    .advantages-active {
-      min-height: 15.5rem;
+  @media (min-width: 768px) {
+    .hero-stage__stats {
+      padding: 1.35rem clamp(2rem, 5vw, 4rem) 1.5rem;
     }
   }
 
-  .advantages-active__card {
-    position: absolute;
-    inset: 0 auto auto 0;
-    width: 100%;
-    max-width: 34rem;
-    visibility: hidden;
-    pointer-events: none;
+  .solution-card {
+    height: 100%;
+    border-radius: 1.25rem;
+    border: 1px solid rgb(11 110 153 / 0.35);
+    background: var(--color-paper-deep);
+    padding: 1.5rem 1.45rem 1.7rem;
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.3s ease,
+      box-shadow 0.35s ease;
   }
 
-  .advantages-active__card.is-active {
-    visibility: visible;
-    pointer-events: auto;
+  .solution-card:hover,
+  .solution-card.is-hovered {
+    transform: translateY(-3px);
+    border-color: rgb(11 110 153 / 0.7);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
   }
 
-  .advantages-active__num,
-  .advantages-active__card h3,
-  .advantages-active__text {
-    opacity: 0;
-    transform: translateX(-1.65rem);
-  }
-
-  .advantages-active__card.is-active .advantages-active__num {
-    animation: advantages-enter-left 0.62s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .advantages-active__card.is-active h3 {
-    animation: advantages-enter-left 0.72s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
-  }
-
-  .advantages-active__card.is-active .advantages-active__text {
-    animation: advantages-enter-left 0.78s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
-  }
-
-  .advantages-active__num {
-    font-size: 0.72rem;
+  .solution-card__num {
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.16em;
-    color: #ffdc04;
+    color: var(--color-accent);
   }
 
-  .advantages-active__card h3 {
-    margin-top: 0.4rem;
-    font-size: 1.45rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.22;
-  }
-
-  @media (min-width: 768px) {
-    .advantages-active__card h3 {
-      font-size: 2.15rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .advantages-active__card h3 {
-      font-size: 2.35rem;
-    }
-  }
-
-  .advantages-active__text {
-    margin-top: 0.75rem;
-    font-size: 0.98rem;
-    line-height: 1.6;
-    color: rgb(255 255 255 / 0.78);
-  }
-
-  @media (min-width: 768px) {
-    .advantages-active__text {
-      margin-top: 0.9rem;
-      font-size: 1.125rem;
-      line-height: 1.65;
-    }
-  }
-
-  .advantages-ticks {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 1.35rem;
-  }
-
-  .advantages-tick {
-    min-width: 2.35rem;
-    border-radius: 999px;
-    border: 1px solid rgb(255 255 255 / 0.16);
-    background: rgb(255 255 255 / 0.05);
-    padding: 0.32rem 0.55rem;
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    color: rgb(255 255 255 / 0.45);
-    transition:
-      color 0.2s ease,
-      border-color 0.2s ease,
-      background-color 0.2s ease;
-  }
-
-  .advantages-tick:hover,
-  .advantages-tick.is-hovered,
-  .advantages-tick:focus-visible {
-    border-color: rgb(255 255 255 / 0.4);
-    color: #fff;
-    outline: none;
-  }
-
-  .advantages-tick.is-active {
-    border-color: rgba(255, 220, 4, 0.55);
-    background: rgba(255, 220, 4, 0.12);
-    color: #ffdc04;
-  }
-
-  .advantages-story.is-static {
-    height: auto;
-  }
-
-  .advantages-story.is-static .advantages-stage {
-    position: relative;
-    top: auto;
-    height: auto;
-    min-height: 0;
-  }
-
-  .advantages-story.is-static .advantages-hint,
-  .advantages-story.is-static .advantages-ticks,
-  .advantages-story.is-static .advantages-bg {
-    display: none;
-  }
-
-  .advantages-story.is-static .advantages-shell {
-    display: block;
-    height: auto;
-  }
-
-  .advantages-story.is-static .advantages-copy {
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
-  }
-
-  .advantages-story.is-static .advantages-active {
-    display: grid;
-    gap: 1rem;
-    min-height: 0;
-    margin-top: 1.5rem;
-  }
-
-  .advantages-story.is-static .advantages-active__card {
-    position: static;
-    visibility: visible;
-    pointer-events: auto;
-    padding: 1.1rem 1.2rem;
-    border-radius: 1rem;
-    border: 1px solid rgb(255 255 255 / 0.1);
-    background: rgb(255 255 255 / 0.04);
-  }
-
-  .advantages-story.is-static .advantages-active__num,
-  .advantages-story.is-static .advantages-active__card h3,
-  .advantages-story.is-static .advantages-active__text {
-    opacity: 1;
-    transform: none;
-    animation: none;
+  .problem-card:hover,
+  .problem-card.is-hovered {
+    transform: translateY(-2px);
+    border-color: rgb(11 110 153 / 0.5);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
   }
 
   .section-lead {
@@ -613,22 +501,21 @@
   }
 
   .site-header {
-    @apply sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-md transition-[box-shadow,border-color] duration-300;
+    @apply sticky top-0 z-40 border-b border-white/10 bg-paper/90 backdrop-blur-md transition-[box-shadow,border-color] duration-300;
   }
 
   .site-header.is-scrolled {
-    @apply border-line/80 shadow-[0_8px_24px_rgba(18,32,51,0.08)];
+    @apply border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.45)];
   }
 
   .product-card {
-    @apply flex h-full flex-col overflow-hidden rounded-xl border border-line bg-paper transition duration-300 ease-out;
-    box-shadow: 0 8px 28px rgba(18, 32, 51, 0.06);
+    @apply flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-paper-deep transition duration-300 ease-out;
   }
 
   .product-card:hover,
   .product-card.is-hovered {
-    border-color: rgb(11 110 153 / 0.4);
-    box-shadow: 0 16px 40px rgba(18, 32, 51, 0.1);
+    border-color: rgb(11 110 153 / 0.55);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
   }
 
   .product-features {
@@ -645,7 +532,7 @@
   }
 
   .examples-stage-frame {
-    @apply relative overflow-hidden rounded-2xl border border-white/12 bg-white shadow-[0_24px_64px_rgba(0,0,0,0.35)];
+    @apply relative overflow-hidden rounded-2xl border border-white/12 bg-paper-deep shadow-[0_24px_64px_rgba(0,0,0,0.45)];
     min-height: clamp(300px, 58vw, 560px);
   }
 
@@ -666,7 +553,7 @@
     height: clamp(300px, 58vw, 560px);
     object-fit: contain;
     padding: clamp(1.25rem, 4vw, 2.75rem);
-    background: linear-gradient(180deg, #ffffff 0%, #f3f7fa 100%);
+    background: linear-gradient(180deg, #121a28 0%, #0c1420 100%);
     transition:
       opacity 0.2s ease,
       transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -712,7 +599,7 @@
   }
 
   .examples-thumb {
-    @apply relative overflow-hidden rounded-xl border border-white/12 bg-white p-2 transition duration-300;
+    @apply relative overflow-hidden rounded-xl border border-white/12 bg-paper-deep p-2 transition duration-300;
     aspect-ratio: 4 / 3;
   }
 
@@ -875,12 +762,12 @@
 
   /* Mobile CTA: inline in catalog, then fixed */
   .mobile-cta-bar {
-    @apply grid grid-cols-2 gap-2 border border-line bg-paper p-3 shadow-[0_8px_28px_rgba(18,32,51,0.06)] md:hidden;
+    @apply grid grid-cols-2 gap-2 border border-white/10 bg-paper-deep p-3 md:hidden;
     border-radius: 0.75rem;
   }
 
   .mobile-cta-bar.is-fixed {
-    @apply fixed inset-x-0 bottom-0 z-50 rounded-none border-x-0 border-b-0 border-t border-ink/10 bg-paper/95 shadow-none backdrop-blur;
+    @apply fixed inset-x-0 bottom-0 z-50 rounded-none border-x-0 border-b-0 border-t border-white/10 bg-paper/95 shadow-none backdrop-blur;
   }
 
   body.has-fixed-cta {
@@ -1021,8 +908,8 @@
   }
 
   .partner-chip--light {
-    border-color: var(--color-line);
-    background: var(--color-paper-deep);
+    border-color: rgb(255 255 255 / 0.12);
+    background: rgb(255 255 255 / 0.06);
     color: var(--color-ink);
   }
 
@@ -1126,10 +1013,9 @@
     flex-direction: column;
     overflow: hidden;
     border-radius: 1rem;
-    border: 1px solid var(--color-line);
-    background: var(--color-paper);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    background: var(--color-paper-deep);
     padding: 1.4rem 1.4rem 1.5rem;
-    box-shadow: 0 8px 28px rgba(18, 32, 51, 0.06);
     transition:
       transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
       border-color 0.3s ease,
@@ -1139,8 +1025,8 @@
   .partner-card:hover,
   .partner-card.is-hovered {
     transform: translateY(-3px);
-    border-color: rgb(11 110 153 / 0.4);
-    box-shadow: 0 18px 40px rgba(18, 32, 51, 0.12);
+    border-color: rgb(11 110 153 / 0.5);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
   }
 
   .partner-logo-plate {
@@ -1202,7 +1088,7 @@
 
   .partner-mini-stat {
     border-radius: 0.75rem;
-    background: var(--color-paper-deep);
+    background: rgb(255 255 255 / 0.05);
     padding: 0.7rem 0.65rem;
   }
 
@@ -1226,8 +1112,8 @@
   .partner-marquee__track span {
     flex-shrink: 0;
     border-radius: 999px;
-    border: 1px solid var(--color-line);
-    background: var(--color-paper-deep);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    background: rgb(255 255 255 / 0.06);
     padding: 0.28rem 0.7rem;
     font-size: 0.72rem;
     font-weight: 700;
@@ -1323,29 +1209,6 @@
   }
 }
 
-@keyframes advantages-hint {
-  0%,
-  100% {
-    transform: translateX(0);
-    opacity: 0.35;
-  }
-  50% {
-    transform: translateX(8px);
-    opacity: 1;
-  }
-}
-
-@keyframes advantages-enter-left {
-  from {
-    opacity: 0;
-    transform: translateX(-1.65rem);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1365,7 +1228,11 @@
   }
 
   .problem-card:hover,
-  .problem-card.is-hovered {
+  .problem-card.is-hovered,
+  .advantage-card:hover,
+  .advantage-card.is-hovered,
+  .solution-card:hover,
+  .solution-card.is-hovered {
     transform: none;
   }
 
@@ -1441,32 +1308,17 @@
     transition: none !important;
   }
 
-  .advantages-bg__video {
+  .hero-spark-dot {
+    animation: none !important;
+  }
+
+  .hero-stage__video {
     display: none;
   }
 
-  .advantages-hint::after {
-    animation: none !important;
-  }
-
-  .advantages-active__num,
-  .advantages-active__card h3,
-  .advantages-active__text,
-  .advantages-active__card.is-active .advantages-active__num,
-  .advantages-active__card.is-active h3,
-  .advantages-active__card.is-active .advantages-active__text {
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-  }
-
-  .advantages-story {
-    height: auto;
-  }
-
-  .advantages-stage {
-    position: relative;
-    top: auto;
-    height: auto;
+  .hero-stage__media {
+    background:
+      linear-gradient(105deg, rgba(8, 12, 20, 0.82), rgba(11, 110, 153, 0.28)),
+      url('/videos/particles-water.jpg') center / cover no-repeat;
   }
 }
