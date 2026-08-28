@@ -673,7 +673,7 @@
   }
 
   .examples-stage-frame {
-    @apply relative overflow-hidden rounded-2xl border border-white/12 bg-white shadow-[0_24px_64px_rgba(0,0,0,0.35)];
+    @apply relative overflow-hidden rounded-2xl border border-white/12 bg-paper-deep shadow-[0_24px_64px_rgba(0,0,0,0.45)];
     min-height: clamp(300px, 58vw, 560px);
   }
 
@@ -694,7 +694,7 @@
     height: clamp(300px, 58vw, 560px);
     object-fit: contain;
     padding: clamp(1.25rem, 4vw, 2.75rem);
-    background: linear-gradient(180deg, #ffffff 0%, #f3f7fa 100%);
+    background: linear-gradient(180deg, #121a28 0%, #0c1420 100%);
     transition:
       opacity 0.2s ease,
       transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -740,7 +740,7 @@
   }
 
   .examples-thumb {
-    @apply relative overflow-hidden rounded-xl border border-white/12 bg-white p-2 transition duration-300;
+    @apply relative overflow-hidden rounded-xl border border-white/12 bg-paper-deep p-2 transition duration-300;
     aspect-ratio: 4 / 3;
   }
 
