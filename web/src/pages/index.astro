@@ -4,12 +4,10 @@ export const prerender = true
 import Layout from '../layouts/Layout.astro'
 import Header from '../components/Header.astro'
 import Hero from '../components/Hero.astro'
-import Intro from '../components/Intro.astro'
 import Problems from '../components/Problems.astro'
 import Services from '../components/Services.astro'
 import Advantages from '../components/Advantages.astro'
 import Package from '../components/Package.astro'
-import Gallery from '../components/Gallery.astro'
 import Works from '../components/Works.astro'
 import Partners from '../components/Partners.astro'
 import Trust from '../components/Trust.astro'
@@ -59,10 +57,14 @@ const jsonLd = {
       phoneHref={settings.phoneHref}
       brandName={settings.brandName}
     />
-    <Intro title={home.trustTitle} text={home.trustText} />
     <Partners title={home.partnersTitle} intro={home.partnersIntro} partners={home.partners} />
     <Problems title={home.problemsTitle} problems={home.problems} />
-    <Services title={home.servicesTitle} services={home.services} phoneHref={settings.phoneHref} />
+    <Services
+      title={home.servicesTitle}
+      services={home.services}
+      examples={home.gallery}
+      phoneHref={settings.phoneHref}
+    />
     <Advantages title={home.advantagesTitle} advantages={home.advantages} />
     <Package
       title={home.packageTitle}
@@ -71,7 +73,6 @@ const jsonLd = {
       price={home.packagePrice}
       cta={home.packageCta}
     />
-    <Gallery title={home.galleryTitle} items={home.gallery} />
     <Works title={home.worksTitle} items={home.works} />
     <Faq title={home.faqTitle} faqs={home.faqs} />
     <Trust

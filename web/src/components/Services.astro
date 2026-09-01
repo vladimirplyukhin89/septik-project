@@ -1,14 +1,15 @@
 ---
-import type { Service } from '../lib/types'
+import type { GalleryItem, Service } from '../lib/types'
 import { COMPANY_LOGO_URL } from '../lib/site'
 
 interface Props {
   title: string
   services: Service[]
+  examples?: GalleryItem[]
   phoneHref: string
 }
 
-const { title, services, phoneHref } = Astro.props
+const { title, services, examples = [], phoneHref } = Astro.props
 
 const badges = ['Пластик', 'Вертикальный', 'Горизонтальный']
 const hoverImages = [
@@ -89,6 +90,32 @@ const hoverImages = [
         ))
       }
     </div>
+
+    {
+      examples.length > 0 && (
+        <div class="examples-strip fade-up mt-10 md:mt-12">
+          <p class="examples-strip__label">Форматы корпусов</p>
+          <div class="examples-bento examples-bento--strip">
+            {examples.map((item) => (
+              <figure class="examples-tile">
+                <div class="examples-tile__media">
+                  <span class="examples-tile__glow" aria-hidden="true" />
+                  <img
+                    src={item.imageUrl}
+                    alt=""
+                    width="640"
+                    height="480"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <figcaption class="examples-tile__caption">{item.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      )
+    }
 
     <div class="js-mobile-cta-sentinel mt-8 h-px w-full md:hidden" aria-hidden="true"></div>
     <div class="mobile-cta-bar js-mobile-cta md:hidden" data-mobile-cta>

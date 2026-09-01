@@ -8,6 +8,15 @@ interface Props {
 }
 
 const { title, intro, items, price, cta } = Astro.props
+
+const priceMatch = price.match(/(\d+(?:\s\d+)*)\s*₽/)
+const priceDigits = priceMatch ? Number(priceMatch[1].replace(/\s/g, '')) : NaN
+const pricePrefix =
+  priceMatch && priceMatch.index != null ? price.slice(0, priceMatch.index) : ''
+const priceSuffix =
+  priceMatch && priceMatch.index != null
+    ? price.slice(priceMatch.index + priceMatch[1].length)
+    : ''
 ---
 
 <section id="package" class="section">
@@ -31,7 +40,17 @@ const { title, intro, items, price, cta } = Astro.props
       <div class="flex flex-col justify-between border-t border-white/10 bg-accent/15 p-8 md:border-l md:border-t-0 md:p-12">
         <div>
           <p class="text-xs font-semibold uppercase tracking-[0.14em] text-white/50">Стоимость</p>
-          <p class="mt-3 text-2xl font-bold leading-snug md:text-4xl">{price}</p>
+          <p class="package-price js-stats mt-3 text-2xl font-bold leading-snug md:text-4xl">
+            {
+              Number.isFinite(priceDigits) ? (
+                <span data-count={priceDigits} data-prefix={pricePrefix} data-suffix={priceSuffix}>
+                  {price}
+                </span>
+              ) : (
+                price
+              )
+            }
+          </p>
         </div>
         <button
           type="button"

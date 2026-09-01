@@ -324,6 +324,81 @@
     window.addEventListener('scroll', onScroll, { passive: true })
   }
 
+  function initNav() {
+    const header = document.querySelector<HTMLElement>('[data-site-header]')
+    const toggle = header?.querySelector<HTMLButtonElement>('[data-nav-toggle]')
+    const panel = header?.querySelector<HTMLElement>('[data-nav-panel]')
+    const backdrop = header?.querySelector<HTMLElement>('[data-nav-backdrop]')
+    const first = header?.querySelector<HTMLElement>('[data-nav-first]')
+    if (!header || !toggle || !panel || !backdrop) return
+
+    let open = false
+
+    const setOpen = (next: boolean) => {
+      if (next === open) return
+      open = next
+      toggle.setAttribute('aria-expanded', next ? 'true' : 'false')
+      toggle.setAttribute('aria-label', next ? 'Закрыть меню' : 'Открыть меню')
+      document.documentElement.classList.toggle('nav-open', next)
+
+      if (next) {
+        panel.hidden = false
+        backdrop.hidden = false
+        if (reduceMotion) {
+          panel.classList.add('is-open')
+          backdrop.classList.add('is-open')
+        } else {
+          requestAnimationFrame(() => {
+            panel.classList.add('is-open')
+            backdrop.classList.add('is-open')
+          })
+        }
+        window.setTimeout(() => first?.focus(), 40)
+        return
+      }
+
+      panel.classList.remove('is-open')
+      backdrop.classList.remove('is-open')
+      if (reduceMotion) {
+        panel.hidden = true
+        backdrop.hidden = true
+      } else {
+        window.setTimeout(() => {
+          if (open) return
+          panel.hidden = true
+          backdrop.hidden = true
+        }, 220)
+      }
+      toggle.focus()
+    }
+
+    toggle.addEventListener('click', () => setOpen(!open))
+    backdrop.addEventListener('click', () => setOpen(false))
+    header.querySelectorAll('[data-nav-link]').forEach((el) => {
+      el.addEventListener('click', () => {
+        document.documentElement.classList.remove('nav-open')
+        open = false
+        toggle.setAttribute('aria-expanded', 'false')
+        toggle.setAttribute('aria-label', 'Открыть меню')
+        panel.classList.remove('is-open')
+        backdrop.classList.remove('is-open')
+        panel.hidden = true
+        backdrop.hidden = true
+      })
+    })
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !open) return
+      event.preventDefault()
+      setOpen(false)
+    })
+    document.querySelectorAll('[data-open-lead-modal]').forEach((el) => {
+      el.addEventListener('click', () => setOpen(false))
+    })
+    window.matchMedia('(min-width: 1280px)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false)
+    })
+  }
+
   function initNoCopy() {
     const isEditable = (target: EventTarget | null) => {
       if (!(target instanceof Element)) return false
@@ -367,7 +442,7 @@
       'pointerdown',
       (event) => {
         if (!(event.target instanceof Element)) return
-        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .works-tile, .works-lightbox__nav, .works-lightbox__close, .faq-trigger, .lead-modal__close')
+        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .works-tile, .works-lightbox__nav, .works-lightbox__close, .faq-trigger, .lead-modal__close, .site-nav-toggle, .site-nav-panel__link')
         if (!target) {
           clear()
           return
@@ -436,6 +511,7 @@
   }
 
   initHeader()
+  initNav()
   initHero()
   initCountUps()
   initMeters()

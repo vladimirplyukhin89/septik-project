@@ -2,7 +2,7 @@ import { animate, hover, inView, stagger, type AnimationSequence } from 'motion'
 
 const SPRING = { type: 'spring' as const, stiffness: 280, damping: 28 }
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
-const STAT_SPRING = { type: 'spring' as const, stiffness: 150, damping: 20, mass: 0.95 }
+const STAT_SPRING = { type: 'spring' as const, stiffness: 150, damping: 30, mass: 0.95 }
 
 function formatRu(value: number) {
   return value.toLocaleString('ru-RU')
@@ -71,14 +71,11 @@ export function playStatCascade(
 ) {
   if (!root || !stats.length) return
 
-  const valueSelector = options.valueSelector ?? '.partner-stat__value'
-
   const run = () => {
     stats.forEach((stat, index) => {
       const delay = 0.45 + index * 0.24
       const counter = stat.querySelector<HTMLElement>('[data-count]')
       const meter = stat.querySelector<HTMLElement>('[data-motion-meter]')
-      const value = stat.querySelector<HTMLElement>(valueSelector)
       const target = counter ? Number(counter.dataset.count) : NaN
       const countDuration = Number.isFinite(target) ? Math.min(1.7, 0.95 + target / 1100) : 1.2
 
@@ -105,10 +102,6 @@ export function playStatCascade(
         countUp(counter, {
           duration: countDuration,
           delay: delay + 0.32,
-          onComplete: () => {
-            if (!value) return
-            animate(value, { scale: [1, 1.07, 1] }, { duration: 0.55, ease: EASE_OUT })
-          },
         })
       }
 

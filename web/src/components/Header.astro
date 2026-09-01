@@ -20,10 +20,10 @@ const nav = [
 ]
 ---
 
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="container-site flex h-[4.25rem] items-center justify-between gap-4 md:h-[4.75rem]">
-    <div class="flex items-center gap-6 md:gap-8">
-      <a href="#top" class="flex items-center gap-2 no-underline sm:gap-3">
+    <div class="flex min-w-0 items-center gap-6 md:gap-8">
+      <a href="#top" class="flex min-w-0 items-center gap-2 no-underline sm:gap-3">
         <span class="site-logo-wrap">
           <img
             src={COMPANY_LOGO_URL}
@@ -51,14 +51,58 @@ const nav = [
         }
       </nav>
     </div>
-    <div class="flex items-center gap-3 md:gap-4">
+    <div class="flex shrink-0 items-center gap-2 sm:gap-3 md:gap-4">
       <a href={`tel:${phoneHref}`} class="hidden text-right leading-tight sm:block">
         <span class="block text-sm font-bold text-ink hover:text-accent">{phone}</span>
         <span class="text-[11px] text-ink-muted">ежедневно, звонок бесплатный</span>
       </a>
+      <button
+        type="button"
+        class="site-nav-toggle xl:hidden"
+        data-nav-toggle
+        aria-expanded="false"
+        aria-controls="site-nav-panel"
+        aria-label="Открыть меню"
+      >
+        <span class="site-nav-toggle__bars" aria-hidden="true" />
+      </button>
       <button type="button" class="btn-primary py-2.5 text-xs md:text-sm" data-open-lead-modal>
         Обратный звонок
       </button>
     </div>
   </div>
+
+  <div class="site-nav-backdrop xl:hidden" data-nav-backdrop hidden></div>
+  <nav
+    id="site-nav-panel"
+    class="site-nav-panel xl:hidden"
+    data-nav-panel
+    hidden
+    aria-label="Мобильное меню"
+  >
+    <div class="container-site py-5">
+      <ul class="flex flex-col gap-1">
+        {
+          nav.map((item, i) => (
+            <li>
+              <a
+                href={item.href}
+                class="site-nav-panel__link"
+                data-nav-link
+                {...(i === 0 ? { 'data-nav-first': '' } : {})}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a href={`tel:${phoneHref}`} class="site-nav-panel__phone" data-nav-link>
+        {phone}
+      </a>
+      <a href="#lead-form" class="btn-primary mt-4 w-full justify-center" data-nav-link>
+        Заявка
+      </a>
+    </div>
+  </nav>
 </header>
