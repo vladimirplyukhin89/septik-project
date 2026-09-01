@@ -404,7 +404,7 @@
       'pointerdown',
       (event) => {
         if (!(event.target instanceof Element)) return
-        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .works-tile, .works-lightbox__nav, .works-lightbox__close, .faq-trigger, .lead-modal__close, .site-nav-toggle, .site-nav-panel__link')
+        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .works-tile, .works-lightbox__close, .faq-trigger, .lead-modal__close, .site-nav-toggle, .site-nav-panel__link')
         if (!target) {
           clear()
           return

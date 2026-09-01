@@ -20,8 +20,16 @@
 
 @layer base {
   html {
+    --header-height: 4.25rem;
     scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-height) + 0.5rem);
     color-scheme: dark;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      --header-height: 4.75rem;
+    }
   }
 
   body {
@@ -312,7 +320,7 @@
   }
 
   .section {
-    @apply py-16 md:py-20;
+    @apply py-10 md:py-20;
   }
 
   .section-title {
@@ -428,6 +436,20 @@
     }
   }
 
+  .advantage-card:not(.is-featured) .advantage-card__ghost-n {
+    right: 0.2rem;
+    top: -0.4rem;
+    font-size: 6.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .advantage-card:not(.is-featured) .advantage-card__ghost-n {
+      right: 0.3rem;
+      top: -0.1rem;
+      font-size: 8rem;
+    }
+  }
+
   .advantage-card__num {
     position: relative;
     z-index: 1;
@@ -506,14 +528,8 @@
 
   .hero-block {
     position: relative;
-    min-height: calc(100svh - 4.25rem);
+    min-height: calc(100svh - var(--header-height));
     padding: 0;
-  }
-
-  @media (min-width: 768px) {
-    .hero-block {
-      min-height: calc(100svh - 4.75rem);
-    }
   }
 
   .hero-stage {
@@ -532,6 +548,19 @@
     inset: 0;
   }
 
+  .hero-stage__grid {
+    display: none;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 40%, transparent 80%);
+    animation: partners-grid-shift 18s linear infinite;
+  }
+
   .hero-stage__video {
     display: none;
     position: absolute;
@@ -546,18 +575,8 @@
   }
 
   @media (max-width: 767px) {
-    .hero-stage__media {
-      background:
-        linear-gradient(
-          180deg,
-          rgba(8, 12, 20, 0.2) 0%,
-          rgba(8, 12, 20, 0.1) 30%,
-          var(--color-soil) 54%
-        ),
-        url('/videos/particles-water.jpg') 70% 18% / 82% auto no-repeat;
-      background-position:
-        0 0,
-        100% 0;
+    .hero-stage__grid {
+      display: block;
     }
   }
 
@@ -845,6 +864,12 @@
     @apply border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.45)];
   }
 
+  @media (max-width: 1279px) {
+    .site-header [data-open-lead-modal] {
+      display: none;
+    }
+  }
+
   .site-nav-toggle {
     display: flex;
     height: 2.5rem;
@@ -911,7 +936,7 @@
 
   .site-nav-panel {
     position: fixed;
-    top: 4.25rem;
+    top: var(--header-height);
     right: 0;
     bottom: 0;
     left: 0;
@@ -920,12 +945,6 @@
     overscroll-behavior: contain;
     background: var(--color-paper);
     clip-path: circle(0px at calc(100% - 5.5rem) 0px);
-  }
-
-  @media (min-width: 768px) {
-    .site-nav-panel {
-      top: 4.75rem;
-    }
   }
 
   .site-nav-panel__inner {
@@ -1310,6 +1329,16 @@
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  @media (max-width: 767px) {
+    .examples-tile__media {
+      aspect-ratio: 4 / 3;
+    }
+
+    .examples-tile__media img {
+      padding: 0.45rem 0.45rem 0.7rem;
+    }
+  }
+
   .examples-tile:hover .examples-tile__media img {
     transform: scale(1.035);
   }
@@ -1472,12 +1501,23 @@
     box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
   }
 
+  .works-lightbox__stage {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: min(70dvh, 42rem);
+    overflow: hidden;
+    touch-action: pan-y;
+    background: #070b12;
+  }
+
   .works-lightbox__img {
     display: block;
     width: 100%;
-    max-height: min(78dvh, 48rem);
+    height: 100%;
     object-fit: contain;
-    background: #070b12;
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
   .works-lightbox__close {
@@ -1506,46 +1546,6 @@
   .works-lightbox__close.is-hovered {
     border-color: var(--color-accent);
     background: var(--color-accent);
-  }
-
-  .works-lightbox__nav {
-    position: absolute;
-    top: 50%;
-    z-index: 3;
-    display: flex;
-    height: 2.75rem;
-    width: 2.75rem;
-    transform: translateY(-50%);
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    border: 1px solid rgb(255 255 255 / 0.2);
-    background: rgb(7 11 18 / 0.72);
-    font-size: 1.6rem;
-    line-height: 1;
-    color: #fff;
-    backdrop-filter: blur(8px);
-    transition:
-      border-color 0.2s ease,
-      background-color 0.2s ease;
-  }
-
-  .works-lightbox__nav:hover,
-  .works-lightbox__nav.is-hovered {
-    border-color: var(--color-accent);
-    background: var(--color-accent);
-  }
-
-  .works-lightbox__nav--prev {
-    left: 0.75rem;
-  }
-
-  .works-lightbox__nav--next {
-    right: 0.75rem;
-  }
-
-  .works-lightbox__nav[hidden] {
-    display: none;
   }
 
   .works-lightbox__meta {
@@ -2250,6 +2250,7 @@
   }
 
   .partners-grid,
+  .hero-stage__grid,
   .partner-mark__icon,
   .partner-mark__ring,
   .partner-live__dot,
@@ -2300,17 +2301,11 @@
 
   @media (max-width: 767px) {
     .hero-stage__media {
-      background:
-        linear-gradient(
-          180deg,
-          rgba(8, 12, 20, 0.2) 0%,
-          rgba(8, 12, 20, 0.1) 30%,
-          var(--color-soil) 54%
-        ),
-        url('/videos/particles-water.jpg') 70% 18% / 82% auto no-repeat;
-      background-position:
-        0 0,
-        100% 0;
+      background: none;
+    }
+
+    .hero-stage__grid {
+      display: block;
     }
   }
 }

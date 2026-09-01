@@ -29,19 +29,15 @@ const { title, advantages } = Astro.props
             data-advantage-card
             data-tap-hover
           >
-            {i === 0 && (
-              <span class="advantage-card__ghost" aria-hidden="true">
-                <span class="advantage-card__ghost-n">{String(i + 1).padStart(2, '0')}</span>
-              </span>
-            )}
+            <span class="advantage-card__ghost" aria-hidden="true">
+              <span class="advantage-card__ghost-n">{String(i + 1).padStart(2, '0')}</span>
+            </span>
             <p class="advantage-card__num" data-advantage-num>
               {String(i + 1).padStart(2, '0')}
             </p>
-            {i === 0 && (
-              <span class="advantage-meter" aria-hidden="true">
-                <span class="advantage-meter__fill" data-advantage-meter />
-              </span>
-            )}
+            <span class="advantage-meter" aria-hidden="true">
+              <span class="advantage-meter__fill" data-advantage-meter />
+            </span>
             <h3 class="advantage-card__title">{item.title}</h3>
             <p class="advantage-card__text">{item.text}</p>
           </article>

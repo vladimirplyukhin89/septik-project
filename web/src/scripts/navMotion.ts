@@ -206,10 +206,8 @@ export function initSiteNav() {
         const target = document.querySelector(href)
         void Promise.resolve(setOpen(false)).then(() => {
           if (target instanceof HTMLElement) {
-            const top =
-              window.scrollY + target.getBoundingClientRect().top - header.offsetHeight
-            window.scrollTo({
-              top: Math.max(0, top),
+            target.scrollIntoView({
+              block: 'start',
               behavior: prefersReducedMotion() ? 'instant' : 'smooth',
             })
           }

@@ -72,30 +72,17 @@ const { title, items } = Astro.props
               >
                 ×
               </button>
-              <button
-                type="button"
-                class="works-lightbox__nav works-lightbox__nav--prev"
-                data-works-prev
-                aria-label="Предыдущее фото"
-              >
-                <span aria-hidden="true">‹</span>
-              </button>
-              <img
-                src={items[0].imageUrl}
-                alt={items[0].caption}
-                class="works-lightbox__img"
-                data-works-lightbox-img
-                width="1200"
-                height="1600"
-              />
-              <button
-                type="button"
-                class="works-lightbox__nav works-lightbox__nav--next"
-                data-works-next
-                aria-label="Следующее фото"
-              >
-                <span aria-hidden="true">›</span>
-              </button>
+              <div class="works-lightbox__stage" data-works-stage>
+                <img
+                  src={items[0].imageUrl}
+                  alt={items[0].caption}
+                  class="works-lightbox__img"
+                  data-works-lightbox-img
+                  width="1200"
+                  height="1600"
+                  draggable="false"
+                />
+              </div>
               <div class="works-lightbox__meta">
                 <p id="works-lightbox-caption" data-works-lightbox-caption>
                   {items[0].caption}

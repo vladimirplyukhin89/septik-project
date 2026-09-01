@@ -35,7 +35,7 @@ function playEntrance(section: HTMLElement) {
 
   const cards = [...section.querySelectorAll<HTMLElement>('[data-advantage-card]')]
   const nums = [...section.querySelectorAll<HTMLElement>('[data-advantage-num]')]
-  const meter = section.querySelector<HTMLElement>('[data-advantage-meter]')
+  const meters = [...section.querySelectorAll<HTMLElement>('[data-advantage-meter]')]
 
   if (!cards.length) {
     revealInstant(section)
@@ -73,7 +73,15 @@ function playEntrance(section: HTMLElement) {
     )
   }
 
-  if (meter) {
-    animate(meter, { scaleX: [0, 1] }, { delay: 0.38, duration: 0.95, ease: EASE_OUT })
+  if (meters.length) {
+    animate(
+      meters,
+      { scaleX: [0, 1] },
+      {
+        delay: stagger(0.1, { startDelay: 0.38 }),
+        duration: 0.95,
+        ease: EASE_OUT,
+      },
+    )
   }
 }

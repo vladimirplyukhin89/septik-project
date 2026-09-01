@@ -1,6 +1,8 @@
 import { lockScroll, unlockScroll } from './scrollLock'
 
-/** Лайтбокс для мозаики работ: открытие кадра, стрелки только внутри диалога. */
+const SWIPE_THRESHOLD = 48
+
+/** Лайтбокс для мозаики работ: смена кадров свайпом, стрелки клавиатуры. */
 export function initWorksLightbox() {
   const root = document.querySelector<HTMLElement>('[data-works-gallery]')
   const modal = root?.querySelector<HTMLDialogElement>('[data-works-lightbox]')
@@ -8,10 +10,9 @@ export function initWorksLightbox() {
 
   const tiles = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-works-open]'))
   const img = modal.querySelector<HTMLImageElement>('[data-works-lightbox-img]')
+  const stage = modal.querySelector<HTMLElement>('[data-works-stage]')
   const caption = modal.querySelector<HTMLElement>('[data-works-lightbox-caption]')
   const counter = modal.querySelector<HTMLElement>('[data-works-lightbox-counter]')
-  const prev = modal.querySelector<HTMLButtonElement>('[data-works-prev]')
-  const next = modal.querySelector<HTMLButtonElement>('[data-works-next]')
   const closeBtn = modal.querySelector<HTMLButtonElement>('[data-works-close]')
   if (!img || !tiles.length) return
 
@@ -22,11 +23,6 @@ export function initWorksLightbox() {
 
   if (!slides.length) return
 
-  if (slides.length < 2) {
-    prev?.setAttribute('hidden', '')
-    next?.setAttribute('hidden', '')
-  }
-
   let index = 0
   let closing = false
   let closeGeneration = 0
@@ -34,6 +30,9 @@ export function initWorksLightbox() {
   let onCloseTransitionEnd: ((event: TransitionEvent) => void) | null = null
   let lastTile: HTMLButtonElement | null = null
   let scrollHeld = false
+  let swipeX = 0
+  let swipeY = 0
+  let swiping = false
 
   const holdScroll = () => {
     if (scrollHeld) return
@@ -132,17 +131,36 @@ export function initWorksLightbox() {
     tile.addEventListener('click', () => open(i, tile))
   })
 
-  prev?.addEventListener('click', (event) => {
-    event.stopPropagation()
-    apply(index - 1)
-  })
-  next?.addEventListener('click', (event) => {
-    event.stopPropagation()
-    apply(index + 1)
-  })
   closeBtn?.addEventListener('click', (event) => {
     event.preventDefault()
     close()
+  })
+
+  const onSwipeStart = (event: PointerEvent) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return
+    if (slides.length < 2) return
+    swiping = true
+    swipeX = event.clientX
+    swipeY = event.clientY
+    stage?.setPointerCapture(event.pointerId)
+  }
+
+  const onSwipeEnd = (event: PointerEvent) => {
+    if (!swiping) return
+    swiping = false
+    if (stage?.hasPointerCapture(event.pointerId)) {
+      stage.releasePointerCapture(event.pointerId)
+    }
+    const dx = event.clientX - swipeX
+    const dy = event.clientY - swipeY
+    if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dx) < Math.abs(dy)) return
+    apply(dx < 0 ? index + 1 : index - 1)
+  }
+
+  stage?.addEventListener('pointerdown', onSwipeStart)
+  stage?.addEventListener('pointerup', onSwipeEnd)
+  stage?.addEventListener('pointercancel', () => {
+    swiping = false
   })
 
   modal.addEventListener('click', (event) => {

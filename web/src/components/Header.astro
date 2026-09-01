@@ -21,7 +21,7 @@ const nav = [
 ---
 
 <header class="site-header" data-site-header>
-  <div class="container-site flex h-[4.25rem] items-center justify-between gap-4 md:h-[4.75rem]">
+  <div class="container-site flex h-[var(--header-height)] items-center justify-between gap-4">
     <div class="flex min-w-0 items-center gap-6 md:gap-8">
       <a href="#top" class="flex min-w-0 items-center gap-2 no-underline sm:gap-3">
         <span class="site-logo-wrap">
@@ -66,7 +66,7 @@ const nav = [
       >
         <span class="site-nav-toggle__bars" aria-hidden="true" />
       </button>
-      <button type="button" class="btn-primary py-2.5 text-xs md:text-sm" data-open-lead-modal>
+      <button type="button" class="btn-primary hidden py-2.5 text-xs md:text-sm xl:inline-flex" data-open-lead-modal>
         Обратный звонок
       </button>
     </div>
