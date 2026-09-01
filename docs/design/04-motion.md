@@ -8,10 +8,16 @@
 2. **Stats count-up** — 1 / 5 / цена «от N ₽» (~900 ms, ease-out)
 3. **Scroll fade-up** — заголовки секций
 4. **Stagger cards** — продукция, преимущества, сценарии, галерея (`--reveal-i`)
-5. **Partners live** — пульс «официальные представители», count-up масштаба, ticker линеек, сеть узлов
+5. **Partners live (Motion)** — vanilla API из [`motion`](https://motion.dev/) в `web/src/scripts/partnersMotion.ts`:
+   - `inView` — вход секции при скролле
+   - spring + `stagger` — featured-карточка и сетка производителей
+   - **partner-stat** — отдельный `inView` сетки цифр: медленный spring, blur→sharp, count-up и meter по очереди, чтобы каждую карточку можно было рассмотреть
+   - SVG `pathLength` — сеть складов «рисуется»
+   - города раскрываются `stagger({ from: Тюмень })`
+   - `hover` — spring-подъём карточек (без фейкового touch-hover)
 6. **Hero video** — particle-loop на первом экране, play/pause по видимости; при reduced-motion — постер
 7. **Header shadow** — `.site-header.is-scrolled` после 12 px
-8. **Hover** — карточки `-translateY(2px)`, галерея zoom 1.03
+8. **Hover** — карточки `-translateY(2px)`, галерея zoom 1.03; partners — Motion spring
 9. **Form** — `.is-loading` на кнопке отправки
 10. **FAQ** — плавный аккордеон (`grid-template-rows` + fade текста), один открытый пункт
 

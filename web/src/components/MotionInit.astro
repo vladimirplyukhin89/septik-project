@@ -5,6 +5,7 @@
 <script>
   import { initLeadForms, initLeadModal } from '../scripts/leadForms'
   import { initExamplesGallery } from '../scripts/examplesGallery'
+  import { initPartnersMotion } from '../scripts/partnersMotion'
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -118,6 +119,8 @@
     if (!roots.length) return
 
     roots.forEach((root) => {
+      if (root.closest('[data-partners-motion]')) return
+
       if (reduceMotion) {
         animateStats(root, true)
         return
@@ -156,7 +159,10 @@
       },
       { threshold: 0.4 },
     )
-    meters.forEach((el) => observer.observe(el))
+    meters.forEach((el) => {
+      if (el.closest('[data-partners-motion]')) return
+      observer.observe(el)
+    })
   }
 
   function initHeader() {
@@ -286,6 +292,7 @@
   initCountUps()
   initMeters()
   initReveals()
+  initPartnersMotion()
   initTapHover()
   initMobileCta()
   initNoCopy()
