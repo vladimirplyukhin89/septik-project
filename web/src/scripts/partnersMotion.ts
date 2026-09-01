@@ -78,12 +78,12 @@ function playStats(section: HTMLElement) {
     root,
     () => {
       stats.forEach((stat, index) => {
-        const delay = index * 0.18
+        const delay = 0.45 + index * 0.24
         const counter = stat.querySelector<HTMLElement>('[data-count]')
         const meter = stat.querySelector<HTMLElement>('[data-motion-meter]')
         const value = stat.querySelector<HTMLElement>('.partner-stat__value')
         const target = counter ? Number(counter.dataset.count) : NaN
-        const countDuration = Number.isFinite(target) ? Math.min(1.45, 0.8 + target / 1300) : 1.1
+        const countDuration = Number.isFinite(target) ? Math.min(1.7, 0.95 + target / 1100) : 1.2
 
         animate(
           stat,
@@ -107,7 +107,7 @@ function playStats(section: HTMLElement) {
         if (counter && Number.isFinite(target)) {
           countUp(counter, {
             duration: countDuration,
-            delay: delay + 0.28,
+            delay: delay + 0.32,
             onComplete: () => {
               if (!value) return
               animate(value, { scale: [1, 1.07, 1] }, { duration: 0.55, ease: EASE_OUT })
@@ -119,17 +119,17 @@ function playStats(section: HTMLElement) {
           animate(
             meter,
             { scaleX: [0, 1] },
-            { delay: delay + 0.48, duration: 1.05, ease: EASE_OUT },
+            { delay: delay + 0.55, duration: 1.15, ease: EASE_OUT },
           )
         }
       })
 
       window.setTimeout(
         () => enableStatHovers(stats),
-        stats.length * 180 + 900,
+        450 + stats.length * 240 + 1100,
       )
     },
-    { amount: 0.35, margin: '0px 0px -12% 0px' },
+    { amount: 0.55, margin: '0px 0px -18% 0px' },
   )
 }
 
