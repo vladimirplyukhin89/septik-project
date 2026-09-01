@@ -1,3 +1,4 @@
+import { lockScroll, unlockScroll } from './scrollLock'
 import {
   formatPhoneDisplay,
   hasLeadErrors,
@@ -160,6 +161,21 @@ export function initLeadModal(root: ParentNode = document) {
   let closeGeneration = 0
   let closeTimer: number | null = null
   let onCloseTransitionEnd: ((event: TransitionEvent) => void) | null = null
+  let scrollHeld = false
+
+  const holdScroll = () => {
+    if (scrollHeld) return
+    scrollHeld = true
+    lockScroll()
+    document.documentElement.classList.add('modal-open')
+  }
+
+  const releaseScroll = () => {
+    if (!scrollHeld) return
+    scrollHeld = false
+    document.documentElement.classList.remove('modal-open')
+    unlockScroll()
+  }
 
   const cleanupCloseAnimation = () => {
     if (closeTimer != null) {
@@ -178,7 +194,7 @@ export function initLeadModal(root: ParentNode = document) {
     closeGeneration += 1
     closing = false
     modal.showModal()
-    document.documentElement.classList.add('modal-open')
+    holdScroll()
 
     if (reduceMotion) {
       modal.classList.add('is-open')
@@ -187,14 +203,14 @@ export function initLeadModal(root: ParentNode = document) {
     }
 
     const first = modal.querySelector<HTMLInputElement>('[data-field="name"]')
-    window.setTimeout(() => first?.focus(), 40)
+    window.setTimeout(() => first?.focus({ preventScroll: true }), 40)
   }
 
   const close = () => {
     if (!modal.open || closing) return
     closing = true
     cleanupCloseAnimation()
-    document.documentElement.classList.remove('modal-open')
+    releaseScroll()
 
     if (reduceMotion) {
       modal.classList.remove('is-open')
@@ -260,7 +276,7 @@ export function initLeadModal(root: ParentNode = document) {
   modal.addEventListener('close', () => {
     cleanupCloseAnimation()
     modal.classList.remove('is-open')
-    document.documentElement.classList.remove('modal-open')
+    releaseScroll()
     closing = false
   })
 

@@ -1,3 +1,5 @@
+import { lockScroll, unlockScroll } from './scrollLock'
+
 /** Лайтбокс для мозаики работ: открытие кадра, стрелки только внутри диалога. */
 export function initWorksLightbox() {
   const root = document.querySelector<HTMLElement>('[data-works-gallery]')
@@ -31,6 +33,21 @@ export function initWorksLightbox() {
   let closeTimer: number | null = null
   let onCloseTransitionEnd: ((event: TransitionEvent) => void) | null = null
   let lastTile: HTMLButtonElement | null = null
+  let scrollHeld = false
+
+  const holdScroll = () => {
+    if (scrollHeld) return
+    scrollHeld = true
+    lockScroll()
+    document.documentElement.classList.add('modal-open')
+  }
+
+  const releaseScroll = () => {
+    if (!scrollHeld) return
+    scrollHeld = false
+    document.documentElement.classList.remove('modal-open')
+    unlockScroll()
+  }
 
   const apply = (nextIndex: number) => {
     index = (nextIndex + slides.length) % slides.length
@@ -59,7 +76,7 @@ export function initWorksLightbox() {
     lastTile = tile
     apply(nextIndex)
     modal.showModal()
-    document.documentElement.classList.add('modal-open')
+    holdScroll()
 
     if (reduceMotion) {
       modal.classList.add('is-open')
@@ -67,17 +84,17 @@ export function initWorksLightbox() {
       requestAnimationFrame(() => modal.classList.add('is-open'))
     }
 
-    window.setTimeout(() => closeBtn?.focus(), 40)
+    window.setTimeout(() => closeBtn?.focus({ preventScroll: true }), 40)
   }
 
   const close = () => {
     if (!modal.open || closing) return
     closing = true
     cleanupCloseAnimation()
-    document.documentElement.classList.remove('modal-open')
+    releaseScroll()
 
     const restore = () => {
-      lastTile?.focus()
+      lastTile?.focus({ preventScroll: true })
     }
 
     if (reduceMotion) {
@@ -140,7 +157,7 @@ export function initWorksLightbox() {
   modal.addEventListener('close', () => {
     cleanupCloseAnimation()
     modal.classList.remove('is-open')
-    document.documentElement.classList.remove('modal-open')
+    releaseScroll()
     closing = false
   })
 

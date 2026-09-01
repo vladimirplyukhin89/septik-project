@@ -71,32 +71,37 @@ const nav = [
       </button>
     </div>
   </div>
+</header>
 
-  <div class="site-nav-backdrop xl:hidden" data-nav-backdrop hidden></div>
-  <nav
-    id="site-nav-panel"
-    class="site-nav-panel xl:hidden"
-    data-nav-panel
-    hidden
-    aria-label="Мобильное меню"
-  >
-    <div class="container-site py-5">
-      <ul class="flex flex-col gap-1">
-        {
-          nav.map((item, i) => (
-            <li>
-              <a
-                href={item.href}
-                class="site-nav-panel__link"
-                data-nav-link
-                {...(i === 0 ? { 'data-nav-first': '' } : {})}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+<nav
+  id="site-nav-panel"
+  class="site-nav-panel xl:hidden"
+  data-nav-panel
+  hidden
+  aria-hidden="true"
+  aria-label="Мобильное меню"
+>
+  <div class="site-nav-panel__inner container-site">
+    <p class="site-nav-panel__kicker" data-nav-item>Меню</p>
+    <ul class="site-nav-panel__list">
+      {
+        nav.map((item, i) => (
+          <li>
+            <a
+              href={item.href}
+              class="site-nav-panel__link"
+              data-nav-item
+              data-nav-link
+              {...(i === 0 ? { 'data-nav-first': '' } : {})}
+            >
+              <span class="site-nav-panel__index">{String(i + 1).padStart(2, '0')}</span>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="site-nav-panel__footer" data-nav-item>
       <a href={`tel:${phoneHref}`} class="site-nav-panel__phone" data-nav-link>
         {phone}
       </a>
@@ -104,5 +109,5 @@ const nav = [
         Заявка
       </a>
     </div>
-  </nav>
-</header>
+  </div>
+</nav>

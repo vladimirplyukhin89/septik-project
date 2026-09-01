@@ -71,9 +71,24 @@
 
     const stats = hero.querySelector('.js-stats')
     const video = hero.querySelector<HTMLVideoElement>('[data-hero-video]')
+    const desktop = window.matchMedia('(min-width: 768px)')
+    const videoSrc = '/videos/particles-water.mp4'
+
+    const attachVideo = () => {
+      if (!video || reduceMotion || !desktop.matches) return
+      if (video.getAttribute('src') === videoSrc) return
+      video.src = videoSrc
+    }
+
+    const detachVideo = () => {
+      if (!video || !video.getAttribute('src')) return
+      video.pause()
+      video.removeAttribute('src')
+      video.load()
+    }
 
     const setVideoPlaying = (play: boolean) => {
-      if (!video) return
+      if (!video?.getAttribute('src')) return
       if (play) {
         const run = video.play()
         if (run) run.catch(() => {})
@@ -104,16 +119,32 @@
     )
     heroObserver.observe(hero)
 
-    if (video) {
-      const videoObserver = new IntersectionObserver(
-        (entries) => {
-          const inView = entries.some((entry) => entry.isIntersecting)
-          setVideoPlaying(inView)
-        },
-        { threshold: 0.12 },
-      )
-      videoObserver.observe(hero)
+    if (!video) return
+
+    let heroInView = false
+    const videoObserver = new IntersectionObserver(
+      (entries) => {
+        heroInView = entries.some((entry) => entry.isIntersecting)
+        if (desktop.matches) {
+          attachVideo()
+          setVideoPlaying(heroInView)
+        }
+      },
+      { threshold: 0.12 },
+    )
+    videoObserver.observe(hero)
+
+    const syncVideo = () => {
+      if (desktop.matches) {
+        attachVideo()
+        setVideoPlaying(heroInView)
+        return
+      }
+      detachVideo()
     }
+
+    syncVideo()
+    desktop.addEventListener('change', syncVideo)
   }
 
   function revealStatsInstant(root: Element) {
@@ -325,78 +356,9 @@
   }
 
   function initNav() {
-    const header = document.querySelector<HTMLElement>('[data-site-header]')
-    const toggle = header?.querySelector<HTMLButtonElement>('[data-nav-toggle]')
-    const panel = header?.querySelector<HTMLElement>('[data-nav-panel]')
-    const backdrop = header?.querySelector<HTMLElement>('[data-nav-backdrop]')
-    const first = header?.querySelector<HTMLElement>('[data-nav-first]')
-    if (!header || !toggle || !panel || !backdrop) return
-
-    let open = false
-
-    const setOpen = (next: boolean) => {
-      if (next === open) return
-      open = next
-      toggle.setAttribute('aria-expanded', next ? 'true' : 'false')
-      toggle.setAttribute('aria-label', next ? 'Закрыть меню' : 'Открыть меню')
-      document.documentElement.classList.toggle('nav-open', next)
-
-      if (next) {
-        panel.hidden = false
-        backdrop.hidden = false
-        if (reduceMotion) {
-          panel.classList.add('is-open')
-          backdrop.classList.add('is-open')
-        } else {
-          requestAnimationFrame(() => {
-            panel.classList.add('is-open')
-            backdrop.classList.add('is-open')
-          })
-        }
-        window.setTimeout(() => first?.focus(), 40)
-        return
-      }
-
-      panel.classList.remove('is-open')
-      backdrop.classList.remove('is-open')
-      if (reduceMotion) {
-        panel.hidden = true
-        backdrop.hidden = true
-      } else {
-        window.setTimeout(() => {
-          if (open) return
-          panel.hidden = true
-          backdrop.hidden = true
-        }, 220)
-      }
-      toggle.focus()
-    }
-
-    toggle.addEventListener('click', () => setOpen(!open))
-    backdrop.addEventListener('click', () => setOpen(false))
-    header.querySelectorAll('[data-nav-link]').forEach((el) => {
-      el.addEventListener('click', () => {
-        document.documentElement.classList.remove('nav-open')
-        open = false
-        toggle.setAttribute('aria-expanded', 'false')
-        toggle.setAttribute('aria-label', 'Открыть меню')
-        panel.classList.remove('is-open')
-        backdrop.classList.remove('is-open')
-        panel.hidden = true
-        backdrop.hidden = true
-      })
-    })
-    document.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape' || !open) return
-      event.preventDefault()
-      setOpen(false)
-    })
-    document.querySelectorAll('[data-open-lead-modal]').forEach((el) => {
-      el.addEventListener('click', () => setOpen(false))
-    })
-    window.matchMedia('(min-width: 1280px)').addEventListener('change', (event) => {
-      if (event.matches) setOpen(false)
-    })
+    import('../scripts/navMotion')
+      .then((mod) => mod.initSiteNav())
+      .catch(() => {})
   }
 
   function initNoCopy() {
