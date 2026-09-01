@@ -346,13 +346,20 @@
 
   function initHeader() {
     const header = document.querySelector('.site-header')
-    if (!header) return
+    const toTop = document.querySelector<HTMLAnchorElement>('[data-back-to-top]')
 
     const onScroll = () => {
-      header.classList.toggle('is-scrolled', window.scrollY > 12)
+      const y = window.scrollY
+      header?.classList.toggle('is-scrolled', y > 12)
+      toTop?.classList.toggle('is-visible', y > Math.min(560, window.innerHeight * 0.7))
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
+
+    toTop?.addEventListener('click', (event) => {
+      event.preventDefault()
+      window.scrollTo({ top: 0, behavior: reduceMotion ? 'instant' : 'smooth' })
+    })
   }
 
   function initNav() {
@@ -404,7 +411,7 @@
       'pointerdown',
       (event) => {
         if (!(event.target instanceof Element)) return
-        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .works-tile, .works-lightbox__close, .faq-trigger, .lead-modal__close, .site-nav-toggle, .site-nav-panel__link')
+        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .works-tile, .works-lightbox__close, .faq-trigger, .lead-modal__close, .site-nav-toggle, .site-nav-panel__link, .back-to-top')
         if (!target) {
           clear()
           return

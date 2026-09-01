@@ -70,5 +70,16 @@ const metrikaId = settings.yandexMetrikaId || import.meta.env.PUBLIC_YANDEX_METR
   </head>
   <body data-metrika-id={metrikaId || undefined}>
     <slot />
+    <a href="#top" class="back-to-top" data-back-to-top aria-label="Наверх">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M6 14.5 12 8.5l6 6"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </a>
   </body>
 </html>
