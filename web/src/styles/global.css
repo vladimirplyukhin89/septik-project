@@ -391,7 +391,7 @@
     bottom: auto;
     left: 18%;
     width: auto;
-    height: min(46%, 17.5rem);
+    height: min(38%, 14.5rem);
     object-fit: cover;
     object-position: 70% 36%;
   }
@@ -402,13 +402,13 @@
     background:
       linear-gradient(
         180deg,
-        rgba(8, 12, 20, 0.18) 0%,
-        rgba(8, 12, 20, 0.08) 28%,
-        rgba(8, 12, 20, 0.78) 52%,
-        var(--color-soil) 68%,
+        rgba(8, 12, 20, 0.14) 0%,
+        rgba(8, 12, 20, 0.22) 22%,
+        rgba(8, 12, 20, 0.92) 42%,
+        var(--color-soil) 54%,
         var(--color-soil) 100%
       ),
-      linear-gradient(90deg, rgba(8, 12, 20, 0.78) 0%, rgba(8, 12, 20, 0.2) 42%, transparent 100%);
+      linear-gradient(90deg, rgba(8, 12, 20, 0.82) 0%, rgba(8, 12, 20, 0.22) 40%, transparent 100%);
   }
 
   .hero-stage__accent {
@@ -416,7 +416,7 @@
     right: -16%;
     top: 0;
     width: min(72%, 18rem);
-    height: 42%;
+    height: 36%;
     background: radial-gradient(circle at center, rgba(11, 110, 153, 0.38), transparent 68%);
     filter: blur(12px);
   }
@@ -1359,7 +1359,7 @@
           180deg,
           rgba(8, 12, 20, 0.2) 0%,
           rgba(8, 12, 20, 0.1) 30%,
-          var(--color-soil) 68%
+          var(--color-soil) 54%
         ),
         url('/videos/particles-water.jpg') 70% 18% / 82% auto no-repeat;
       background-position:
