@@ -118,9 +118,9 @@ const hubIndex = Math.max(0, warehouses.indexOf('Тюмень'))
             </div>
 
             <div>
-              <div class="grid grid-cols-2 gap-3">
+              <div class="grid grid-cols-2 gap-3" data-motion-stats>
                 {(featured.stats || []).map((stat) => (
-                  <div class="partner-stat" data-motion-enter>
+                  <div class="partner-stat" data-motion-stat>
                     <p class="partner-stat__value">
                       {stat.value != null ? (
                         <span

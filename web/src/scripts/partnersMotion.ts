@@ -2,6 +2,7 @@ import { animate, hover, inView, stagger, type AnimationSequence } from 'motion'
 
 const SPRING = { type: 'spring' as const, stiffness: 280, damping: 28 }
 const EASE_OUT = [0.16, 1, 0.3, 1] as const
+const STAT_SPRING = { type: 'spring' as const, stiffness: 150, damping: 20, mass: 0.95 }
 
 function formatRu(value: number) {
   return value.toLocaleString('ru-RU')
@@ -14,6 +15,7 @@ function prefersReducedMotion() {
 function revealInstant(section: HTMLElement) {
   section.classList.remove('partners-motion-pending')
   section.classList.add('is-live')
+  section.querySelectorAll('[data-motion-stat]').forEach((el) => el.classList.add('is-shown'))
 
   section.querySelectorAll<HTMLElement>('[data-count]').forEach((node) => {
     if (node.dataset.counted === '1') return
@@ -24,7 +26,10 @@ function revealInstant(section: HTMLElement) {
   })
 }
 
-function countUp(node: HTMLElement) {
+function countUp(
+  node: HTMLElement,
+  options: { duration?: number; delay?: number; onComplete?: () => void } = {},
+) {
   if (node.dataset.counted === '1') return
   const target = Number(node.dataset.count)
   if (!Number.isFinite(target)) return
@@ -32,13 +37,16 @@ function countUp(node: HTMLElement) {
   node.dataset.counted = '1'
   const prefix = node.dataset.prefix || ''
   const suffix = node.dataset.suffix || ''
+  node.textContent = `${prefix}${formatRu(0)}${suffix}`
 
   animate(0, target, {
-    duration: 0.9,
-    ease: EASE_OUT,
+    duration: options.duration ?? 0.9,
+    delay: options.delay ?? 0,
+    ease: [0.12, 0.78, 0.16, 1],
     onUpdate: (latest) => {
       node.textContent = `${prefix}${formatRu(Math.round(latest))}${suffix}`
     },
+    onComplete: options.onComplete,
   })
 }
 
@@ -54,6 +62,77 @@ function enableHovers(section: HTMLElement) {
   })
 }
 
+function enableStatHovers(stats: HTMLElement[]) {
+  hover(stats, (element) => {
+    animate(element, { y: -5, scale: 1.02 }, { type: 'spring', stiffness: 360, damping: 22 })
+    return () => animate(element, { y: 0, scale: 1 }, { type: 'spring', stiffness: 320, damping: 26 })
+  })
+}
+
+function playStats(section: HTMLElement) {
+  const root = section.querySelector<HTMLElement>('[data-motion-stats]')
+  const stats = [...section.querySelectorAll<HTMLElement>('[data-motion-stat]')]
+  if (!root || !stats.length) return
+
+  inView(
+    root,
+    () => {
+      stats.forEach((stat, index) => {
+        const delay = index * 0.18
+        const counter = stat.querySelector<HTMLElement>('[data-count]')
+        const meter = stat.querySelector<HTMLElement>('[data-motion-meter]')
+        const value = stat.querySelector<HTMLElement>('.partner-stat__value')
+        const target = counter ? Number(counter.dataset.count) : NaN
+        const countDuration = Number.isFinite(target) ? Math.min(1.45, 0.8 + target / 1300) : 1.1
+
+        animate(
+          stat,
+          {
+            opacity: [0, 1],
+            y: [36, 0],
+            scale: [0.92, 1],
+            filter: ['blur(10px)', 'blur(0px)'],
+          },
+          {
+            delay,
+            opacity: { delay, duration: 0.85, ease: EASE_OUT },
+            filter: { delay, duration: 0.95, ease: EASE_OUT },
+            y: { ...STAT_SPRING, delay },
+            scale: { ...STAT_SPRING, delay },
+          },
+        ).then(() => {
+          stat.classList.add('is-shown')
+        })
+
+        if (counter && Number.isFinite(target)) {
+          countUp(counter, {
+            duration: countDuration,
+            delay: delay + 0.28,
+            onComplete: () => {
+              if (!value) return
+              animate(value, { scale: [1, 1.07, 1] }, { duration: 0.55, ease: EASE_OUT })
+            },
+          })
+        }
+
+        if (meter) {
+          animate(
+            meter,
+            { scaleX: [0, 1] },
+            { delay: delay + 0.48, duration: 1.05, ease: EASE_OUT },
+          )
+        }
+      })
+
+      window.setTimeout(
+        () => enableStatHovers(stats),
+        stats.length * 180 + 900,
+      )
+    },
+    { amount: 0.35, margin: '0px 0px -12% 0px' },
+  )
+}
+
 function playEntrance(section: HTMLElement) {
   const head = section.querySelector<HTMLElement>('[data-motion-head]')
   const featured = section.querySelector<HTMLElement>('[data-motion-featured]')
@@ -62,7 +141,6 @@ function playEntrance(section: HTMLElement) {
   const path = section.querySelector<SVGPathElement>('[data-motion-path]')
   const nodes = section.querySelectorAll<SVGCircleElement>('[data-motion-node]')
   const cards = section.querySelectorAll<HTMLElement>('[data-motion-card]')
-  const meters = section.querySelectorAll<HTMLElement>('[data-motion-meter]')
   const counters = section.querySelectorAll<HTMLElement>('[data-count]')
   const hubFrom = Number(section.querySelector('[data-motion-cities]')?.getAttribute('data-hub-index') || 0)
 
@@ -122,14 +200,6 @@ function playEntrance(section: HTMLElement) {
     ])
   }
 
-  if (meters.length) {
-    sequence.push([
-      meters,
-      { scaleX: [0, 1] },
-      { delay: stagger(0.08), duration: 0.85, ease: EASE_OUT, at: 0.5 },
-    ])
-  }
-
   animate(sequence, {
     onComplete: () => {
       section.classList.remove('partners-motion-pending')
@@ -139,7 +209,10 @@ function playEntrance(section: HTMLElement) {
   })
 
   window.setTimeout(() => {
-    counters.forEach((node) => countUp(node))
+    counters.forEach((node) => {
+      if (node.closest('[data-motion-stat]')) return
+      countUp(node)
+    })
   }, 520)
 }
 
@@ -149,7 +222,8 @@ export function initPartnersMotion() {
 
   const fallback = window.setTimeout(() => {
     if (section.classList.contains('is-live')) return
-    revealInstant(section)
+    section.classList.remove('partners-motion-pending')
+    section.classList.add('is-live')
   }, 2500)
 
   if (prefersReducedMotion()) {
@@ -166,4 +240,6 @@ export function initPartnersMotion() {
     },
     { margin: '0px 0px -8% 0px' },
   )
+
+  playStats(section)
 }

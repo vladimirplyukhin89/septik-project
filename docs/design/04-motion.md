@@ -11,7 +11,7 @@
 5. **Partners live (Motion)** — vanilla API из [`motion`](https://motion.dev/) в `web/src/scripts/partnersMotion.ts`:
    - `inView` — вход секции при скролле
    - spring + `stagger` — featured-карточка и сетка производителей
-   - count-up через `animate(0, n)`
+   - **partner-stat** — отдельный `inView` сетки цифр: медленный spring, blur→sharp, count-up и meter по очереди, чтобы каждую карточку можно было рассмотреть
    - SVG `pathLength` — сеть складов «рисуется»
    - города раскрываются `stagger({ from: Тюмень })`
    - `hover` — spring-подъём карточек (без фейкового touch-hover)

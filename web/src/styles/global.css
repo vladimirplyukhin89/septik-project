@@ -855,6 +855,10 @@
     opacity: 0;
   }
 
+  [data-motion-stat]:not(.is-shown) {
+    opacity: 0;
+  }
+
   .partners-motion-pending .partners-grid,
   .partners-motion-pending .partner-mark__icon,
   .partners-motion-pending .partner-mark__ring,
@@ -872,7 +876,8 @@
     .partners-motion-pending [data-motion-card],
     .partners-motion-pending [data-motion-enter],
     .partners-motion-pending [data-motion-city],
-    .partners-motion-pending [data-motion-node] {
+    .partners-motion-pending [data-motion-node],
+    [data-motion-stat]:not(.is-shown) {
       opacity: 1;
     }
 
@@ -978,18 +983,21 @@
 
   .partner-stat {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     border-radius: 0.9rem;
     border: 1px solid rgb(255 255 255 / 0.1);
     background: rgb(255 255 255 / 0.05);
     padding: 0.9rem 0.95rem 1.05rem;
+    transform-origin: center bottom;
   }
 
   .partner-stat__value {
+    display: inline-block;
     font-size: 1.65rem;
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1;
+    transform-origin: left center;
   }
 
   .partner-stat__label {
@@ -1017,7 +1025,7 @@
     background: linear-gradient(90deg, #ffdc04, #0b6e99);
   }
 
-  .is-live .partner-meter__fill {
+  .is-shown .partner-meter__fill {
     transform: scaleX(1);
   }
 
@@ -1374,9 +1382,11 @@
   .partners-motion-pending [data-motion-card],
   .partners-motion-pending [data-motion-enter],
   .partners-motion-pending [data-motion-city],
-  .partners-motion-pending [data-motion-node] {
+  .partners-motion-pending [data-motion-node],
+  [data-motion-stat]:not(.is-shown) {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
   }
 
   .hero-spark-dot {
