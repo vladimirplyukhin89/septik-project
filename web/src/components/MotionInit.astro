@@ -84,7 +84,10 @@
 
     if (reduceMotion) {
       hero.classList.add('hero-ready')
-      if (stats) animateStats(stats, true)
+      if (stats) {
+        stats.querySelectorAll('[data-motion-stat]').forEach((el) => el.classList.add('is-shown'))
+        animateStats(stats, true)
+      }
       video?.remove()
       return
     }
@@ -113,6 +116,11 @@
     }
   }
 
+  function revealStatsInstant(root: Element) {
+    root.querySelectorAll('[data-motion-stat]').forEach((el) => el.classList.add('is-shown'))
+    animateStats(root, true)
+  }
+
   function initCountUps() {
     const roots = document.querySelectorAll('.js-stats')
     if (!roots.length) return
@@ -120,8 +128,22 @@
     roots.forEach((root) => {
       if (root.closest('[data-partners-motion]')) return
 
+      const isHeroStats = Boolean(root.closest('.hero-stage__stats'))
+
       if (reduceMotion) {
-        animateStats(root, true)
+        revealStatsInstant(root)
+        return
+      }
+
+      if (isHeroStats && root instanceof HTMLElement) {
+        const stats = [...root.querySelectorAll<HTMLElement>('[data-motion-stat]')]
+        import('../scripts/partnersMotion')
+          .then((mod) => {
+            mod.playStatCascade(root, stats, { valueSelector: '.hero-stat__value', immediate: true })
+          })
+          .catch(() => {
+            revealStatsInstant(root)
+          })
         return
       }
 
@@ -164,8 +186,8 @@
     })
   }
 
-    /** Motion весит ~22 КБ gzip, поэтому чанк грузится только перед показом секции. */
-    function initPartners() {
+  /** Motion весит ~22 КБ gzip, поэтому чанк грузится только перед показом секции. */
+  function initPartners() {
     const section = document.querySelector<HTMLElement>('[data-partners-motion]')
     if (!section) return
 
@@ -187,16 +209,62 @@
         loader.disconnect()
 
         // Страховка только на время загрузки чанка, иначе она подставит цифры до анимации
-        const safety = window.setTimeout(revealPartners, 4000)
+        let fallbackUsed = false
+        const safety = window.setTimeout(() => {
+          fallbackUsed = true
+          revealPartners()
+        }, 4000)
 
         import('../scripts/partnersMotion')
           .then((mod) => {
             window.clearTimeout(safety)
+            if (fallbackUsed) return
             mod.initPartnersMotion()
           })
           .catch(() => {
             window.clearTimeout(safety)
-            revealPartners()
+            if (!fallbackUsed) revealPartners()
+          })
+      },
+      { rootMargin: '700px 0px' },
+    )
+    loader.observe(section)
+  }
+
+  function initAdvantages() {
+    const section = document.querySelector<HTMLElement>('[data-advantages-motion]')
+    if (!section) return
+
+    const revealAdvantages = () => {
+      section.classList.remove('advantages-motion-pending')
+      section.classList.add('is-live')
+    }
+
+    if (reduceMotion) {
+      revealAdvantages()
+      return
+    }
+
+    const loader = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return
+        loader.disconnect()
+
+        let fallbackUsed = false
+        const safety = window.setTimeout(() => {
+          fallbackUsed = true
+          revealAdvantages()
+        }, 4000)
+
+        import('../scripts/advantagesMotion')
+          .then((mod) => {
+            window.clearTimeout(safety)
+            if (fallbackUsed) return
+            mod.initAdvantagesMotion()
+          })
+          .catch(() => {
+            window.clearTimeout(safety)
+            if (!fallbackUsed) revealAdvantages()
           })
       },
       { rootMargin: '700px 0px' },
@@ -332,6 +400,7 @@
   initMeters()
   initReveals()
   initPartners()
+  initAdvantages()
   initTapHover()
   initMobileCta()
   initNoCopy()

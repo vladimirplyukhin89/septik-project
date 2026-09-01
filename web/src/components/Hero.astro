@@ -82,11 +82,11 @@ const stats = [
     </div>
 
     <div class="hero-stage__stats">
-      <div class="container-site js-stats grid grid-cols-2 gap-4 py-4 md:grid-cols-4 md:gap-8 md:py-6">
+      <div class="container-site js-stats grid grid-cols-2 gap-4 py-4 md:grid-cols-4 md:gap-8 md:py-6" data-motion-stats>
         {
           stats.map((stat) => (
-            <div class="hero-reveal" style="--hero-i: 6">
-              <p class="text-xl font-bold text-white md:text-2xl">
+            <div data-motion-stat>
+              <p class="hero-stat__value text-xl font-bold text-white md:text-2xl">
                 {stat.count !== null ? (
                   <span data-count={stat.count} data-prefix={stat.prefix} data-suffix={stat.suffix}>
                     {stat.fallback}
@@ -95,6 +95,9 @@ const stats = [
                   stat.fallback
                 )}
               </p>
+              <span class="hero-stat-meter" aria-hidden="true">
+                <span class="hero-stat-meter__fill" data-motion-meter />
+              </span>
               <p class="mt-1 text-xs text-white/60 md:text-sm">{stat.label}</p>
             </div>
           ))

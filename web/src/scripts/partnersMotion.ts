@@ -51,11 +51,6 @@ function countUp(
 }
 
 function enableHovers(section: HTMLElement) {
-  hover(section.querySelectorAll('[data-partner-hover]'), (element) => {
-    animate(element, { y: -6 }, { type: 'spring', stiffness: 420, damping: 24 })
-    return () => animate(element, { y: 0 }, { type: 'spring', stiffness: 380, damping: 30 })
-  })
-
   hover(section.querySelectorAll('.partner-chip'), (element) => {
     animate(element, { scale: 1.06 }, { type: 'spring', stiffness: 500, damping: 22 })
     return () => animate(element, { scale: 1 }, { type: 'spring', stiffness: 420, damping: 26 })
@@ -69,68 +64,82 @@ function enableStatHovers(stats: HTMLElement[]) {
   })
 }
 
+export function playStatCascade(
+  root: HTMLElement,
+  stats: HTMLElement[],
+  options: { valueSelector?: string; immediate?: boolean } = {},
+) {
+  if (!root || !stats.length) return
+
+  const valueSelector = options.valueSelector ?? '.partner-stat__value'
+
+  const run = () => {
+    stats.forEach((stat, index) => {
+      const delay = 0.45 + index * 0.24
+      const counter = stat.querySelector<HTMLElement>('[data-count]')
+      const meter = stat.querySelector<HTMLElement>('[data-motion-meter]')
+      const value = stat.querySelector<HTMLElement>(valueSelector)
+      const target = counter ? Number(counter.dataset.count) : NaN
+      const countDuration = Number.isFinite(target) ? Math.min(1.7, 0.95 + target / 1100) : 1.2
+
+      animate(
+        stat,
+        {
+          opacity: [0, 1],
+          y: [36, 0],
+          scale: [0.92, 1],
+          filter: ['blur(10px)', 'blur(0px)'],
+        },
+        {
+          delay,
+          opacity: { delay, duration: 0.85, ease: EASE_OUT },
+          filter: { delay, duration: 0.95, ease: EASE_OUT },
+          y: { ...STAT_SPRING, delay },
+          scale: { ...STAT_SPRING, delay },
+        },
+      ).then(() => {
+        stat.classList.add('is-shown')
+      })
+
+      if (counter && Number.isFinite(target)) {
+        countUp(counter, {
+          duration: countDuration,
+          delay: delay + 0.32,
+          onComplete: () => {
+            if (!value) return
+            animate(value, { scale: [1, 1.07, 1] }, { duration: 0.55, ease: EASE_OUT })
+          },
+        })
+      }
+
+      if (meter) {
+        animate(
+          meter,
+          { scaleX: [0, 1] },
+          { delay: delay + 0.55, duration: 1.15, ease: EASE_OUT },
+        )
+      }
+    })
+
+    window.setTimeout(
+      () => enableStatHovers(stats),
+      450 + stats.length * 240 + 1100,
+    )
+  }
+
+  if (options.immediate) {
+    run()
+    return
+  }
+
+  inView(root, run, { amount: 0.55, margin: '0px 0px -18% 0px' })
+}
+
 function playStats(section: HTMLElement) {
   const root = section.querySelector<HTMLElement>('[data-motion-stats]')
   const stats = [...section.querySelectorAll<HTMLElement>('[data-motion-stat]')]
   if (!root || !stats.length) return
-
-  inView(
-    root,
-    () => {
-      stats.forEach((stat, index) => {
-        const delay = 0.45 + index * 0.24
-        const counter = stat.querySelector<HTMLElement>('[data-count]')
-        const meter = stat.querySelector<HTMLElement>('[data-motion-meter]')
-        const value = stat.querySelector<HTMLElement>('.partner-stat__value')
-        const target = counter ? Number(counter.dataset.count) : NaN
-        const countDuration = Number.isFinite(target) ? Math.min(1.7, 0.95 + target / 1100) : 1.2
-
-        animate(
-          stat,
-          {
-            opacity: [0, 1],
-            y: [36, 0],
-            scale: [0.92, 1],
-            filter: ['blur(10px)', 'blur(0px)'],
-          },
-          {
-            delay,
-            opacity: { delay, duration: 0.85, ease: EASE_OUT },
-            filter: { delay, duration: 0.95, ease: EASE_OUT },
-            y: { ...STAT_SPRING, delay },
-            scale: { ...STAT_SPRING, delay },
-          },
-        ).then(() => {
-          stat.classList.add('is-shown')
-        })
-
-        if (counter && Number.isFinite(target)) {
-          countUp(counter, {
-            duration: countDuration,
-            delay: delay + 0.32,
-            onComplete: () => {
-              if (!value) return
-              animate(value, { scale: [1, 1.07, 1] }, { duration: 0.55, ease: EASE_OUT })
-            },
-          })
-        }
-
-        if (meter) {
-          animate(
-            meter,
-            { scaleX: [0, 1] },
-            { delay: delay + 0.55, duration: 1.15, ease: EASE_OUT },
-          )
-        }
-      })
-
-      window.setTimeout(
-        () => enableStatHovers(stats),
-        450 + stats.length * 240 + 1100,
-      )
-    },
-    { amount: 0.55, margin: '0px 0px -18% 0px' },
-  )
+  playStatCascade(root, stats)
 }
 
 function playEntrance(section: HTMLElement) {
@@ -218,7 +227,7 @@ function playEntrance(section: HTMLElement) {
 
 export function initPartnersMotion() {
   const section = document.querySelector<HTMLElement>('[data-partners-motion]')
-  if (!section) return
+  if (!section || section.classList.contains('is-live')) return
 
   const fallback = window.setTimeout(() => {
     if (section.classList.contains('is-live')) return

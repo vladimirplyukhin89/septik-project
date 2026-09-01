@@ -9,7 +9,7 @@ interface Props {
 const { title, advantages } = Astro.props
 ---
 
-<section id="why" class="section">
+<section id="why" class="section advantages-section advantages-motion-pending" data-advantages-motion>
   <div class="container-site">
     <div class="section-head fade-up">
       <div>
@@ -21,17 +21,29 @@ const { title, advantages } = Astro.props
       </p>
     </div>
 
-    <div class="stagger-group stagger-group--left mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="advantages-bento mt-10">
       {
         advantages.map((item, i) => (
           <article
-            class="advantage-card reveal-item"
-            style={`--reveal-i: ${i}`}
+            class:list={['advantage-card', i === 0 && 'is-featured']}
+            data-advantage-card
             data-tap-hover
           >
-            <p class="advantage-card__num">{String(i + 1).padStart(2, '0')}</p>
-            <h3 class="mt-3 text-lg font-bold md:text-xl">{item.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-ink-muted md:text-base">{item.text}</p>
+            {i === 0 && (
+              <span class="advantage-card__ghost" aria-hidden="true">
+                <span class="advantage-card__ghost-n">{String(i + 1).padStart(2, '0')}</span>
+              </span>
+            )}
+            <p class="advantage-card__num" data-advantage-num>
+              {String(i + 1).padStart(2, '0')}
+            </p>
+            {i === 0 && (
+              <span class="advantage-meter" aria-hidden="true">
+                <span class="advantage-meter__fill" data-advantage-meter />
+              </span>
+            )}
+            <h3 class="advantage-card__title">{item.title}</h3>
+            <p class="advantage-card__text">{item.text}</p>
           </article>
         ))
       }
