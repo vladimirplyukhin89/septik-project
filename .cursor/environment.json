@@ -1,0 +1,20 @@
+{
+  "name": "Мой септик — landing + Sanity Studio",
+  "install": "npm install",
+  "ports": [
+    { "name": "web", "port": 4321 },
+    { "name": "studio", "port": 3333 }
+  ],
+  "terminals": [
+    {
+      "name": "web",
+      "command": "npm run dev --workspace=web -- --host 127.0.0.1 --port 4321",
+      "description": "Astro landing dev server (http://127.0.0.1:4321). Runs on local fallback content and demo-mode lead API without secrets."
+    },
+    {
+      "name": "studio",
+      "command": "npm run dev --workspace=studio -- --host 127.0.0.1 --port 3333",
+      "description": "Sanity Studio (http://127.0.0.1:3333). Set SANITY_STUDIO_PROJECT_ID to connect to a real Sanity dataset."
+    }
+  ]
+}
