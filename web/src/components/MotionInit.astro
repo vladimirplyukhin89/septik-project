@@ -5,7 +5,6 @@
 <script>
   import { initLeadForms, initLeadModal } from '../scripts/leadForms'
   import { initExamplesGallery } from '../scripts/examplesGallery'
-  import { initPartnersMotion } from '../scripts/partnersMotion'
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -165,6 +164,46 @@
     })
   }
 
+  /** Motion весит ~22 КБ gzip, поэтому чанк грузится только перед показом секции. */
+  function initPartners() {
+    const section = document.querySelector<HTMLElement>('[data-partners-motion]')
+    if (!section) return
+
+    const revealPartners = () => {
+      section.classList.remove('partners-motion-pending')
+      section.classList.add('is-live')
+      section.querySelectorAll('[data-motion-stat]').forEach((el) => el.classList.add('is-shown'))
+      animateStats(section, true)
+    }
+
+    if (reduceMotion) {
+      revealPartners()
+      return
+    }
+
+    const loader = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return
+        loader.disconnect()
+
+        // Страховка только на время загрузки чанка, иначе она подставит цифры до анимации
+        const safety = window.setTimeout(revealPartners, 4000)
+
+        import('../scripts/partnersMotion')
+          .then((mod) => {
+            window.clearTimeout(safety)
+            mod.initPartnersMotion()
+          })
+          .catch(() => {
+            window.clearTimeout(safety)
+            revealPartners()
+          })
+      },
+      { rootMargin: '700px 0px' },
+    )
+    loader.observe(section)
+  }
+
   function initHeader() {
     const header = document.querySelector('.site-header')
     if (!header) return
@@ -292,7 +331,7 @@
   initCountUps()
   initMeters()
   initReveals()
-  initPartnersMotion()
+  initPartners()
   initTapHover()
   initMobileCta()
   initNoCopy()
