@@ -668,37 +668,133 @@
     transform: scaleX(1);
   }
 
-  .solution-card {
-    height: 100%;
-    border-radius: 1.25rem;
-    border: 1px solid rgb(11 110 153 / 0.35);
+  .problems-scenes {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .problem-scene {
+    display: grid;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
     background: var(--color-paper-deep);
-    padding: 1.5rem 1.45rem 1.7rem;
     transition:
-      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
       border-color 0.3s ease,
       box-shadow 0.35s ease;
   }
 
-  .solution-card:hover,
-  .solution-card.is-hovered {
-    transform: translateY(-3px);
-    border-color: rgb(11 110 153 / 0.7);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  @media (min-width: 768px) {
+    .problem-scene {
+      grid-template-columns: minmax(13.5rem, 17rem) minmax(0, 1fr);
+    }
   }
 
-  .solution-card__num {
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
+  .problem-scene:hover,
+  .problem-scene.is-hovered {
+    border-color: rgb(11 110 153 / 0.55);
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.06);
+  }
+
+  .problem-scene__visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 9.5rem;
+    padding: 1rem 1.1rem 0.4rem;
+    background:
+      radial-gradient(ellipse 70% 80% at 50% 80%, rgb(11 110 153 / 0.16), transparent 70%),
+      linear-gradient(180deg, rgb(14 22 34 / 0.55), rgb(8 14 22 / 0.2));
+  }
+
+  @media (min-width: 768px) {
+    .problem-scene__visual {
+      min-height: 100%;
+      padding: 1.2rem 1rem;
+      border-right: 1px solid rgb(255 255 255 / 0.06);
+    }
+  }
+
+  .problem-scene__svg {
+    width: 100%;
+    max-width: 17rem;
+    height: auto;
+    color: rgb(237 242 247 / 0.55);
+  }
+
+  .problem-scene__path,
+  .problem-scene__path-tick {
+    stroke: var(--color-accent);
+    fill: none;
+  }
+
+  .problem-scene__path-tick {
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+
+  .problems-motion-pending .problem-scene__path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .problem-scene__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.15rem 1.25rem 1.35rem;
+  }
+
+  @media (min-width: 768px) {
+    .problem-scene__body {
+      padding: 1.45rem 1.6rem 1.55rem;
+    }
+  }
+
+  .problem-scene__kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.42);
+  }
+
+  .problem-scene__kicker [data-problem-num] {
+    display: inline-block;
     color: var(--color-accent);
+    transform-origin: left center;
   }
 
-  .problem-card:hover,
-  .problem-card.is-hovered {
-    transform: translateY(-2px);
-    border-color: rgb(11 110 153 / 0.5);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  .problem-scene__title {
+    margin-top: 0.65rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  @media (min-width: 768px) {
+    .problem-scene__title {
+      font-size: 1.45rem;
+    }
+  }
+
+  .problem-scene__text {
+    margin-top: 0.7rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-ink-muted);
+  }
+
+  @media (min-width: 768px) {
+    .problem-scene__text {
+      max-width: 38rem;
+      font-size: 1.05rem;
+    }
   }
 
   .section-lead {
@@ -1234,6 +1330,10 @@
     opacity: 0;
   }
 
+  .problems-motion-pending [data-problem-scene] {
+    opacity: 0;
+  }
+
   [data-motion-stat]:not(.is-shown) {
     opacity: 0;
   }
@@ -1674,9 +1774,22 @@
   .problem-card.is-hovered,
   .advantage-card:hover,
   .advantage-card.is-hovered,
+  .problem-scene:hover,
+  .problem-scene.is-hovered,
   .solution-card:hover,
   .solution-card.is-hovered {
     transform: none;
+  }
+
+  .problems-motion-pending [data-problem-scene] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .problems-motion-pending .problem-scene__path,
+  .problems-section.is-live .problem-scene__path {
+    stroke-dashoffset: 0;
   }
 
   .advantages-motion-pending [data-advantage-card] {

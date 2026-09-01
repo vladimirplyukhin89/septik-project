@@ -272,6 +272,47 @@
     loader.observe(section)
   }
 
+  function initProblems() {
+    const section = document.querySelector<HTMLElement>('[data-problems-motion]')
+    if (!section) return
+
+    const revealProblems = () => {
+      section.classList.remove('problems-motion-pending')
+      section.classList.add('is-live')
+    }
+
+    if (reduceMotion) {
+      revealProblems()
+      return
+    }
+
+    const loader = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return
+        loader.disconnect()
+
+        let fallbackUsed = false
+        const safety = window.setTimeout(() => {
+          fallbackUsed = true
+          revealProblems()
+        }, 4000)
+
+        import('../scripts/problemsMotion')
+          .then((mod) => {
+            window.clearTimeout(safety)
+            if (fallbackUsed) return
+            mod.initProblemsMotion()
+          })
+          .catch(() => {
+            window.clearTimeout(safety)
+            if (!fallbackUsed) revealProblems()
+          })
+      },
+      { rootMargin: '700px 0px' },
+    )
+    loader.observe(section)
+  }
+
   function initHeader() {
     const header = document.querySelector('.site-header')
     if (!header) return
@@ -401,6 +442,7 @@
   initReveals()
   initPartners()
   initAdvantages()
+  initProblems()
   initTapHover()
   initMobileCta()
   initNoCopy()
