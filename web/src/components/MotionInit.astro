@@ -4,7 +4,7 @@
 
 <script>
   import { initLeadForms, initLeadModal } from '../scripts/leadForms'
-  import { initExamplesGallery } from '../scripts/examplesGallery'
+  import { initWorksLightbox } from '../scripts/worksLightbox'
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -367,7 +367,7 @@
       'pointerdown',
       (event) => {
         if (!(event.target instanceof Element)) return
-        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .examples-thumb, .examples-nav, .faq-trigger, .lead-modal__close')
+        const target = event.target.closest('[data-tap-hover], .btn-primary, .btn-ghost, .btn-outline, .btn-form-submit, .works-tile, .works-lightbox__nav, .works-lightbox__close, .faq-trigger, .lead-modal__close')
         if (!target) {
           clear()
           return
@@ -446,7 +446,7 @@
   initTapHover()
   initMobileCta()
   initNoCopy()
-  initExamplesGallery()
+  initWorksLightbox()
   initLeadForms()
   initLeadModal()
 </script>

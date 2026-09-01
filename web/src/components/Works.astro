@@ -7,10 +7,9 @@ interface Props {
 }
 
 const { title, items } = Astro.props
-const first = items[0]
 ---
 
-<section id="works" class="works-section relative overflow-hidden bg-soil py-20 text-white md:py-28">
+<section id="works" class="works-section relative overflow-hidden bg-soil py-16 text-white md:py-24">
   <div
     class="pointer-events-none absolute inset-0 opacity-45"
     style="background:
@@ -32,73 +31,81 @@ const first = items[0]
     </div>
 
     {
-      first && (
-        <div
-          class="examples-gallery works-gallery fade-up mt-10 md:mt-12"
-          data-examples-gallery
-          tabindex="0"
-          role="region"
-          aria-roledescription="карусель"
-          aria-label="Галерея выполненных работ"
-        >
-          <div class="examples-stage">
-            <button
-              type="button"
-              class="examples-nav examples-nav--prev"
-              data-examples-prev
-              aria-label="Предыдущее фото"
-            >
-              <span aria-hidden="true">‹</span>
-            </button>
+      items.length > 0 && (
+        <div class="fade-up mt-10 md:mt-12" data-works-gallery>
+          <div class="works-mosaic">
+            {items.map((item, i) => (
+              <button
+                type="button"
+                class:list={['works-tile', i === 0 && 'is-featured']}
+                data-works-open
+                data-src={item.imageUrl}
+                data-caption={item.caption}
+                data-tap-hover
+                aria-label={`Открыть фото: ${item.caption}`}
+              >
+                <img
+                  src={item.imageUrl}
+                  alt=""
+                  width={i === 0 ? 960 : 480}
+                  height={i === 0 ? 720 : 600}
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+                <span class="works-tile__overlay" aria-hidden="true" />
+                <span class="works-tile__caption">{item.caption}</span>
+              </button>
+            ))}
+          </div>
 
-            <div class="examples-stage-frame works-stage-frame">
+          <dialog
+            class="works-lightbox"
+            data-works-lightbox
+            aria-labelledby="works-lightbox-caption"
+          >
+            <div class="works-lightbox__panel">
+              <button
+                type="button"
+                class="works-lightbox__close"
+                data-works-close
+                aria-label="Закрыть фото"
+              >
+                ×
+              </button>
+              <button
+                type="button"
+                class="works-lightbox__nav works-lightbox__nav--prev"
+                data-works-prev
+                aria-label="Предыдущее фото"
+              >
+                <span aria-hidden="true">‹</span>
+              </button>
               <img
-                src={first.imageUrl}
-                alt={first.caption}
-                class="examples-stage-img works-stage-img"
-                data-examples-main
-                width="960"
-                height="1200"
-                decoding="async"
+                src={items[0].imageUrl}
+                alt={items[0].caption}
+                class="works-lightbox__img"
+                data-works-lightbox-img
+                width="1200"
+                height="1600"
               />
-              <div class="works-stage-overlay" aria-hidden="true" />
-              <div class="examples-stage-meta">
-                <p class="examples-stage-caption" data-examples-caption>
-                  {first.caption}
+              <button
+                type="button"
+                class="works-lightbox__nav works-lightbox__nav--next"
+                data-works-next
+                aria-label="Следующее фото"
+              >
+                <span aria-hidden="true">›</span>
+              </button>
+              <div class="works-lightbox__meta">
+                <p id="works-lightbox-caption" data-works-lightbox-caption>
+                  {items[0].caption}
                 </p>
-                <p class="examples-stage-counter" data-examples-counter>
+                <p data-works-lightbox-counter>
                   1 / {items.length}
                 </p>
               </div>
             </div>
-
-            <button
-              type="button"
-              class="examples-nav examples-nav--next"
-              data-examples-next
-              aria-label="Следующее фото"
-            >
-              <span aria-hidden="true">›</span>
-            </button>
-          </div>
-
-          <div class="examples-thumbs works-thumbs" role="tablist" aria-label="Выбор работы">
-            {items.map((item, i) => (
-              <button
-                type="button"
-                class:list={['examples-thumb', 'works-thumb', i === 0 && 'is-active']}
-                role="tab"
-                aria-selected={i === 0 ? 'true' : 'false'}
-                aria-label={item.caption}
-                data-examples-thumb
-                data-src={item.imageUrl}
-                data-caption={item.caption}
-                data-tap-hover
-              >
-                <img src={item.imageUrl} alt="" width="240" height="300" loading="lazy" />
-              </button>
-            ))}
-          </div>
+          </dialog>
         </div>
       )
     }
