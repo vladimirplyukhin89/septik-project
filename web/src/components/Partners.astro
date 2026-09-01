@@ -36,11 +36,14 @@ const nodes = [
   { x: 81, y: 24, s: 7 },
   { x: 90, y: 44, s: 6 },
 ]
+
+const constellationPath = nodes.map((n, i) => `${i === 0 ? 'M' : 'L'} ${n.x} ${n.y}`).join(' ')
+const hubIndex = Math.max(0, warehouses.indexOf('Тюмень'))
 ---
 
-<section id="partners" class="partners-section section">
+<section id="partners" class="partners-section partners-motion-pending section" data-partners-motion>
   <div class="container-site">
-    <div class="section-head fade-up fade-up--left">
+    <div class="section-head" data-motion-head>
       <div>
         <p class="section-kicker">Производители</p>
         <h2 class="section-title mt-2">{title}</h2>
@@ -51,8 +54,8 @@ const nodes = [
     {
       featured && (
         <article
-          class="partner-featured reveal-item group relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-soil text-white"
-          style="--reveal-i: 0"
+          class="partner-featured group relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-soil text-white"
+          data-motion-featured
           data-tap-hover
         >
           <div class="partners-grid" aria-hidden="true" />
@@ -66,7 +69,7 @@ const nodes = [
 
           <div class="relative grid gap-8 p-6 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:gap-10 md:p-10">
             <div>
-              <div class="flex flex-wrap items-center gap-4">
+              <div class="flex flex-wrap items-center gap-4" data-motion-enter>
                 <div class="partner-mark" aria-hidden="true">
                   <span class="partner-mark__ring" />
                   <span class="partner-mark__ring partner-mark__ring--delay" />
@@ -87,15 +90,19 @@ const nodes = [
                 </div>
               </div>
 
-              <p class="mt-5 max-w-xl text-sm leading-relaxed text-white/70 md:text-lg">{featured.summary}</p>
+              <p class="mt-5 max-w-xl text-sm leading-relaxed text-white/70 md:text-lg" data-motion-enter>
+                {featured.summary}
+              </p>
 
               <div class="mt-6 flex flex-wrap gap-2">
                 {(featured.tags || []).map((tag) => (
-                  <span class="partner-chip">{tag}</span>
+                  <span class="partner-chip" data-motion-enter>
+                    {tag}
+                  </span>
                 ))}
               </div>
 
-              <div class="mt-7 flex flex-wrap items-center gap-3">
+              <div class="mt-7 flex flex-wrap items-center gap-3" data-motion-enter>
                 <a
                   href={featured.url}
                   class="btn-ghost border-white/25"
@@ -111,9 +118,9 @@ const nodes = [
             </div>
 
             <div>
-              <div class="js-stats grid grid-cols-2 gap-3">
+              <div class="grid grid-cols-2 gap-3">
                 {(featured.stats || []).map((stat) => (
-                  <div class="partner-stat">
+                  <div class="partner-stat" data-motion-enter>
                     <p class="partner-stat__value">
                       {stat.value != null ? (
                         <span
@@ -128,17 +135,24 @@ const nodes = [
                       )}
                     </p>
                     <p class="partner-stat__label">{stat.label}</p>
-                    <span class="partner-meter" data-meter-fill />
+                    <span class="partner-meter">
+                      <span class="partner-meter__fill" data-motion-meter />
+                    </span>
                   </div>
                 ))}
               </div>
 
-              <p class="mt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40">
+              <p
+                class="mt-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/40"
+                data-motion-enter
+              >
                 Склады быстрой отгрузки · есть Тюмень
               </p>
-              <ul class="mt-3 flex flex-wrap gap-2">
+              <ul class="mt-3 flex flex-wrap gap-2" data-motion-cities data-hub-index={hubIndex}>
                 {warehouses.map((city) => (
-                  <li class:list={['partner-city', city === 'Тюмень' && 'is-hub']}>{city}</li>
+                  <li class:list={['partner-city', city === 'Тюмень' && 'is-hub']} data-motion-city>
+                    {city}
+                  </li>
                 ))}
               </ul>
             </div>
@@ -146,14 +160,17 @@ const nodes = [
 
           <div class="partners-constellation" aria-hidden="true">
             <svg viewBox="0 0 100 80" preserveAspectRatio="none">
-              <g class="partners-links">
-                {nodes.slice(0, -1).map((n, i) => (
-                  <line x1={n.x} y1={n.y} x2={nodes[i + 1].x} y2={nodes[i + 1].y} />
-                ))}
-              </g>
+              <path
+                class="partners-path"
+                data-motion-path
+                pathLength="1"
+                d={constellationPath}
+                fill="none"
+              />
               {nodes.map((n, i) => (
                 <circle
                   class:list={['partners-node', n.hub && 'is-hub']}
+                  data-motion-node
                   cx={n.x}
                   cy={n.y}
                   r={n.s / 4}
@@ -166,14 +183,10 @@ const nodes = [
       )
     }
 
-    <div class="stagger-group stagger-group--left mt-6 grid gap-6 lg:grid-cols-2">
+    <div class="mt-6 grid gap-6 lg:grid-cols-2">
       {
-        rest.map((partner, i) => (
-          <article
-            class="partner-card reveal-item group"
-            style={`--reveal-i: ${i + 1}`}
-            data-tap-hover
-          >
+        rest.map((partner) => (
+          <article class="partner-card group" data-motion-card data-partner-hover data-tap-hover>
             <div class="flex items-start justify-between gap-4">
               <div class="partner-logo-plate">
                 {isEurobion(partner) ? (
@@ -196,7 +209,7 @@ const nodes = [
             <h3 class="mt-5 text-2xl font-bold text-ink md:text-3xl">{partner.name}</h3>
             <p class="mt-3 text-sm leading-relaxed text-ink-muted md:text-lg">{partner.summary}</p>
 
-            <div class="js-stats mt-6 grid grid-cols-3 gap-2">
+            <div class="mt-6 grid grid-cols-3 gap-2">
               {(partner.stats || []).map((stat) => (
                 <div class="partner-mini-stat">
                   <p class="text-lg font-extrabold text-ink md:text-xl">
