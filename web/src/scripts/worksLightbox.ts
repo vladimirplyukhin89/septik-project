@@ -1,8 +1,9 @@
 import { lockScroll, unlockScroll } from './scrollLock'
 
 const SWIPE_THRESHOLD = 48
+const DESKTOP_MQ = '(min-width: 768px)'
 
-/** Лайтбокс для мозаики работ: смена кадров свайпом, стрелки клавиатуры. */
+/** Лайтбокс для мозаики работ: свайп на мобиле, кнопки на десктопе, стрелки клавиатуры. */
 export function initWorksLightbox() {
   const root = document.querySelector<HTMLElement>('[data-works-gallery]')
   const modal = root?.querySelector<HTMLDialogElement>('[data-works-lightbox]')
@@ -13,15 +14,23 @@ export function initWorksLightbox() {
   const stage = modal.querySelector<HTMLElement>('[data-works-stage]')
   const caption = modal.querySelector<HTMLElement>('[data-works-lightbox-caption]')
   const counter = modal.querySelector<HTMLElement>('[data-works-lightbox-counter]')
+  const prev = modal.querySelector<HTMLButtonElement>('[data-works-prev]')
+  const next = modal.querySelector<HTMLButtonElement>('[data-works-next]')
   const closeBtn = modal.querySelector<HTMLButtonElement>('[data-works-close]')
   if (!img || !tiles.length) return
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const desktop = window.matchMedia(DESKTOP_MQ)
   const slides = tiles
     .map((tile) => ({ src: tile.dataset.src || '', caption: tile.dataset.caption || '' }))
     .filter((slide) => slide.src)
 
   if (!slides.length) return
+
+  if (slides.length < 2) {
+    prev?.setAttribute('hidden', '')
+    next?.setAttribute('hidden', '')
+  }
 
   let index = 0
   let closing = false
@@ -136,7 +145,19 @@ export function initWorksLightbox() {
     close()
   })
 
+  prev?.addEventListener('click', (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    apply(index - 1)
+  })
+  next?.addEventListener('click', (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    apply(index + 1)
+  })
+
   const onSwipeStart = (event: PointerEvent) => {
+    if (desktop.matches) return
     if (event.pointerType === 'mouse' && event.button !== 0) return
     if (slides.length < 2) return
     swiping = true

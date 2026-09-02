@@ -192,6 +192,22 @@
     visibility: hidden;
   }
 
+  .lead-form {
+    position: relative;
+  }
+
+  .form-honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .lead-modal {
     margin: auto;
     width: min(calc(100% - 1.5rem), 42rem);
@@ -282,7 +298,8 @@
     .lead-form--modal > p,
     .lead-form--modal > button,
     .lead-form--modal > .form-status,
-    .lead-form--modal > .form-error--form {
+    .lead-form--modal > .form-error--form,
+    .lead-form--modal > .form-honeypot {
       grid-column: 1 / -1;
     }
   }
@@ -1549,6 +1566,7 @@
   }
 
   .works-lightbox__stage {
+    position: relative;
     display: grid;
     place-items: center;
     width: 100%;
@@ -1556,6 +1574,12 @@
     overflow: hidden;
     touch-action: pan-y;
     background: #070b12;
+  }
+
+  @media (min-width: 768px) {
+    .works-lightbox__stage {
+      touch-action: manipulation;
+    }
   }
 
   .works-lightbox__img {
@@ -1593,6 +1617,52 @@
   .works-lightbox__close.is-hovered {
     border-color: var(--color-accent);
     background: var(--color-accent);
+  }
+
+  .works-lightbox__nav {
+    display: none;
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    height: 2.75rem;
+    width: 2.75rem;
+    transform: translateY(-50%);
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    background: rgb(7 11 18 / 0.72);
+    font-size: 1.6rem;
+    line-height: 1;
+    color: #fff;
+    backdrop-filter: blur(8px);
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .works-lightbox__nav:hover,
+  .works-lightbox__nav.is-hovered {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+
+  .works-lightbox__nav--prev {
+    left: 0.75rem;
+  }
+
+  .works-lightbox__nav--next {
+    right: 0.75rem;
+  }
+
+  .works-lightbox__nav[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .works-lightbox__nav {
+      display: flex;
+    }
   }
 
   .works-lightbox__meta {
