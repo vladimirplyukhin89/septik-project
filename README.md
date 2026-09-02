@@ -35,8 +35,11 @@ npm run dev:studio # Sanity
 Переменные:
 
 - `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` — доставка в Telegram
-- без них заявки логируются (demo mode)
+- `AMOCRM_SUBDOMAIN` + `AMOCRM_ACCESS_TOKEN` — сделка/неразобранное в amoCRM
+- без Telegram и amoCRM заявки логируются (demo mode)
 - `PUBLIC_YANDEX_METRIKA_ID` — Метрика + цель `lead_submit`
+
+Антиспам: скрытое honeypot-поле и лимит 5 заявок с IP / номера за 10 минут.
 
 ## Деплой
 
