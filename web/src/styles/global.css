@@ -2131,6 +2131,34 @@
     padding: 0.7rem 0.65rem;
   }
 
+  .partner-mini-stat__label {
+    margin-top: 0.25rem;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: manual;
+  }
+
+  /* Narrow screens: value + label on one row so long words like
+     «Представительств» stay unbroken instead of wrapping mid-word
+     inside a cramped 3-column cell. */
+  @media (max-width: 639px) {
+    .partner-mini-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+      padding: 0.65rem 0.85rem;
+    }
+
+    .partner-mini-stat__value {
+      flex-shrink: 0;
+    }
+
+    .partner-mini-stat__label {
+      margin-top: 0;
+      min-width: 0;
+    }
+  }
+
   .partner-marquee {
     overflow: hidden;
     mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
