@@ -187,10 +187,10 @@ const hubIndex = Math.max(0, warehouses.findIndex((w) => w.hub))
             <h3 class="mt-5 text-2xl font-bold text-ink md:text-3xl">{partner.name}</h3>
             <p class="mt-3 text-sm leading-relaxed text-ink-muted md:text-lg">{partner.summary}</p>
 
-            <div class="mt-6 grid grid-cols-3 gap-2">
+            <div class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
               {(partner.stats || []).map((stat) => (
                 <div class="partner-mini-stat">
-                  <p class="text-lg font-extrabold text-ink md:text-xl">
+                  <p class="partner-mini-stat__value text-lg font-extrabold text-ink md:text-xl">
                     {stat.value != null ? (
                       <span
                         data-count={stat.value}
@@ -203,7 +203,7 @@ const hubIndex = Math.max(0, warehouses.findIndex((w) => w.hub))
                       stat.fallback
                     )}
                   </p>
-                  <p class="mt-1 text-[11px] leading-snug text-ink-muted">{stat.label}</p>
+                  <p class="partner-mini-stat__label text-[11px] leading-snug text-ink-muted">{stat.label}</p>
                 </div>
               ))}
             </div>
