@@ -13,4 +13,4 @@
 
 ## Переменные на проде
 
-Скопировать из `web/.env.example`: Sanity IDs, Telegram bot, Метрика.
+Скопировать из `web/.env.example`: Sanity IDs, Telegram bot, amoCRM, Метрика.

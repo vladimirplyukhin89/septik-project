@@ -11,12 +11,14 @@ const { brandName, phone, phoneHref } = Astro.props
 const brandShort = brandName.replace(/^ООО\s*/i, '').trim() || brandName
 
 const nav = [
-  { href: '#partners', label: 'Партнёры' },
-  { href: '#products', label: 'Продукция' },
+  { href: '#products', label: 'Каталог' },
+  { href: '#problems', label: 'Решения' },
+  { href: '#partners', label: 'Производители' },
+  { href: '#package', label: 'Монтаж' },
+  { href: '#works', label: 'Наши работы' },
   { href: '#why', label: 'Преимущества' },
-  { href: '#package', label: 'Под ключ' },
-  { href: '#works', label: 'Работы' },
-  { href: '#faq', label: 'FAQ' },
+  { href: '#faq', label: 'Вопросы' },
+  { href: '#trust', label: 'Контакты' },
 ]
 ---
 

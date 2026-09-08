@@ -11,7 +11,7 @@ interface Props {
 
 const { title, services, examples = [], phoneHref } = Astro.props
 
-const badges = ['Пластик', 'Вертикальный', 'Горизонтальный']
+// const badges = ['Пластик', 'Вертикальный', 'Горизонтальный']
 const hoverImages = [
   '/images/jpg/septik-mini-1.jpg',
   '/images/jpg/septik-mini-2.jpg',
@@ -65,7 +65,7 @@ const hoverImages = [
                   height="140"
                 />
               )}
-              <span class="product-card__badge">{badges[i] || 'Изделие'}</span>
+              {/* <span class="product-card__badge">{badges[i] || 'Изделие'}</span> */}
               <div class="product-card__title-bar">
                 <p>{service.title}</p>
               </div>
@@ -91,7 +91,7 @@ const hoverImages = [
       }
     </div>
 
-    {
+    <!-- {
       examples.length > 0 && (
         <div class="examples-strip fade-up mt-10 md:mt-12">
           <p class="examples-strip__label">Форматы корпусов</p>
@@ -115,7 +115,7 @@ const hoverImages = [
           </div>
         </div>
       )
-    }
+    } -->
 
     <div class="js-mobile-cta-sentinel mt-8 h-px w-full md:hidden" aria-hidden="true"></div>
     <div class="mobile-cta-bar js-mobile-cta md:hidden" data-mobile-cta>

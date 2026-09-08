@@ -76,4 +76,16 @@ const messageId = `${idPrefix}-message`
     Заявка отправлена. Мы скоро свяжемся с вами.
   </p>
   <p class="form-error form-error--form mt-2 is-empty text-sm" data-form-error role="alert"></p>
+
+  <div class="form-honeypot" aria-hidden="true" inert>
+    <label for={`${idPrefix}-website`}>Сайт</label>
+    <input
+      id={`${idPrefix}-website`}
+      type="text"
+      name="website"
+      tabindex="-1"
+      autocomplete="off"
+      data-honeypot
+    />
+  </div>
 </form>

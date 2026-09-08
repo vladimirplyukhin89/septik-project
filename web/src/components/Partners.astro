@@ -92,12 +92,10 @@ const hubIndex = Math.max(0, warehouses.findIndex((w) => w.hub))
 
               <div class="mt-7 flex flex-wrap items-center gap-3" data-motion-enter>
                 <a
-                  href={featured.url}
+                  href={`#products`}
                   class="btn-ghost border-white/25"
-                  target="_blank"
-                  rel="noopener noreferrer"
                 >
-                  Сайт производителя
+                  К каталогу
                 </a>
                 <button type="button" class="btn-primary" data-open-lead-modal>
                   Подобрать {featured.name}
@@ -228,12 +226,10 @@ const hubIndex = Math.max(0, warehouses.findIndex((w) => w.hub))
 
             <div class="mt-auto flex flex-wrap items-center gap-3 pt-6">
               <a
-                href={partner.url}
+                href={`#products`}
                 class="btn-outline py-2.5 text-xs"
-                target="_blank"
-                rel="noopener noreferrer"
               >
-                Подробнее о {partner.name}
+                К каталогу
               </a>
               <button type="button" class="btn-primary py-2.5 text-xs" data-open-lead-modal>
                 Подобрать модель
