@@ -45,7 +45,7 @@ npm run dev:studio # Sanity
 
 1. **Сайт:** Node standalone (`npm run build` → `node ./dist/server/entry.mjs`) или платформа с Node/Astro adapter (Vercel/Cloudflare — сменить adapter).
 2. **Studio:** `cd studio && npx sanity deploy` → `*.sanity.studio` (бесплатный хостинг Sanity).
-3. Домен `мойсептик72.рф`: DNS на хостинг, после запуска — Вебмастер/Search Console.
+3. Домен `armada-septik.ru`: DNS на хостинг, после запуска — Вебмастер/Search Console.
 
 ## Дизайн
 
