@@ -20,7 +20,7 @@ export const fallbackContent: SiteContent = {
     heroSubtitle:
       'Подберём станцию или накопительную ёмкость под ваш участок, доставим и смонтируем за один день с гарантией 10 лет в договоре.',
     heroCta: 'Оставить заявку',
-    heroPriceFrom: 'от 45 800 ₽',
+    heroPriceFrom: 'от 144 100 ₽',
     heroTrust: ['Подбор под участок', 'Бесплатный выезд инженера', 'Монтаж под ключ'],
     problemsTitle: 'А вы сталкивались с такими проблемами?',
     problems: [
@@ -100,7 +100,7 @@ export const fallbackContent: SiteContent = {
       'Земляные работы',
       'Бесплатная доставка по г. Тюмени',
     ],
-    packagePrice: 'Под ключ за 1 день — от 45 800 ₽',
+    packagePrice: 'Под ключ за 1 день — от 144 100 ₽',
     packageCta: 'Рассчитать стоимость',
     galleryTitle: 'Примеры пластиковых септиков',
     gallery: [

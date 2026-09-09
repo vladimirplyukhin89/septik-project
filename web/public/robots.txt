@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://мойсептик72.рф/sitemap-index.xml
+Sitemap: https://armada-septik.ru/sitemap-index.xml
