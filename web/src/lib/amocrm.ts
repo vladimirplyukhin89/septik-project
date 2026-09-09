@@ -236,7 +236,7 @@ function buildLead(config: AmoConfig, input: AmoLeadInput, contact: AmoContact):
       category: 'forms',
       form_id: 1,
       form_name: 'Форма на сайте',
-      form_page: input.page || 'https://мойсептик72.рф',
+      form_page: input.page || 'https://armada-septik.ru',
       form_sent_at: Math.floor(Date.now() / 1000),
       ip: input.ip,
     }

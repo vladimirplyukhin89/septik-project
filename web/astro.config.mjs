@@ -2,13 +2,15 @@
 import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
 import sitemap from '@astrojs/sitemap'
-import vercel from '@astrojs/vercel'
+import node from '@astrojs/node'
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://xn--72-mlcmdikqlsn.xn--p1ai',
+  site: 'https://armada-septik.ru',
   output: 'server',
-  adapter: vercel(),
+  adapter: node({
+    mode: 'standalone',
+  }),
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

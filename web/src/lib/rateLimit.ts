@@ -43,7 +43,6 @@ export function consumeRateLimit(key: string): { ok: true } | { ok: false; retry
 
 export function clientIp(request: Request): string {
   const header =
-    request.headers.get('x-vercel-forwarded-for') ||
     request.headers.get('x-real-ip') ||
     request.headers.get('x-forwarded-for')
   if (!header) return 'unknown'

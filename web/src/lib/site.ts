@@ -1,5 +1,5 @@
 /** Канонический URL сайта (совпадает с `site` в astro.config). */
-export const SITE_URL = 'https://мойсептик72.рф'
+export const SITE_URL = 'https://armada-septik.ru'
 
 /** Логотип компании (заглушка там, где ещё нет продуктовых фото). */
 export const COMPANY_LOGO_URL = '/images/png/armada-logo.png'
