@@ -1,5 +1,6 @@
 {
-  "name": "moy-septik",
+  "name": "armada-septik",
+  "version": "1.0.0",
   "private": true,
   "workspaces": [
     "web",
@@ -12,5 +13,8 @@
     "build": "npm run build --workspace=web",
     "build:studio": "npm run build --workspace=studio",
     "preview": "npm run preview --workspace=web"
+  },
+  "dependencies": {
+    "@astrojs/node": "^11.1.5"
   }
 }

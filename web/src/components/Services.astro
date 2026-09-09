@@ -9,13 +9,12 @@ interface Props {
   phoneHref: string
 }
 
-const { title, services, examples = [], phoneHref } = Astro.props
+const { title, services, phoneHref } = Astro.props
 
-// const badges = ['Пластик', 'Вертикальный', 'Горизонтальный']
 const hoverImages = [
-  '/images/jpg/septik-mini-1.jpg',
-  '/images/jpg/septik-mini-2.jpg',
-  '/images/jpg/septik-mini-3.jpg',
+  '/images/webp/product-topas.webp',
+  '/images/jpg/eurolos-pro-01.jpg',
+  '/images/jpg/evrobion-5.jpg',
 ]
 ---
 
@@ -27,7 +26,7 @@ const hoverImages = [
         <h2 class="section-title mt-2">{title}</h2>
       </div>
       <p class="section-lead">
-        Три линейки пластиковых решений — понятный выбор без перегруза.
+        Три линейки современных септиков — понятный выбор без перегруза.
       </p>
     </div>
     <div class="stagger-group stagger-group--left mt-10 grid items-stretch gap-6 md:grid-cols-3">
@@ -48,7 +47,7 @@ const hoverImages = [
               {hoverImages[i] ? (
                 <img
                   src={hoverImages[i]}
-                  alt=""
+                  alt="Примеры корпусов септиков"
                   aria-hidden="true"
                   class="product-card__img"
                   width="640"
@@ -65,7 +64,9 @@ const hoverImages = [
                   height="140"
                 />
               )}
-              {/* <span class="product-card__badge">{badges[i] || 'Изделие'}</span> */}
+              {i === 1 && (
+                <span class="product-card__badge">Рекомендуемый</span>
+              )}
               <div class="product-card__title-bar">
                 <p>{service.title}</p>
               </div>
@@ -90,32 +91,6 @@ const hoverImages = [
         ))
       }
     </div>
-
-    <!-- {
-      examples.length > 0 && (
-        <div class="examples-strip fade-up mt-10 md:mt-12">
-          <p class="examples-strip__label">Форматы корпусов</p>
-          <div class="examples-bento examples-bento--strip">
-            {examples.map((item) => (
-              <figure class="examples-tile">
-                <div class="examples-tile__media">
-                  <span class="examples-tile__glow" aria-hidden="true" />
-                  <img
-                    src={item.imageUrl}
-                    alt=""
-                    width="640"
-                    height="480"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-                <figcaption class="examples-tile__caption">{item.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      )
-    } -->
 
     <div class="js-mobile-cta-sentinel mt-8 h-px w-full md:hidden" aria-hidden="true"></div>
     <div class="mobile-cta-bar js-mobile-cta md:hidden" data-mobile-cta>
