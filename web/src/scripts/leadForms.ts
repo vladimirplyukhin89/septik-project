@@ -34,7 +34,6 @@ function readPayload(form: HTMLFormElement) {
     name: String(data.get('name') || '').trim(),
     phone: String(data.get('phone') || '').trim(),
     message: String(data.get('message') || '').trim(),
-    website: String(data.get('website') || '').trim(),
   }
 }
 
@@ -95,8 +94,9 @@ async function submitLeadForm(form: HTMLFormElement) {
         name: payload.name.replace(/\s+/g, ' '),
         phone: formatPhoneDisplay(digits),
         message: payload.message,
-        website: payload.website,
       }),
+      mode: 'cors',
+      credentials: 'same-origin'
     })
     const body = await res.json().catch(() => ({}))
     if (!res.ok) {

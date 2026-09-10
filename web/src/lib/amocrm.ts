@@ -1,8 +1,6 @@
 type AmoConfig = {
   subdomain: string
-  clientId?: string
-  clientSecret?: string
-  redirectUri: string
+  accessToken: string
   pipelineId?: number
   statusId?: number
   responsibleUserId?: number
@@ -10,29 +8,25 @@ type AmoConfig = {
   unsorted: boolean
 }
 
-type TokenState = {
-  accessToken: string
-  refreshToken?: string
-  expiresAt: number
-}
-
 type AmoLeadInput = {
   name: string
   phone: string
   phonePretty: string
-  message: string
-  note: string
+  message?: string
+  note?: string
   ip: string
   page?: string
+}
+
+type AmoCustomField = {
+  field_code: string
+  values: Array<{ value: string; enum_code?: string }>
 }
 
 type AmoContact = {
   id?: number
   first_name?: string
-  custom_fields_values?: Array<{
-    field_code: string
-    values: Array<{ value: string; enum_code?: string }>
-  }>
+  custom_fields_values?: AmoCustomField[]
 }
 
 type AmoComplexLead = {
@@ -55,8 +49,11 @@ type AmoComplexLead = {
   }
 }
 
-let tokenState: TokenState | null = null
-let refreshInFlight: Promise<void> | null = null
+type AmoComplexResponse = {
+  _embedded?: {
+    leads?: Array<{ id: number }>
+  }
+}
 
 function optionalPositiveInt(value?: string): number | undefined {
   if (!value) return undefined
@@ -83,9 +80,7 @@ function readConfig(): AmoConfig | null {
 
   return {
     subdomain: normalizeSubdomain(rawSubdomain),
-    clientId: import.meta.env.AMOCRM_CLIENT_ID?.trim() || undefined,
-    clientSecret: import.meta.env.AMOCRM_CLIENT_SECRET?.trim() || undefined,
-    redirectUri: import.meta.env.AMOCRM_REDIRECT_URI?.trim() || 'https://localhost',
+    accessToken,
     pipelineId: optionalPositiveInt(import.meta.env.AMOCRM_PIPELINE_ID),
     statusId,
     responsibleUserId: optionalPositiveInt(import.meta.env.AMOCRM_RESPONSIBLE_USER_ID),
@@ -94,113 +89,40 @@ function readConfig(): AmoConfig | null {
   }
 }
 
-function ensureTokenState(): TokenState | null {
-  if (tokenState) return tokenState
-  const accessToken = import.meta.env.AMOCRM_ACCESS_TOKEN?.trim()
-  if (!accessToken) return null
-  tokenState = {
-    accessToken,
-    refreshToken: import.meta.env.AMOCRM_REFRESH_TOKEN?.trim() || undefined,
-    expiresAt: 0,
-  }
-  return tokenState
-}
-
 export function isAmoConfigured(): boolean {
   return readConfig() !== null
-}
-
-async function refreshTokens(config: AmoConfig): Promise<void> {
-  const state = ensureTokenState()
-  if (!state?.refreshToken || !config.clientId || !config.clientSecret) {
-    throw new Error('amoCRM refresh is not configured')
-  }
-
-  const res = await fetch(`https://${config.subdomain}.amocrm.ru/oauth2/access_token`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      client_id: config.clientId,
-      client_secret: config.clientSecret,
-      grant_type: 'refresh_token',
-      refresh_token: state.refreshToken,
-      redirect_uri: config.redirectUri,
-    }),
-    signal: AbortSignal.timeout(10_000),
-  })
-
-  const body = (await res.json().catch(() => ({}))) as {
-    access_token?: string
-    refresh_token?: string
-    expires_in?: number
-    hint?: string
-    title?: string
-  }
-
-  if (!res.ok || !body.access_token) {
-    throw new Error(body.hint || body.title || `amoCRM oauth ${res.status}`)
-  }
-
-  tokenState = {
-    accessToken: body.access_token,
-    refreshToken: body.refresh_token || state.refreshToken,
-    expiresAt: Date.now() + Math.max(60, (body.expires_in || 86400) - 120) * 1000,
-  }
-  console.info('[lead] amoCRM tokens refreshed')
-}
-
-async function getAccessToken(config: AmoConfig, forceRefresh = false): Promise<string> {
-  const state = ensureTokenState()
-  if (!state) throw new Error('amoCRM is not configured')
-
-  const expired = state.expiresAt > 0 && Date.now() >= state.expiresAt
-  if (!forceRefresh && !expired) return state.accessToken
-
-  const canRefresh = Boolean(state.refreshToken && config.clientId && config.clientSecret)
-  if (!canRefresh) {
-    if (forceRefresh) throw new Error('amoCRM refresh is not configured')
-    return state.accessToken
-  }
-
-  if (!refreshInFlight) {
-    refreshInFlight = refreshTokens(config).finally(() => {
-      refreshInFlight = null
-    })
-  }
-  await refreshInFlight
-  return tokenState?.accessToken || state.accessToken
 }
 
 async function amoFetch(
   config: AmoConfig,
   path: string,
-  init: RequestInit = {},
-  retried = false
+  init: RequestInit = {}
 ): Promise<Response> {
-  const token = await getAccessToken(config, retried)
-  const res = await fetch(`https://${config.subdomain}.amocrm.ru${path}`, {
+  return fetch(`https://${config.subdomain}.amocrm.ru${path}`, {
     ...init,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${config.accessToken}`,
       'Content-Type': 'application/json',
       ...(init.headers || {}),
     },
     signal: init.signal ?? AbortSignal.timeout(10_000),
   })
-
-  if (res.status === 401 && !retried && tokenState?.refreshToken) {
-    await getAccessToken(config, true)
-    return amoFetch(config, path, init, true)
-  }
-
-  return res
 }
 
 async function readError(res: Response): Promise<string> {
+  if (res.status === 502) {
+    try {
+      const json = await res.json() as { error?: string }
+      if (json?.error) return json.error
+    } catch {
+      return 'Сервис amoCRM временно недоступен (Ошибка 502 Bad Gateway)'
+    }
+  }
+
   const text = await res.text()
   try {
-    const json = JSON.parse(text) as { title?: string; detail?: string; hint?: string }
-    return json.detail || json.hint || json.title || text || `HTTP ${res.status}`
+    const json = JSON.parse(text) as { title?: string; detail?: string; hint?: string; error?: string }
+    return json.detail || json.hint || json.title || json.error || text || `HTTP ${res.status}`
   } catch {
     return text || `HTTP ${res.status}`
   }
@@ -215,34 +137,6 @@ async function findContactId(config: AmoConfig, phone: string): Promise<number |
   }
   const id = data._embedded?.contacts?.[0]?.id
   return typeof id === 'number' ? id : undefined
-}
-
-function buildLead(config: AmoConfig, input: AmoLeadInput, contact: AmoContact): AmoComplexLead {
-  const lead: AmoComplexLead = {
-    name: `Заявка с сайта — ${input.name}`,
-    created_by: 0,
-    _embedded: {
-      contacts: [contact],
-    },
-  }
-
-  if (config.pipelineId) lead.pipeline_id = config.pipelineId
-  if (config.statusId && !config.unsorted) lead.status_id = config.statusId
-  if (config.responsibleUserId) lead.responsible_user_id = config.responsibleUserId
-  if (config.tag) lead._embedded.tags = [{ name: config.tag }]
-
-  if (config.unsorted) {
-    lead._embedded.metadata = {
-      category: 'forms',
-      form_id: 1,
-      form_name: 'Форма на сайте',
-      form_page: input.page || 'https://armada-septik.ru',
-      form_sent_at: Math.floor(Date.now() / 1000),
-      ip: input.ip,
-    }
-  }
-
-  return lead
 }
 
 async function addNote(config: AmoConfig, leadId: number, text: string) {
@@ -260,36 +154,97 @@ async function addNote(config: AmoConfig, leadId: number, text: string) {
   }
 }
 
+function buildLead(config: AmoConfig, input: AmoLeadInput, contact: AmoContact): AmoComplexLead {
+  // Базовый объект строго по спецификации amoCRM
+  const lead: any = {
+    name: input.name === 'ping' ? 'Тестовая заявка (Ping)' : `Заявка с сайта — ${input.name}`,
+    created_by: 0,
+    _embedded: {
+      contacts: [contact],
+    },
+  }
+
+  // Записываем ID воронки и статуса ТОЛЬКО если они реально существуют как числа
+  if (typeof config.pipelineId === 'number') lead.pipeline_id = config.pipelineId
+  if (typeof config.statusId === 'number' && !config.unsorted) lead.status_id = config.statusId
+  if (typeof config.responsibleUserId === 'number') lead.responsible_user_id = config.responsibleUserId
+  
+  if (config.tag) {
+    lead._embedded.tags = [{ name: config.tag }]
+  }
+
+  if (config.unsorted) {
+    lead._embedded.metadata = {
+      category: 'forms',
+      form_id: 1,
+      form_name: 'Форма на сайте',
+      form_page: input.page || 'https://armada-septik.ru',
+      form_sent_at: Math.floor(Date.now() / 1000),
+      ip: input.ip,
+    }
+  }
+
+  return lead
+}
+
 export async function createAmoLead(input: AmoLeadInput): Promise<void> {
   const config = readConfig()
   if (!config) return
 
-  const existingId = await findContactId(config, input.phone)
+  let existingId: number | undefined
+  try {
+    existingId = await findContactId(config, input.phone)
+  } catch (err) {
+    console.error('[lead] amoCRM contact search error:', err)
+  }
+
+  const customFields: AmoCustomField[] = []
+
+  // Безопасная проверка: передаем телефон только если есть непустая строка
+  const targetPhone = input.phonePretty?.trim() || input.phone?.trim()
+  if (targetPhone) {
+    customFields.push({
+      field_code: 'PHONE',
+      values: [{ value: targetPhone, enum_code: 'WORK' }],
+    })
+  }
+
   const contact: AmoContact = existingId
     ? { id: existingId }
     : {
-        first_name: input.name,
-        custom_fields_values: [
-          {
-            field_code: 'PHONE',
-            values: [{ value: input.phonePretty, enum_code: 'WORK' }],
-          },
-        ],
+        first_name: input.name === 'ping' ? 'Тестовый Контакт' : input.name,
+        // Если кастомных полей нет, свойство вообще не должно создаваться в JSON
+        ...(customFields.length > 0 ? { custom_fields_values: customFields } : {}),
       }
 
-  const payload = [buildLead(config, input, contact)]
+  const leadPayload = buildLead(config, input, contact);
+  console.log('ЭТО ТО, ЧТО ОТПРАВЛЯЕТ САЙТ В AMO:', JSON.stringify(leadPayload, null, 2));
+
+  // Глубокая очистка JSON от свойств со значением `undefined` перед отправкой fetch
+  const cleanPayload = JSON.parse(JSON.stringify([leadPayload]))
+  console.log('ЭТО ТО, ЧТО ОТПРАВЛЯЕТ САЙТ В AMO:', JSON.stringify(cleanPayload, null, 2));
+
   const res = await amoFetch(config, '/api/v4/leads/complex', {
     method: 'POST',
-    body: JSON.stringify(payload),
+    body: JSON.stringify(cleanPayload), // Отправляем идеально чистую структуру без скрытых undefined параметров
   })
 
   if (!res.ok) {
     throw new Error(await readError(res))
   }
 
-  const created = (await res.json().catch(() => null)) as Array<{ id?: number }> | null
-  const leadId = created?.[0]?.id
-  if (typeof leadId === 'number' && input.note) {
-    await addNote(config, leadId, input.note)
+  const created = (await res.json().catch(() => null)) as AmoComplexResponse | null
+  const leadId = created?._embedded?.leads?.[0]?.id 
+
+  if (typeof leadId === 'number') {
+    const notesArray: string[] = []
+    
+    notesArray.push(`Источник: armada-septik.ru`)
+    if (input.message?.trim()) notesArray.push(`Сообщение: ${input.message.trim()}`)
+    if (input.note?.trim()) notesArray.push(`Примечание: ${input.note.trim()}`)
+
+    if (notesArray.length > 0) {
+      await addNote(config, leadId, notesArray.join('\n'))
+    }
   }
 }
