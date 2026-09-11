@@ -73,34 +73,34 @@ function normalizeSubdomain(value: string): string {
 }
 
 function readConfig(): AmoConfig | null {
-  const rawSubdomain = import.meta.env.AMOCRM_SUBDOMAIN?.trim()
-  const accessToken = import.meta.env.AMOCRM_ACCESS_TOKEN?.trim()
+  const rawSubdomain = process.env.AMOCRM_SUBDOMAIN?.trim()
+  const accessToken = process.env.AMOCRM_ACCESS_TOKEN?.trim()
   if (!rawSubdomain || !accessToken) return null
 
-  const statusId = optionalPositiveInt(import.meta.env.AMOCRM_STATUS_ID)
-  const mode = import.meta.env.AMOCRM_MODE?.trim().toLowerCase()
+  const statusId = optionalPositiveInt(process.env.AMOCRM_STATUS_ID)
+  const mode = process.env.AMOCRM_MODE?.trim().toLowerCase()
   const unsorted = mode === 'unsorted' || (!mode && !statusId)
 
   return {
     subdomain: normalizeSubdomain(rawSubdomain),
-    clientId: import.meta.env.AMOCRM_CLIENT_ID?.trim() || undefined,
-    clientSecret: import.meta.env.AMOCRM_CLIENT_SECRET?.trim() || undefined,
-    redirectUri: import.meta.env.AMOCRM_REDIRECT_URI?.trim() || 'https://localhost',
-    pipelineId: optionalPositiveInt(import.meta.env.AMOCRM_PIPELINE_ID),
+    clientId: process.env.AMOCRM_CLIENT_ID?.trim() || undefined,
+    clientSecret: process.env.AMOCRM_CLIENT_SECRET?.trim() || undefined,
+    redirectUri: process.env.AMOCRM_REDIRECT_URI?.trim() || 'https://localhost',
+    pipelineId: optionalPositiveInt(process.env.AMOCRM_PIPELINE_ID),
     statusId,
-    responsibleUserId: optionalPositiveInt(import.meta.env.AMOCRM_RESPONSIBLE_USER_ID),
-    tag: import.meta.env.AMOCRM_TAG?.trim() || 'сайт',
+    responsibleUserId: optionalPositiveInt(process.env.AMOCRM_RESPONSIBLE_USER_ID),
+    tag: process.env.AMOCRM_TAG?.trim() || 'сайт',
     unsorted,
   }
 }
 
 function ensureTokenState(): TokenState | null {
   if (tokenState) return tokenState
-  const accessToken = import.meta.env.AMOCRM_ACCESS_TOKEN?.trim()
+  const accessToken = process.env.AMOCRM_ACCESS_TOKEN?.trim()
   if (!accessToken) return null
   tokenState = {
     accessToken,
-    refreshToken: import.meta.env.AMOCRM_REFRESH_TOKEN?.trim() || undefined,
+    refreshToken: process.env.AMOCRM_REFRESH_TOKEN?.trim() || undefined,
     expiresAt: 0,
   }
   return tokenState

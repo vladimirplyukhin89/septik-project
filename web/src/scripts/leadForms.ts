@@ -97,6 +97,8 @@ async function submitLeadForm(form: HTMLFormElement) {
         message: payload.message,
         website: payload.website,
       }),
+      mode: 'cors',
+      credentials: 'same-origin'
     })
     const body = await res.json().catch(() => ({}))
     if (!res.ok) {
