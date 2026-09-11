@@ -13,7 +13,7 @@
     "build": "npm run build --workspace=web",
     "build:studio": "npm run build --workspace=studio",
     "preview": "npm run preview --workspace=web",
-    "start": "node web/dist/server/entry.mjs"
+    "start": "node web/start.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^11.1.5"

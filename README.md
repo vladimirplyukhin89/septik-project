@@ -43,7 +43,15 @@ npm run dev:studio # Sanity
 
 ## Деплой
 
-1. **Сайт:** Node standalone (`npm run build` → `node ./dist/server/entry.mjs`) или платформа с Node/Astro adapter (Vercel/Cloudflare — сменить adapter).
+1. **Сайт (Beget, mod_passenger):** секреты читаются из `process.env` в рантайме, поэтому запуск идёт через враппер `web/start.mjs`, который загружает `.env` из корня приложения.
+   ```bash
+   npm run build
+   # содержимое web/dist → ~/armada-septik/dist
+   # web/start.mjs → ~/armada-septik/start.mjs
+   # .env (все переменные из web/.env) → ~/armada-septik/.env
+   # в public_html/.htaccess: PassengerStartupFile start.mjs
+   touch ~/armada-septik/tmp/restart.txt
+   ```
 2. **Studio:** `cd studio && npx sanity deploy` → `*.sanity.studio` (бесплатный хостинг Sanity).
 3. Домен `armada-septik.ru`: DNS на хостинг, после запуска — Вебмастер/Search Console.
 
