@@ -8,4 +8,5 @@ dist
 *.log
 .sanity
 .vercel
-.env*
+.cursor
+docs
