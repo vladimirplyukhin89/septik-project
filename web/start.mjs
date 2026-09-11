@@ -34,4 +34,4 @@ function loadDotEnv(filePath) {
 
 loadDotEnv(join(rootDir, '.env'))
 
-await import('./dist/server/entry.mjs')
+import('./dist/server/entry.mjs')
